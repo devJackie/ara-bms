@@ -1,0 +1,24 @@
+type: storedRecInfo
+
+indexConfig:
+  type: zookeeper
+  uri: /index/BMS_DD_ADMIN_AD_SCHE
+
+sourceConfig:
+  type: local
+#  path: /data/amoeba/${date}/
+  path: /Users/devjackie/ara-monitoring/admin/${date}/
+  pathAttributes:
+  - type: date
+    datePattern: yyyyMMdd
+    scanRange: -0d
+
+fileIOConfig:
+  type: idx
+  path: /Users/devjackie/ara-monitoring/admin/${date}/
+  pathAttributes:
+  - type: date
+    datePattern: yyyyMMdd
+    scanRange: -0d
+  textEncoding : utf-8
+  filePattern: ([\d+]{8}).[IDX|FIN]+

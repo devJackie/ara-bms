@@ -1,0 +1,12 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kthcorp.daisy.bms.repository.RecInfoMapper">
+
+    <insert id="insertRecFileInfo" parameterType="com.kthcorp.daisy.bms.repository.entity.RecFileInfo">
+        INSERT INTO bms_dd_file_list_res_record (
+            yyyymmdd, file_id, apln_form_id, ad_id, ch_id, otv_ch_no, start_dt, rec_file_path, rec_thumb_file_path, brdcst_dt, reg_dt
+        ) VALUES (
+            #{yyyyMMdd}, #{fileId}, #{aplnFormId}, #{adId}, #{chId}, #{otvChNo}, #{startDt}, #{recFilePath}, #{recThumbFilePath}, #{brdcstDt}, now()
+        )
+    </insert>
+
+</mapper>

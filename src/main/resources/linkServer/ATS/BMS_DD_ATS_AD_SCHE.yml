@@ -1,0 +1,24 @@
+type: storedRecInfo
+
+indexConfig:
+  type: zookeeper
+  uri: /index/BMS_DD_ATS_AD_SCHE
+
+sourceConfig:
+#  type: ftp
+#  server: 10.45.160.82
+#  port: 21
+#  id: sunchun
+#  password: sunchun!
+#  dataConnectionMode: active
+#  path: /data/cuton_logs/kt/ad_sche/
+  type: ftp
+  server: localhosts
+  port: 21
+  id: devjackie
+  password: Tjddydwozl12
+#  dataConnectionMode: active
+  path: /Users/devjackie/ara-monitoring/ats/
+  pathAttributes:
+  - type: none
+  filePattern: ad_sche_([\d+]{8}).DAT$
