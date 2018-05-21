@@ -89,7 +89,7 @@ public abstract class BaseExecutor implements CommonExecutor {
         // 4-1. mss 프로그램 epg 테이블 + 4번 선천 광고 익일 epg 테이블 매핑
         // (프로그램 종료시간 -15분을 start_dt, 15분후를 end_dt 로 기준 정함, 광고 epg 생성 되게 쿼리 생성 후 epg 데이터 db 저장)
 
-        // 6. 1-2번 녹화완료된 데이터와 4번 쿼리 데이터 매핑해서 녹화되지 않은 데이터 db 저장
+        // 5. 1-2번 녹화완료된 데이터와 4번 쿼리 데이터 매핑해서 녹화되지 않은 데이터 db 저장
 
         // 6. 긴급 광고 편성표 데이터가 있는지 체크
 
