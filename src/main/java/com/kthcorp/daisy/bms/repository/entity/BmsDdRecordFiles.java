@@ -10,19 +10,19 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode
-public class RecFileInfo {
+public class BmsDdRecordFiles {
 
     private String yyyyMMdd;
     private String fileId;
     private String aplnFormId;
     private String adId;
     private String chId;
-    private String otvChNo;
+    private String chNo;
     private String startDt;
     private String recFilePath;
     private String recThumbFilePath;
     private String brdcstDt;
     private String regDt;
 
-    public RecFileInfo() {}
+    public BmsDdRecordFiles() {}
 }

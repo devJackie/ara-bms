@@ -2,7 +2,7 @@ type: storedRecInfo
 
 indexConfig:
   type: zookeeper
-  uri: /index/BMS_DD_FILE_LIST_RES_RECORD
+  uri: /index/BMS_DD_RECORD_FILES
 
 sourceConfig:
   type: local

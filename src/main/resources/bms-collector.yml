@@ -4,4 +4,4 @@ LIMIT:
     uri: /bms/collector-mutex/LIMIT
 
   linkServer:
-    - BMS_DD_FILE_LIST_RES_RECORD : linkServer/AMOEBA/BMS_DD_FILE_LIST_RES_RECORD.yml
+    - BMS_DD_RECORD_FILES : linkServer/AMOEBA/BMS_DD_RECORD_FILES.yml
