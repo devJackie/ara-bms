@@ -2,10 +2,11 @@
 <mapper namespace="com.kthcorp.daisy.bms.repository.BmsDdRecordFilesMapper">
 
     <insert id="insertRecordFiles" parameterType="com.kthcorp.daisy.bms.repository.entity.BmsDdRecordFiles">
+    /** insertRecordFiles **/
         INSERT INTO bms_dd_record_files (
             yyyymmdd, file_id, apln_form_id, ad_id, ch_id, ch_no, start_dt, rec_file_path, rec_thumb_file_path, brdcst_dt, reg_dt
         ) VALUES (
-            #{yyyyMMdd}, #{fileId}, #{aplnFormId}, #{adId}, #{chId}, #{chNo}, #{startDt}, #{recFilePath}, #{recThumbFilePath}, #{brdcstDt}, now()
+            #{yyyymmdd}, #{file_id}, #{apln_form_id}, #{ad_id}, #{ch_id}, #{ch_no}, #{start_dt}, #{rec_file_path}, #{rec_thumb_file_path}, #{brdcst_dt}, now()
         )
     </insert>
 

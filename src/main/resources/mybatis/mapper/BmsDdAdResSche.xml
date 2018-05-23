@@ -1,0 +1,145 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kthcorp.daisy.bms.repository.BmsDdAdTmpResScheMapper">
+
+    <insert id="insertAdResSche" parameterType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche">
+        insert into bms_dd_ad_res_sche (
+        /** insertAdResSche **/
+            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
+        ) value (
+            #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{start_dt}, #{end_dt}, now()
+        )
+    </insert>
+
+    <select id="selAdminScheCheck" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        select count(1) from bms_dd_admin_ad_sche where brdcst_dt = '20180428' limit 1
+    </select>
+    <select id="selTmpScheNadminScheForMerge" parameterType="java.util.HashMap" resultType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche">
+    /** selTmpScheNadminScheForMerge **/
+        select
+                g.yyyymmdd
+                , '1' as sche_gubn
+                , g.apln_form_id
+                , g.ad_id
+                , g.ad_nm
+                , g.ad_length
+                , g.ch_id
+                , g.ch_no
+                , g.ch_nm
+                , g.brdcst_dt
+                , g.ori_start_dt
+                , g.start_dt
+                , g.end_dt
+                , g.prgm_id
+                , g.prgm_start_dt
+                , g.prgm_end_dt
+        from
+        (
+            select
+                    f.yyyymmdd, f.ch_id, f.ch_nm, f.brdcst_dt, f.ch_no, f.apln_form_id, f.ad_id, f.ad_nm, f.ad_length
+                    , f.ori_start_dt
+                    , to_char(to_timestamp(f.start_dt)::timestamp,'YYYY-MM-DD HH24:MI:SS') as start_dt
+                    , f.prgm_end_dt as end_dt
+                    , f.prgm_id
+                    , f.prgm_start_dt
+                    , f.prgm_end_dt
+                    , row_number() over (partition by f.ch_id, f.ch_no, f.ad_id, f.apln_form_id order by f.start_dt asc) as rnum
+            from
+            (
+                select
+                        d.yyyymmdd, d.ch_id, d.ch_nm, d.brdcst_dt, d.ch_no, d.apln_form_id, d.ad_id
+                        , d.ad_nm, d.ad_length
+                        , d.start_dt as ori_start_dt
+                        , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900) as start_dt
+                        --, to_char(to_timestamp((extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900))::timestamp,'YYYY-MM-DD HH24:MI:SS') as start_dt_cvt
+                        , e.prgm_id
+                        , e.prgm_nm
+                        , e.prgm_start_dt
+                        , e.prgm_end_dt
+                        , row_number() over (partition by d.ch_id, d.ch_no, d.ad_id, d.apln_form_id, d.start_dt, d.brdcst_dt order by e.prgm_start_dt) as rnum
+                from
+                (
+                    select
+                            c.yyyymmdd, c.ch_nm, c.brdcst_dt, hhmmss, ch_id, ch_no, c.ad_order, c.ad_id, c.ad_nm, c.ad_length, c.apln_form_id
+                            , c.start_dt, c.screen_gubn
+                    from
+                    (
+                        select
+                                yyyymmdd, ch_nm, brdcst_dt, hhmmss, ch_id, otv_ch_no as ch_no, ad_order, ad_id, ad_nm, ad_length, apln_form_id
+                                , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'YYYYMMDDHH24MISS')::timestamp, 'YYYY-MM-DD HH24:MI:SS') as start_dt
+                                , 'OTV' as screen_gubn
+                        from    bms_dd_ats_ad_sche
+                        where   brdcst_dt = '20180428'
+                        and     otv_ch_no is not null
+                        and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' /** 30분 단위 광고 제외 **/
+                        and     ad_length not in ('60', '120')
+                        and     otv_ch_no in
+                        (
+                            select
+                                    b.otv_ch_no
+                            from
+                            (
+                                select
+                                        a.otv_ch_no, a.sum_otv_view_cnt, row_number() over (order by a.sum_otv_view_cnt desc) as otv_rnum
+                                from
+                                (
+                                    select
+                                            otv_ch_no, sum(cast(otv_view_cnt as bigint)) as sum_otv_view_cnt
+                                    from    ad_result
+                                    where   brdcst_dt between '20180401' and '20180430'
+                                    and     p_cmpl_yn = 'y'
+                                    group   by otv_ch_no
+                                ) a
+                            ) b
+                        where   (b.otv_rnum <![CDATA[>=]]> 1 and b.otv_rnum <![CDATA[<=]]> 30)
+                        )
+                        union all
+                        select
+                                yyyymmdd, ch_nm, brdcst_dt, hhmmss, ch_id, concat('S', ots_ch_no) as ch_no, ad_order, ad_id, ad_nm, ad_length, apln_form_id
+                                , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'YYYYMMDDHH24MISS')::timestamp, 'YYYY-MM-DD HH24:MI:SS') as start_dt
+                                , 'OTS' as screen_gubn
+                        from    bms_dd_ats_ad_sche
+                        where   brdcst_dt = '20180428'
+                        and     ots_ch_no is not null
+                        and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' /** 30분 단위 광고 제외 **/
+                        and     ad_length not in ('60', '120')
+                        and     ots_ch_no in
+                        (
+                            select
+                                    b.ots_ch_no
+                            from
+                            (
+                                select
+                                        a.ots_ch_no, a.sum_ots_view_cnt, row_number() over (order by a.sum_ots_view_cnt desc) as ots_rnum
+                                from
+                                (
+                                    select
+                                            ots_ch_no, sum(cast(ots_view_cnt as bigint)) as sum_ots_view_cnt
+                                    from    ad_result
+                                    where   brdcst_dt between '20180401' and '20180430'
+                                    and     p_cmpl_yn = 'y'
+                                    group   by ots_ch_no
+                            ) a
+                        ) b
+                        where   (b.ots_rnum <![CDATA[ >=]]> 1 and b.ots_rnum <![CDATA[<=]]> 30)
+                        )
+                ) c
+                where   not exists ( select 1 from bms_dd_record_files d where d.apln_form_id = c.apln_form_id and d.ad_id = c.ad_id and d.ch_id = c.ch_id )
+                ) d
+                join
+                (
+                select
+                        yyyymmdd, ch_no, prgm_id, prgm_nm, screen_gubn
+                        , prgm_start_dt
+                        , prgm_end_dt
+                from    ams_dd_mss_prgm_sche
+                where   yyyymmdd = '20180428'
+                ) e on  d.ch_no = e.ch_no and e.prgm_start_dt <![CDATA[<=]]> d.start_dt and d.start_dt <![CDATA[<]]> e.prgm_end_dt
+            /** where   d.ch_no = '17' **/
+            ) f
+            where   f.rnum = 1
+        ) g
+        where   g.rnum = 1
+        order by    g.start_dt
+    </select>
+
+</mapper>

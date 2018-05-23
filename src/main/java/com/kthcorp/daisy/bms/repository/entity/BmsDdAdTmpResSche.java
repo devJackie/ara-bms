@@ -10,19 +10,24 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode
-public class BmsDdRecordFiles {
+public class BmsDdAdTmpResSche {
 
     private String yyyymmdd;
-    private String file_id;
+    private String sche_gubn;
     private String apln_form_id;
     private String ad_id;
+    private String ad_nm;
+    private String ad_length;
     private String ch_id;
     private String ch_no;
-    private String start_dt;
-    private String rec_file_path;
-    private String rec_thumb_file_path;
+    private String ch_nm;
     private String brdcst_dt;
-    private String reg_dt;
+    private String ori_start_dt;
+    private String start_dt;
+    private String end_dt;
+    private String prgm_id;
+    private String prgm_start_dt;
+    private String prgm_end_dt;
 
-    public BmsDdRecordFiles() {}
+    public BmsDdAdTmpResSche() {}
 }
