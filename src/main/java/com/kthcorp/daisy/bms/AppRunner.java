@@ -26,6 +26,9 @@ public class AppRunner implements ApplicationRunner {
     private final BmsMetaProperties bmsMetaProperties;
 
     String executeGroup;
+    CompletableFuture<String> phase1 = null;
+    CompletableFuture<String> phase2 = null;
+    private CommonExecutor executor = null;
 
     @Autowired
     public AppRunner(ApplicationContext context, ZkClient zkClient, BmsMetaProperties bmsMetaProperties) {
@@ -61,7 +64,14 @@ public class AppRunner implements ApplicationRunner {
                 }
             }
 
+            // collector
             ((List<Map<String, String>>) executeGroupConfig.get(LINK_SERVER)).forEach(x -> x.forEach(this::executeProcess));
+
+            // business work flow
+            phase2 = executor.executeWorkFlow();
+            // Wait until they are all done
+            CompletableFuture.allOf(phase1, phase2).join();
+            log.info("--> {}, {}", phase1.get(), phase2.get());
 
             if (mutex != null) {
                 String groupMutexUri = (String) mutex.get("uri");
@@ -80,19 +90,15 @@ public class AppRunner implements ApplicationRunner {
     private void executeProcess(String profileName, String ymlPath) {
         try {
             Yaml yaml = new Yaml();
-            log.debug("{}", profileName);
-            log.debug("{}", ymlPath);
+            log.debug("profileName: {}", profileName);
+            log.debug("ymlPath: {}", ymlPath);
             Map config = (Map) yaml.load(new ClassPathResource(ymlPath).getInputStream());
             config.put("executeGroup", executeGroup);
             config.put("executeName", profileName);
             config.put("profileName", profileName);
-            log.debug("config : {}", config);
-            CommonExecutor executor = context.getBean(CommonExecutor.class, config);
-            CompletableFuture<String> phase = executor.execute();
-
-            // Wait until they are all done
-            CompletableFuture.allOf(phase).join();
-            log.debug("--> {}", phase.get());
+            log.debug("config: {}", config);
+            executor = context.getBean(CommonExecutor.class, config);
+            phase1 = executor.executeCollect();
         } catch (Exception e) {
             log.error("", e);
         }

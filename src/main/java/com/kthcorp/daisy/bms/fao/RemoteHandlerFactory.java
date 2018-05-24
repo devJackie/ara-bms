@@ -19,4 +19,10 @@ public class RemoteHandlerFactory {
     public SourceHandler sourceHandler(Map<String, Object> config) throws Exception {
         return new TemplatePathSourceHandler(config);
     }
+
+    @Bean
+    @Scope("prototype")
+    public SinkHandler sinkHandler(Map<String, Object> config) throws Exception {
+        return new TemplatePathSinkHandler(config);
+    }
 }

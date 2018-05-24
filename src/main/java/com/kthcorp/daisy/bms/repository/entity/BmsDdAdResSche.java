@@ -22,12 +22,8 @@ public class BmsDdAdResSche {
     private String ch_no;
     private String ch_nm;
     private String brdcst_dt;
-    private String ori_start_dt;
     private String start_dt;
     private String end_dt;
-    private String prgm_id;
-    private String prgm_start_dt;
-    private String prgm_end_dt;
 
     public BmsDdAdResSche() {}
 }

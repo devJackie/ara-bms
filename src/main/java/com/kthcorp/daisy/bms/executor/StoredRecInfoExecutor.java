@@ -2,6 +2,7 @@ package com.kthcorp.daisy.bms.executor;
 
 import com.kthcorp.daisy.bms.fao.RemoteFileInfo;
 import com.kthcorp.daisy.bms.fileio.FileIOInfo;
+import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.context.ApplicationContext;
@@ -15,8 +16,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class StoredRecInfoExecutor extends BaseExecutor {
 
-    StoredRecInfoExecutor(ApplicationContext context, Map<String, Object> config) throws Exception {
-        super(context, config);
+    StoredRecInfoExecutor(ApplicationContext context, Map<String, Object> config, BmsMetaProperties bmsMetaProperties) throws Exception {
+        super(context, config, bmsMetaProperties);
     }
 
     List<ExecuteFileInfo> executeFileInfos = new ArrayList<>();
@@ -77,7 +78,7 @@ public class StoredRecInfoExecutor extends BaseExecutor {
 
             List<FileIOInfo> fileIOFiles;
             // .IDX 의 녹화파일 목록
-            fileIOFiles = fileIO.getReadFileList(idxFiles);
+            fileIOFiles = fileIO.readFileIdxList(idxFiles);
 
             fileIOFiles.forEach(x -> {
                 log.debug("{}", x);

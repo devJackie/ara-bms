@@ -1,18 +1,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kthcorp.daisy.bms.repository.BmsDdAdTmpResScheMapper">
+<mapper namespace="com.kthcorp.daisy.bms.repository.BmsDdAdResScheMapper">
 
     <insert id="insertAdResSche" parameterType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche">
-        insert into bms_dd_ad_res_sche (
         /** insertAdResSche **/
+        insert into bms_dd_ad_res_sche (
             yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
-        ) value (
-            #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{start_dt}, #{end_dt}, now()
+        ) values (
+            #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{start_dt}, #{end_dt}
         )
     </insert>
 
     <select id="selAdminScheCheck" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        /** selAdminScheCheck **/
         select count(1) from bms_dd_admin_ad_sche where brdcst_dt = '20180428' limit 1
     </select>
+
     <select id="selTmpScheNadminScheForMerge" parameterType="java.util.HashMap" resultType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche">
     /** selTmpScheNadminScheForMerge **/
         select
@@ -26,12 +28,8 @@
                 , g.ch_no
                 , g.ch_nm
                 , g.brdcst_dt
-                , g.ori_start_dt
                 , g.start_dt
                 , g.end_dt
-                , g.prgm_id
-                , g.prgm_start_dt
-                , g.prgm_end_dt
         from
         (
             select

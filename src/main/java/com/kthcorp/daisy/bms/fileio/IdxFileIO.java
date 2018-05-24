@@ -25,7 +25,7 @@ public class IdxFileIO extends BaseFileIO {
     }
 
     @Override
-    public List<FileIOInfo> getReadFileList(List<RemoteFileInfo> idxFiles) throws Exception {
+    public List<FileIOInfo> readFileIdxList(List<RemoteFileInfo> idxFiles) throws Exception {
         log.debug("config : {}", config);
 
         List<FileIOInfo> fileIOList = new ArrayList<>();

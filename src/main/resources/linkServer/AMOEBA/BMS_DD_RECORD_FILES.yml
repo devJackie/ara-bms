@@ -22,3 +22,11 @@ fileIOConfig:
     scanRange: -0d
   textEncoding : utf-8
   filePattern: ([\d+]{8}).[IDX|FIN]+
+
+#sinkConfig:
+#  type: ftp
+#  server: localhost
+#  port: 21
+#  id: devjackie
+#  password: Tjddydwozl12
+#  path: /data_backup/tCommerce/${yyyyMMdd}/moc/contents

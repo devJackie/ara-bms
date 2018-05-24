@@ -26,9 +26,9 @@ import java.util.concurrent.Executor;
 @Slf4j
 public class Application {
 
-    @Bean
+    @Bean(name = "threadPoolTaskExecutor")
     public Executor asyncExecutor() {
-        log.debug("asyncExecutor : {}", "asyncExecutor!!!");
+        log.debug("{}", "asyncExecutor!!!");
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(1);
         executor.setMaxPoolSize(1);

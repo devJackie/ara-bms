@@ -2,16 +2,16 @@
 <mapper namespace="com.kthcorp.daisy.bms.repository.BmsDdAdTmpResScheMapper">
 
     <insert id="insertAdTmpResSche" parameterType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdTmpResSche">
-        INSERT INTO bms_dd_ad_tmp_res_sche (
         /** insertAdTmpResSche **/
+        insert into bms_dd_ad_tmp_res_sche (
             yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, ori_start_dt, start_dt, end_dt, prgm_id, prgm_start_dt, prgm_end_dt
-        ) VALUES (
+        ) values (
             #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{ori_start_dt}, #{start_dt}, #{end_dt}, #{prgm_id}, #{prgm_start_dt}, #{prgm_end_dt}
         )
     </insert>
 
     <select id="selAdNprgmEpgForMerge" parameterType="java.util.HashMap" resultType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdTmpResSche">
-    /** selAdNprgmEpgForMerge **/
+        /** selAdNprgmEpgForMerge **/
         select
                 g.yyyymmdd
                 , '1' as sche_gubn
@@ -87,7 +87,7 @@
                                     group   by otv_ch_no
                                 ) a
                             ) b
-                        where   (b.otv_rnum <![CDATA[>=]]> 1 and b.otv_rnum <![CDATA[<=]]> 30)
+                        where   <![CDATA[ b.otv_rnum >= 1 and b.otv_rnum <= 30 ]]>
                         )
                         union all
                         select
@@ -117,7 +117,7 @@
                                     group   by ots_ch_no
                             ) a
                         ) b
-                        where   (b.ots_rnum <![CDATA[ >=]]> 1 and b.ots_rnum <![CDATA[<=]]> 30)
+                        where   <![CDATA[ b.ots_rnum >= 1 and b.ots_rnum <= 30 ]]>
                         )
                 ) c
                 where   not exists ( select 1 from bms_dd_record_files d where d.apln_form_id = c.apln_form_id and d.ad_id = c.ad_id and d.ch_id = c.ch_id )
@@ -130,7 +130,7 @@
                         , prgm_end_dt
                 from    ams_dd_mss_prgm_sche
                 where   yyyymmdd = '20180428'
-                ) e on  d.ch_no = e.ch_no and e.prgm_start_dt <![CDATA[<=]]> d.start_dt and d.start_dt <![CDATA[<]]> e.prgm_end_dt
+                ) e on  <![CDATA[ d.ch_no = e.ch_no and e.prgm_start_dt <= d.start_dt and d.start_dt < e.prgm_end_dt ]]>
             /** where   d.ch_no = '17' **/
             ) f
             where   f.rnum = 1

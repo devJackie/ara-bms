@@ -1,23 +1,28 @@
 package com.kthcorp.daisy.bms.executor;
 
+import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.repository.BmsDdAdResScheMapper;
 import com.kthcorp.daisy.bms.repository.BmsDdAdTmpResScheMapper;
 import com.kthcorp.daisy.bms.repository.BmsDdRecordFilesMapper;
+import com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche;
 import com.kthcorp.daisy.bms.repository.entity.BmsDdAdTmpResSche;
 import com.kthcorp.daisy.bms.repository.entity.BmsDdRecordFiles;
+import com.kthcorp.daisy.bms.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationContext;
 
 import java.util.*;
 
 /**
  * Created by devjackie on 2018. 5. 23..
  */
-@Service
+//@Service
 @Slf4j
 public class ExecuteService {
+
+    protected ApplicationContext context;
 
     @Autowired
     BmsDdRecordFilesMapper bmsDdRecordFilesMapper;
@@ -27,6 +32,19 @@ public class ExecuteService {
 
     @Autowired
     BmsDdAdResScheMapper bmsDdAdResScheMapper;
+
+    @Autowired
+    FileUtil fileUtil;
+
+    Map<String, Object> config = new HashMap<>();
+    BmsMetaProperties bmsMetaProperties;
+
+    @Autowired
+    public ExecuteService(ApplicationContext context, Map<String, Object> config, BmsMetaProperties bmsMetaProperties) {
+        this.context = context;
+        this.config = config;
+        this.bmsMetaProperties = bmsMetaProperties;
+    }
 
     public void executeRecordFileProcessTask(ExecuteFileInfo executeFileInfo) throws Exception {
         // .idx 파일 리스트
@@ -108,15 +126,22 @@ public class ExecuteService {
         // 시간되면 -> (1-2번 녹화완료된 데이터와 4번 쿼리 데이터 매핑해서 녹화되지 않은 데이터 db 저장)
 
         // 5. 긴급 광고 편성표 데이터가 있는지 체크, 존재하면
-        int res = bmsDdAdResScheMapper.selAdminScheCheck(map);
+        List<BmsDdAdResSche> resScheList = new ArrayList<>();
+//        int res = bmsDdAdResScheMapper.selAdminScheCheck(map);
+        int res = 1;
         if (res > 0) {
         // 6. 5번 데이터 + 6번 데이터 매핑, 6번 데이터는 최상위로 편성될 수 있게 생성하는데 이미 5번 데이터에 6번 데이터가 존재하면 스킵, 아니면 db 저장
-//        List<BmsDdAdResSche> resScheList = bmsDdAdResScheMapper.selTmpScheNadminScheForMerge(map);
+            resScheList = bmsDdAdResScheMapper.selTmpScheNadminScheForMerge(map);
         }
-//        resScheList.stream().forEach(x -> bmsDdAdResScheMapper.insertAdResSche(x));
+        resScheList.stream().forEach(x -> bmsDdAdResScheMapper.insertAdResSche(x));
 
         // 7. 6번 데이터 파일 생성(최종 편성표)
+        Map<String, Object> args = new LinkedHashMap<>();
+        args.put("list", resScheList);
+        Map<String, Object> result = fileUtil.writeFileAdSches(args);
 
+        log.debug((String) result.get("file"));
+        log.debug((String) result.get("filePath"));
     }
 
     public void executeMediaCollectTask() throws Exception {

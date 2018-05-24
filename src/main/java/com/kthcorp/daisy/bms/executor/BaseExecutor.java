@@ -1,8 +1,10 @@
 package com.kthcorp.daisy.bms.executor;
 
+import com.kthcorp.daisy.bms.fao.SinkHandler;
 import com.kthcorp.daisy.bms.fao.SourceHandler;
 import com.kthcorp.daisy.bms.fileio.FileIO;
 import com.kthcorp.daisy.bms.indexstore.IndexStore;
+import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.util.CollectorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,36 +22,47 @@ import java.util.concurrent.CompletableFuture;
 public abstract class BaseExecutor implements CommonExecutor {
 
     protected ApplicationContext context;
+    protected BmsMetaProperties bmsMetaProperties;
     protected IndexStore indexStore;
     final SourceHandler sourceHandler;
+    final SinkHandler sinkHandler;
     final FileIO fileIO;
+    final ExecuteService executeService;
     private static final String INDEX_CONFIG = "indexConfig";
     private static final String SOURCE_CONFIG = "sourceConfig";
     private static final String FILE_IO_CONFIG = "fileIOConfig";
+    private static final String SINK_CONFIG = "sinkConfig";
 
-    BaseExecutor(ApplicationContext context, Map<String, Object> config) {
+    BaseExecutor(ApplicationContext context, Map<String, Object> config, BmsMetaProperties bmsMetaProperties) {
         this.context = context;
+        this.bmsMetaProperties = bmsMetaProperties;
         IndexStore indexStore = context.getBean(IndexStore.class, config.get(INDEX_CONFIG));
         this.indexStore = indexStore;
         SourceHandler sourceHandler = context.getBean(SourceHandler.class, config.get(SOURCE_CONFIG));
         this.sourceHandler = sourceHandler;
         FileIO fileIO = context.getBean(FileIO.class, config.get(FILE_IO_CONFIG));
         this.fileIO = fileIO;
+        SinkHandler sinkHandler = context.getBean(SinkHandler.class, config.get(SINK_CONFIG));
+        this.sinkHandler = sinkHandler;
+
+//        config.put("sinkHandler", this.sinkHandler);
+//        config.put("bmsMetaProperties", bmsMetaProperties);
+        ExecuteService executeService = context.getBean(ExecuteService.class, config);
+        this.executeService = executeService;
     }
 
     abstract List<ExecuteFileInfo> getExecuteFileInfos() throws Exception;
 
     abstract void setIndex(ExecuteFileInfo executeFileInfo) throws Exception;
 
-    @Autowired
-    ExecuteService executeService;
+//    @Autowired
+//    ExecuteService executeService;
 
-    @Transactional
-    @Async
-    public CompletableFuture<String> execute() {
+    @Async("threadPoolTaskExecutor")
+    public CompletableFuture<String> executeCollect() {
         String result = null;
         try {
-            log.debug("start {}", "execute");
+            log.debug("start {}", "executeCollect");
 
             List<ExecuteFileInfo> executeFileInfos = getExecuteFileInfos();
 
@@ -81,6 +94,24 @@ public abstract class BaseExecutor implements CommonExecutor {
                     log.debug("{} is not new file", executeFileInfo.getSourceFile());
                 }
             }
+
+            // Artificial delay of 1s for demonstration purposes
+            Thread.sleep(1000L);
+        } catch (Exception e) {
+            log.error("", e);
+        } finally {
+            CollectorUtil.quietlyClose(sourceHandler);
+            CollectorUtil.quietlyClose(sinkHandler);
+        }
+        return CompletableFuture.completedFuture(result);
+    }
+
+    @Transactional
+    @Async("threadPoolTaskExecutor")
+    public CompletableFuture<String> executeWorkFlow() {
+        String result = null;
+        try {
+            log.debug("start {}", "executeWorkFlow");
             // 2. 선천 epg 수집, 모듈 개발
             executeService.executeAtsScheCollectTask();
 
@@ -100,7 +131,7 @@ public abstract class BaseExecutor implements CommonExecutor {
         } catch (Exception e) {
             log.error("", e);
         } finally {
-            CollectorUtil.quietlyClose(sourceHandler);
+
         }
         return CompletableFuture.completedFuture(result);
     }

@@ -40,9 +40,14 @@ public class ExecutorFactory {
         String indexType = (String) config.get("type");
         if ("storedRecInfo".equals(indexType)) {
             log.info("Create StoredRecInfoExecutor");
-            return new StoredRecInfoExecutor(context, config);
+            return new StoredRecInfoExecutor(context, config, bmsMetaProperties);
         }
         throw new IllegalArgumentException("type: " + indexType);
     }
 
+    @Bean
+    @Scope("prototype")
+    public ExecuteService executeService(Map<String, Object> config) throws Exception {
+        return new ExecuteService(context, config, bmsMetaProperties);
+    }
 }
