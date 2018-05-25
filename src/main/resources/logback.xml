@@ -9,7 +9,7 @@
         </layout>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!--<file>/home/daisy/logs/ara-monitoring/bms.log</file>-->
+        <!--<file>/home/daisy/logs/ara-bms/bms.log</file>-->
         <file>/Users/devjackie/IdeaProjects/ara-bms/logs/bms.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 파일이 하루에 한개씩 생성된다 -->

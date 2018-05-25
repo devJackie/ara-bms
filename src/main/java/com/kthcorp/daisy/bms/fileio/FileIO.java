@@ -8,5 +8,5 @@ import java.util.List;
  * Created by devjackie on 2018. 5. 10..
  */
 public interface FileIO {
-    List<FileIOInfo> readFileIdxList(List<RemoteFileInfo> idxFiles) throws Exception;
+    List<FileIOInfo> readAmeobaRecFileList(List<RemoteFileInfo> idxFiles) throws Exception;
 }

@@ -120,7 +120,7 @@
                         where   <![CDATA[ b.ots_rnum >= 1 and b.ots_rnum <= 30 ]]>
                         )
                 ) c
-                where   not exists ( select 1 from bms_dd_record_files d where d.apln_form_id = c.apln_form_id and d.ad_id = c.ad_id and d.ch_id = c.ch_id )
+                where   not exists ( select 1 from bms_dd_amoeba_record_files d where d.apln_form_id = c.apln_form_id and d.ad_id = c.ad_id and d.ch_id = c.ch_id )
                 ) d
                 join
                 (

@@ -22,21 +22,8 @@ import java.util.concurrent.Executor;
 @ComponentScan
 @EnableAutoConfiguration(exclude = {DataSourceTransactionManagerAutoConfiguration.class, DataSourceAutoConfiguration.class, MybatisAutoConfiguration.class})
 @EnableScheduling
-@EnableAsync
 @Slf4j
 public class Application {
-
-    @Bean(name = "threadPoolTaskExecutor")
-    public Executor asyncExecutor() {
-        log.debug("{}", "asyncExecutor!!!");
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(1);
-        executor.setMaxPoolSize(1);
-        executor.setQueueCapacity(10);
-        executor.setThreadNamePrefix("BMS-");
-        executor.initialize();
-        return executor;
-    }
 
     public static void main(String[] args) {
         // close the application context to shut down the custom ExecutorService

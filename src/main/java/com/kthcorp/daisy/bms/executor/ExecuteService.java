@@ -3,10 +3,10 @@ package com.kthcorp.daisy.bms.executor;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.repository.BmsDdAdResScheMapper;
 import com.kthcorp.daisy.bms.repository.BmsDdAdTmpResScheMapper;
-import com.kthcorp.daisy.bms.repository.BmsDdRecordFilesMapper;
+import com.kthcorp.daisy.bms.repository.BmsDdAmoebaRecordFilesMapper;
 import com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche;
 import com.kthcorp.daisy.bms.repository.entity.BmsDdAdTmpResSche;
-import com.kthcorp.daisy.bms.repository.entity.BmsDdRecordFiles;
+import com.kthcorp.daisy.bms.repository.entity.BmsDdAmoebaRecordFiles;
 import com.kthcorp.daisy.bms.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -25,7 +25,7 @@ public class ExecuteService {
     protected ApplicationContext context;
 
     @Autowired
-    BmsDdRecordFilesMapper bmsDdRecordFilesMapper;
+    BmsDdAmoebaRecordFilesMapper bmsDdAmoebaRecordFilesMapper;
 
     @Autowired
     BmsDdAdTmpResScheMapper bmsDdAdTmpResScheMapper;
@@ -46,7 +46,7 @@ public class ExecuteService {
         this.bmsMetaProperties = bmsMetaProperties;
     }
 
-    public void executeRecordFileProcessTask(ExecuteFileInfo executeFileInfo) throws Exception {
+    public void executeAmoebaRecFileCollectTask(ExecuteFileInfo executeFileInfo) throws Exception {
         // .idx 파일 리스트
         // AAAAAAAAAA-20180517053610_20180517_0109_32-201804019_180416GSPB30.MP4
         // AAAAAAAAAA-20180517053610_20180517_0109_32-201804032_180420RDLN15.MP4
@@ -84,19 +84,19 @@ public class ExecuteService {
             }
 
             resultRecInfoFiles.stream().forEach(x -> {
-                BmsDdRecordFiles bmsDdRecordFiles = new BmsDdRecordFiles();
-                bmsDdRecordFiles.setYyyymmdd(executeFileInfo.getSourceFile().getYyyyMMdd());
-                bmsDdRecordFiles.setFile_id((String) x.get("fileId"));
-                bmsDdRecordFiles.setApln_form_id((String) x.get("aplnFormId"));
-                bmsDdRecordFiles.setAd_id((String) x.get("adId"));
-                bmsDdRecordFiles.setCh_id((String) x.get("chId"));
-                bmsDdRecordFiles.setCh_no((String) x.get("chNo"));
-                bmsDdRecordFiles.setStart_dt((String) x.get("startDt"));
-                bmsDdRecordFiles.setRec_file_path(executeFileInfo.getSourceFile().getAbsolutePath());
-                bmsDdRecordFiles.setRec_thumb_file_path(executeFileInfo.getSourceFile().getThumbAbsolutePath());
-                bmsDdRecordFiles.setBrdcst_dt((String) x.get("brdcstDt"));
+                BmsDdAmoebaRecordFiles bmsDdAmoebaRecordFiles = new BmsDdAmoebaRecordFiles();
+                bmsDdAmoebaRecordFiles.setYyyymmdd(executeFileInfo.getSourceFile().getYyyyMMdd());
+                bmsDdAmoebaRecordFiles.setFile_id((String) x.get("fileId"));
+                bmsDdAmoebaRecordFiles.setApln_form_id((String) x.get("aplnFormId"));
+                bmsDdAmoebaRecordFiles.setAd_id((String) x.get("adId"));
+                bmsDdAmoebaRecordFiles.setCh_id((String) x.get("chId"));
+                bmsDdAmoebaRecordFiles.setCh_no((String) x.get("chNo"));
+                bmsDdAmoebaRecordFiles.setStart_dt((String) x.get("startDt"));
+                bmsDdAmoebaRecordFiles.setRec_file_path(executeFileInfo.getSourceFile().getAbsolutePath());
+                bmsDdAmoebaRecordFiles.setRec_thumb_file_path(executeFileInfo.getSourceFile().getThumbAbsolutePath());
+                bmsDdAmoebaRecordFiles.setBrdcst_dt((String) x.get("brdcstDt"));
 
-                bmsDdRecordFilesMapper.insertRecordFiles(bmsDdRecordFiles);
+                bmsDdAmoebaRecordFilesMapper.insertAmoebaRecordFiles(bmsDdAmoebaRecordFiles);
             });
 
             executeFileInfo.setSuccess(true);
@@ -140,11 +140,12 @@ public class ExecuteService {
         args.put("list", resScheList);
         Map<String, Object> result = fileUtil.writeFileAdSches(args);
 
-        log.debug((String) result.get("file"));
         log.debug((String) result.get("filePath"));
     }
 
-    public void executeMediaCollectTask() throws Exception {
+    public void executeMediaRecFileCollectTask(ExecuteFileInfo executeFileInfo) throws Exception {
+        log.debug("executeFileInfo: {}", executeFileInfo);
 
+        executeFileInfo.setSuccess(true);
     }
 }

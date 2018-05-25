@@ -1,4 +1,4 @@
-type: storedRecInfo
+type: storedAtsAdScheInfo
 
 indexConfig:
   type: zookeeper
@@ -13,12 +13,23 @@ sourceConfig:
 #  dataConnectionMode: active
 #  path: /data/cuton_logs/kt/ad_sche/
   type: ftp
-  server: localhosts
+  server: localhost
   port: 21
   id: devjackie
   password: Tjddydwozl12
 #  dataConnectionMode: active
-  path: /Users/devjackie/ara-monitoring/ats/
+  path: /Users/devjackie/ara-bms/ats/
   pathAttributes:
   - type: none
   filePattern: ad_sche_([\d+]{8}).DAT$
+
+
+fileIOConfig:
+  type: ats
+  path: /Users/devjackie/ara-bms/ats/${date}/
+  pathAttributes:
+  - type: date
+    datePattern: yyyyMMdd
+    scanRange: -0d
+  textEncoding : utf-8
+  filePattern: ([\d+]{8}).[IDX|FIN]+

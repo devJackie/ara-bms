@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
  * Created by devjackie on 2018. 5. 6..
  */
 @Slf4j
-public class StoredRecInfoExecutor extends BaseExecutor {
+public class StoredAmoebaRecInfoExecutor extends BaseExecutor {
 
-    StoredRecInfoExecutor(ApplicationContext context, Map<String, Object> config, BmsMetaProperties bmsMetaProperties) throws Exception {
+    StoredAmoebaRecInfoExecutor(ApplicationContext context, Map<String, Object> config, BmsMetaProperties bmsMetaProperties) throws Exception {
         super(context, config, bmsMetaProperties);
     }
 
@@ -78,7 +78,7 @@ public class StoredRecInfoExecutor extends BaseExecutor {
 
             List<FileIOInfo> fileIOFiles;
             // .IDX 의 녹화파일 목록
-            fileIOFiles = fileIO.readFileIdxList(idxFiles);
+            fileIOFiles = fileIO.readAmeobaRecFileList(idxFiles);
 
             fileIOFiles.forEach(x -> {
                 log.debug("{}", x);

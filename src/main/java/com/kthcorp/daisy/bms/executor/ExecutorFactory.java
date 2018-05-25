@@ -38,14 +38,18 @@ public class ExecutorFactory {
     public CommonExecutor eventExecutor(Map<String, Object> config) throws Exception {
         log.debug("config -> {}", config);
         String indexType = (String) config.get("type");
-        if ("storedRecInfo".equals(indexType)) {
-            log.info("Create StoredRecInfoExecutor");
-            return new StoredRecInfoExecutor(context, config, bmsMetaProperties);
+        if ("storedAmoebaRecInfo".equals(indexType)) {
+            log.info("Create StoredAmoebaRecInfoExecutor");
+            return new StoredAmoebaRecInfoExecutor(context, config, bmsMetaProperties);
+        } else if ("storedMediaRecInfo".equals(indexType)) {
+            log.info("Create StoredMediaRecInfoExecutor");
+            return new StoredMediaRecInfoExecutor(context, config, bmsMetaProperties);
         }
         throw new IllegalArgumentException("type: " + indexType);
     }
 
     @Bean
+    @Lazy
     @Scope("prototype")
     public ExecuteService executeService(Map<String, Object> config) throws Exception {
         return new ExecuteService(context, config, bmsMetaProperties);

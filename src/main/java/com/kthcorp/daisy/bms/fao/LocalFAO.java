@@ -6,9 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -88,6 +89,52 @@ public class LocalFAO implements RemoteFAO {
     }
 
     @Override
+    public List<RemoteFileInfo> getListRemoteFiles(String remotePath, Pattern p, String fileScanRange, String datePattern) throws Exception {
+        int dateRange = 0;
+        if (fileScanRange.contains("d")) {
+            dateRange = Integer.parseInt(fileScanRange.substring(0, fileScanRange.indexOf("d")));
+        }
+        List<String> dateList = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat(datePattern);
+        for (int i = 0; i >= dateRange; i--) {
+            Calendar calendar = GregorianCalendar.getInstance();
+            calendar.add(Calendar.DATE, i);
+            dateList.add(sdf.format(calendar.getTime()));
+        }
+
+        File[] path = new File(remotePath).listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                if(p != null) {
+                    return p.matcher(name).matches();
+                } else {
+                    return true;
+                }
+            }
+        });
+        List<RemoteFileInfo> resultList = new ArrayList<>();
+        if(path != null) {
+            for (File file : path) {
+                RemoteFileInfo remoteFile = new RemoteFileInfo();
+                remoteFile.setFileName(file.getName());
+                remoteFile.setAbsolutePath(file.getAbsolutePath());
+                remoteFile.setModifyTime(file.lastModified());
+                remoteFile.setSize(file.length());
+                resultList.add(remoteFile);
+            }
+        }
+
+        List<RemoteFileInfo> newResultList = new ArrayList<>();
+        resultList.stream().forEach(x -> {
+            for (String date : dateList) {
+                if(x.getFileName().indexOf(date) > 0)
+                    newResultList.add(x);
+            }
+        });
+        return newResultList;
+    }
+
+    @Override
     public boolean copyToLocal(String remoteFile, String localFilePath) throws Exception {
         File remote = new File(remoteFile);
         File tmpFile = null;
@@ -122,5 +169,15 @@ public class LocalFAO implements RemoteFAO {
     @Override
     public boolean copyToRemote(String localFile, String remotePath) throws Exception {
         return copyToLocal(localFile, remotePath);
+    }
+
+    @Override
+    public InputStream getInputStream(String remote) throws Exception {
+        return null;
+    }
+
+    @Override
+    public OutputStream getOutputStream(String remote) throws Exception {
+        return null;
     }
 }

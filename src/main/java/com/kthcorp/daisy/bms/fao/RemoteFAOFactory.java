@@ -33,6 +33,7 @@ public class RemoteFAOFactory {
 
         } else if (SFTP.equalsIgnoreCase(type)) {
             log.debug("create SftpFAO");
+            remoteFSHandler = new SftpFAO(properties);
 
         } else {
             throw new IllegalArgumentException("not support type : " + type);

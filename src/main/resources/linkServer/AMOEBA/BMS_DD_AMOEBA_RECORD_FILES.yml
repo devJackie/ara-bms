@@ -1,21 +1,21 @@
-type: storedRecInfo
+type: storedAmoebaRecInfo
 
 indexConfig:
   type: zookeeper
-  uri: /index/BMS_DD_RECORD_FILES
+  uri: /index/BMS_DD_AMOEBA_RECORD_FILES
 
 sourceConfig:
   type: local
 #  path: /data/amoeba/${date}/
-  path: /Users/devjackie/ara-monitoring/amoeba/${date}/
+  path: /Users/devjackie/ara-bms/amoeba/${date}/
   pathAttributes:
   - type: date
     datePattern: yyyyMMdd
     scanRange: -0d
 
 fileIOConfig:
-  type: idx
-  path: /Users/devjackie/ara-monitoring/amoeba/${date}/
+  type: amoeba
+  path: /Users/devjackie/ara-bms/amoeba/${date}/
   pathAttributes:
   - type: date
     datePattern: yyyyMMdd
@@ -23,8 +23,8 @@ fileIOConfig:
   textEncoding : utf-8
   filePattern: ([\d+]{8}).[IDX|FIN]+
 
-#sinkConfig:
-#  type: ftp
+sinkConfig:
+  type: ftp
 #  server: localhost
 #  port: 21
 #  id: devjackie

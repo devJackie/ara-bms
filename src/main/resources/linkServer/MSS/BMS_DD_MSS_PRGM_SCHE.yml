@@ -1,4 +1,4 @@
-type: storedRecInfo
+type: storedMssPrgmScheInfo
 
 indexConfig:
   type: zookeeper
@@ -15,7 +15,7 @@ sourceConfig:
 
 fileIOConfig:
   type: idx
-  path: /Users/devjackie/ara-monitoring/amoeba/${date}/
+  path: /Users/devjackie/ara-bms/amoeba/${date}/
   pathAttributes:
   - type: date
     datePattern: yyyyMMdd

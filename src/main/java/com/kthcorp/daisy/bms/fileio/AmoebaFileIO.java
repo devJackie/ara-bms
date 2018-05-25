@@ -18,14 +18,14 @@ import java.util.stream.Collectors;
  * Created by devjackie on 2018. 5. 9..
  */
 @Slf4j
-public class IdxFileIO extends BaseFileIO {
+public class AmoebaFileIO extends BaseFileIO {
 
-    IdxFileIO(Map<String, Object> config, BmsMetaProperties bmsMetaProperties) {
+    AmoebaFileIO(Map<String, Object> config, BmsMetaProperties bmsMetaProperties) {
         super(config, bmsMetaProperties);
     }
 
     @Override
-    public List<FileIOInfo> readFileIdxList(List<RemoteFileInfo> idxFiles) throws Exception {
+    public List<FileIOInfo> readAmeobaRecFileList(List<RemoteFileInfo> idxFiles) throws Exception {
         log.debug("config : {}", config);
 
         List<FileIOInfo> fileIOList = new ArrayList<>();

@@ -1,6 +1,6 @@
 package com.kthcorp.daisy.bms.test;
 
-import com.kthcorp.daisy.bms.repository.entity.BmsDdRecordFiles;
+import com.kthcorp.daisy.bms.repository.entity.BmsDdAmoebaRecordFiles;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.junit.Test;
@@ -190,7 +190,7 @@ public class SplitTest {
 
 
             resultRecInfoFiles.stream().forEach(x -> {
-                BmsDdRecordFiles bmsDdRecordFiles = new BmsDdRecordFiles();
+                BmsDdAmoebaRecordFiles bmsDdAmoebaRecordFiles = new BmsDdAmoebaRecordFiles();
                 x.stream().forEach(list -> {
                     log.debug(list);
                 });
@@ -291,9 +291,9 @@ public class SplitTest {
         }
 
     }
-//    BmsDdRecordFiles recInfo;
+//    BmsDdAmoebaRecordFiles recInfo;
 //            for (int i = 0; i < splits.length; i++) {
-//        recInfo = new BmsDdRecordFiles();
+//        recInfo = new BmsDdAmoebaRecordFiles();
 //        recInfo.setStartDt(splits[0]);
 //        recInfo.setAplnFormId(splits[1]);
 //        recInfo.setAdNo(splits[2]);

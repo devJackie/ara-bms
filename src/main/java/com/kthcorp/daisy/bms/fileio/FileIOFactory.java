@@ -31,9 +31,12 @@ public class FileIOFactory {
     public FileIO fileIO(Map<String, Object> config) throws Exception {
         log.debug("config -> {}", config);
         String indexType = (String) config.get("type");
-        if ("IDX".equalsIgnoreCase(indexType)) {
-            log.info("Create IdxFileIO");
-            return new IdxFileIO(config, bmsMetaProperties);
+        if ("AMOEBA".equalsIgnoreCase(indexType)) {
+            log.info("Create AmoebaFileIO");
+            return new AmoebaFileIO(config, bmsMetaProperties);
+        } else if ("MEDIA".equalsIgnoreCase(indexType)) {
+            log.info("Create AmoebaFileIO");
+            return new MediaFileIO(config, bmsMetaProperties);
         }
         throw new IllegalArgumentException("type: " + indexType);
     }

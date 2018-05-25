@@ -1,0 +1,36 @@
+type: storedMediaRecInfo
+
+indexConfig:
+  type: zookeeper
+  uri: /index/BMS_DD_MEDIA_RECORD_FILES
+
+sourceConfig:
+  type: sftp
+  server: localhost
+  port: 22
+  id: devjackie
+  password: Tjddydwozl12
+#  path: /data/ara-bms/media
+  path: /Users/devjackie/ara-bms/media/${date}/
+  pathAttributes:
+  - type: date
+    datePattern: yyyyMMdd
+    scanRange: -0d
+
+fileIOConfig:
+  type: media
+#  path: /Users/devjackie/ara-bms/media/${date}/
+#  pathAttributes:
+#  - type: date
+#    datePattern: yyyyMMdd
+#    scanRange: -0d
+#  textEncoding : utf-8
+#  filePattern: ([\d+]{8}).[IDX|FIN]+
+
+sinkConfig:
+  type: ftp
+#  server: localhost
+#  port: 21
+#  id: devjackie
+#  password: Tjddydwozl12
+#  path: /data_backup/tCommerce/${yyyyMMdd}/moc/contents

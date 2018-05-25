@@ -10,7 +10,7 @@ import lombok.ToString;
 @Data
 @ToString
 @EqualsAndHashCode
-public class BmsDdRecordFiles {
+public class BmsDdAmoebaRecordFiles {
 
     private String yyyymmdd;
     private String file_id;
@@ -24,5 +24,5 @@ public class BmsDdRecordFiles {
     private String brdcst_dt;
     private String reg_dt;
 
-    public BmsDdRecordFiles() {}
+    public BmsDdAmoebaRecordFiles() {}
 }
