@@ -55,7 +55,7 @@ public class DateUtil {
      */
     public static String getNextDay() throws Exception {
 
-        String result = null;
+        String result;
         try {
             DateTime dt = new DateTime().plusDays(1).toDateTime();
             DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
