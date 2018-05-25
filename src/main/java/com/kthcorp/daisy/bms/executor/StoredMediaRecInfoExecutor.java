@@ -46,7 +46,7 @@ public class StoredMediaRecInfoExecutor extends BaseExecutor {
                 finFiles.contains(f.getFileName().substring(0, f.getFileName().indexOf(".")))).collect(Collectors.toList());
 
         // 현재날짜 설정
-        String currentDay = DateUtil.getCurrentDayDateTime();
+        String currentDay = DateUtil.getCurrentDay();
 
         List<RemoteFileInfo> resultRemoteRecFiles = resultFiles.stream().map(x -> {
             RemoteFileInfo remoteFileInfo = new RemoteFileInfo();
