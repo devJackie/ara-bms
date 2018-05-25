@@ -79,7 +79,7 @@ public abstract class BaseExecutor implements CommonExecutor {
                 if (!executeFileInfo.isFinished()) {
 
                     try {
-                        log.info("AmoebaRecFile: {}", executeFileInfo.getSourceFile().getFileName());
+                        log.info("RecFile: {}", executeFileInfo.getSourceFile().getFileName());
                         // business logic flow
                         // 1. 아메바 .idx 파일 존재 체크, .FIN 가 있을 경우는 주기마다 체크 하지 않도록 구현
                         // 1-1. .mp4, .jpg 파일 존재 체크 (zookeeper index 에 파일 .mp4 저장)
@@ -88,8 +88,14 @@ public abstract class BaseExecutor implements CommonExecutor {
                         if ("storedAmoebaRecInfo".equalsIgnoreCase((String) config.get("type"))) {
                             executeService.executeAmoebaRecFileCollectTask(executeFileInfo);
                         } else if ("storedMediaRecInfo".equalsIgnoreCase((String) config.get("type"))) {
-                            // 5. skylife 에서 제공하는 미디어 서버 광고 파일 수집 및 db 저장 (분당 ara 서버에 put 방식으로 진행 예정)
+                            // 2. skylife 에서 제공하는 미디어 서버 광고 파일 수집 및 db 저장 (분당 ara 서버에 put 방식으로 진행 예정)
                             executeService.executeMediaRecFileCollectTask(executeFileInfo);
+                        } else if ("storedAtsAdScheInfo".equalsIgnoreCase((String) config.get("type"))) {
+                            // 3. 선천 epg 수집, 모듈 개발
+                            executeService.executeAtsAdScheCollectTask(executeFileInfo);
+                        } else if ("storedMssPrgmScheInfo".equalsIgnoreCase((String) config.get("type"))) {
+                            // 4. mss 프로그램 epg 수집, 모듈 개발
+                            executeService.executeMssPrgmScheCollectTask(executeFileInfo);
                         }
                     } catch (Exception e) {
                         throw e;
@@ -121,14 +127,8 @@ public abstract class BaseExecutor implements CommonExecutor {
         String result = null;
         try {
             log.debug("start {}", "executeWorkFlow");
-            // 2. 선천 epg 수집, 모듈 개발
-            executeService.executeAtsScheCollectTask();
-
-            // 3. mss 프로그램 epg 수집, 모듈 개발
-            executeService.executeMssScheCollectTask();
-
-            // 4. 상위 30개 채널 쿼리 get +  선천 광고 익일 epg 테이블 + 녹화파일 테이블 매핑, 녹화파일이 있으면 녹화파일은 제외
-            // 4-1. mss 프로그램 epg 테이블 + 4번 선천 광고 익일 epg 테이블 매핑 (검증 필요)
+            // 1. 상위 30개 채널 쿼리 get +  선천 광고 익일 epg 테이블 + 녹화파일 테이블 매핑, 녹화파일이 있으면 녹화파일은 제외
+            // 1-1. mss 프로그램 epg 테이블 + 4번 선천 광고 익일 epg 테이블 매핑 (검증 필요)
             // (프로그램 종료시간 -15분을 start_dt, 15분후를 end_dt 로 기준 정함, 광고 epg 생성 되게 쿼리 생성 후 epg 데이터 db 저장)
 //            executeService.executeMakeAdScheTask();
 

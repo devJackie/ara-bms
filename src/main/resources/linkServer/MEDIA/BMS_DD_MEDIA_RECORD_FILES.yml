@@ -10,7 +10,7 @@ sourceConfig:
   port: 22
   id: devjackie
   password: Tjddydwozl12
-#  path: /data/ara-bms/media
+#  path: /data/ara-bms/media/
   path: /Users/devjackie/ara-bms/media/${date}/
   pathAttributes:
   - type: date
@@ -19,13 +19,6 @@ sourceConfig:
 
 fileIOConfig:
   type: media
-#  path: /Users/devjackie/ara-bms/media/${date}/
-#  pathAttributes:
-#  - type: date
-#    datePattern: yyyyMMdd
-#    scanRange: -0d
-#  textEncoding : utf-8
-#  filePattern: ([\d+]{8}).[IDX|FIN]+
 
 sinkConfig:
   type: ftp

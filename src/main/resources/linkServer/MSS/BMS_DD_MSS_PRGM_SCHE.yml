@@ -5,20 +5,23 @@ indexConfig:
   uri: /index/BMS_DD_MSS_PRGM_SCHE
 
 sourceConfig:
-  type: local
-#  path: /data/amoeba/${date}/
-  path: /Users/devjackie/amoeba/${date}/
+#  type: sftp
+#  server: 10.45.160.82
+#  port: 22
+#  id: sunchun
+#  password: sunchun!
+#  dataConnectionMode: active
+#  path: /data/cuton_logs/kt/ad_sche/
+  type: sftp
+  server: localhost
+  port: 22
+  id: devjackie
+  password: Tjddydwozl12
+#  path: /data/ara-bms/mss/
+  path: /Users/devjackie/ara-bms/mss/
   pathAttributes:
-  - type: date
-    datePattern: yyyyMMdd
-    scanRange: -0d
+  - type: none
+  filePattern: prgm_sche_([\d+]{8}).DAT$
 
 fileIOConfig:
-  type: idx
-  path: /Users/devjackie/ara-bms/amoeba/${date}/
-  pathAttributes:
-  - type: date
-    datePattern: yyyyMMdd
-    scanRange: -0d
-  textEncoding : utf-8
-  filePattern: ([\d+]{8}).[IDX|FIN]+
+  type: mss

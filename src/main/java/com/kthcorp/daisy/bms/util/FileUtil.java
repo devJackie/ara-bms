@@ -33,7 +33,7 @@ public class FileUtil {
 
             List<BmsDdAdResSche> resScheList = (List<BmsDdAdResSche>) param.get("list");
 
-            String yyyyMMddDir = DateUtil.getDecimalDateTime();
+            String yyyyMMddDir = DateUtil.getCurrentDayDateTime();
             file = new File("/Users/devjackie/ara-bms/bms_sche/");
 
             if(!file.isDirectory()) { //디렉토리가 존재하지 않으면

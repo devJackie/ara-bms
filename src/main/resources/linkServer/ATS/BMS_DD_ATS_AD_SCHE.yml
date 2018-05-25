@@ -5,19 +5,20 @@ indexConfig:
   uri: /index/BMS_DD_ATS_AD_SCHE
 
 sourceConfig:
-#  type: ftp
+#  type: sftp
 #  server: 10.45.160.82
-#  port: 21
+#  port: 22
 #  id: sunchun
 #  password: sunchun!
 #  dataConnectionMode: active
 #  path: /data/cuton_logs/kt/ad_sche/
-  type: ftp
+  type: sftp
   server: localhost
-  port: 21
+  port: 22
   id: devjackie
   password: Tjddydwozl12
 #  dataConnectionMode: active
+#  path: /data/ara-bms/ats/
   path: /Users/devjackie/ara-bms/ats/
   pathAttributes:
   - type: none
@@ -26,10 +27,3 @@ sourceConfig:
 
 fileIOConfig:
   type: ats
-  path: /Users/devjackie/ara-bms/ats/${date}/
-  pathAttributes:
-  - type: date
-    datePattern: yyyyMMdd
-    scanRange: -0d
-  textEncoding : utf-8
-  filePattern: ([\d+]{8}).[IDX|FIN]+

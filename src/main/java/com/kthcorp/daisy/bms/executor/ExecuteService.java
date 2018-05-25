@@ -4,9 +4,11 @@ import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.repository.BmsDdAdResScheMapper;
 import com.kthcorp.daisy.bms.repository.BmsDdAdTmpResScheMapper;
 import com.kthcorp.daisy.bms.repository.BmsDdAmoebaRecordFilesMapper;
+import com.kthcorp.daisy.bms.repository.BmsDdMediaRecordFilesMapper;
 import com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche;
 import com.kthcorp.daisy.bms.repository.entity.BmsDdAdTmpResSche;
 import com.kthcorp.daisy.bms.repository.entity.BmsDdAmoebaRecordFiles;
+import com.kthcorp.daisy.bms.repository.entity.BmsDdMediaRecordFiles;
 import com.kthcorp.daisy.bms.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -26,6 +28,9 @@ public class ExecuteService {
 
     @Autowired
     BmsDdAmoebaRecordFilesMapper bmsDdAmoebaRecordFilesMapper;
+
+    @Autowired
+    BmsDdMediaRecordFilesMapper bmsDdMediaRecordFilesMapper;
 
     @Autowired
     BmsDdAdTmpResScheMapper bmsDdAdTmpResScheMapper;
@@ -105,11 +110,11 @@ public class ExecuteService {
         }
     }
 
-    public void executeAtsScheCollectTask() throws Exception {
+    public void executeAtsAdScheCollectTask(ExecuteFileInfo executeFileInfo) throws Exception {
 
     }
 
-    public void executeMssScheCollectTask() throws Exception {
+    public void executeMssPrgmScheCollectTask(ExecuteFileInfo executeFileInfo) throws Exception {
 
     }
 
@@ -145,6 +150,13 @@ public class ExecuteService {
 
     public void executeMediaRecFileCollectTask(ExecuteFileInfo executeFileInfo) throws Exception {
         log.debug("executeFileInfo: {}", executeFileInfo);
+
+        BmsDdMediaRecordFiles bmsDdMediaRecordFiles = new BmsDdMediaRecordFiles();
+        bmsDdMediaRecordFiles.setYyyymmdd(executeFileInfo.getSourceFile().getYyyyMMdd());
+        bmsDdMediaRecordFiles.setAd_id(FilenameUtils.getBaseName(executeFileInfo.getSourceFile().getFileName()));
+        bmsDdMediaRecordFiles.setRec_file_path(executeFileInfo.getSourceFile().getAbsolutePath());
+
+        bmsDdMediaRecordFilesMapper.insertMediaRecordFiles(bmsDdMediaRecordFiles);
 
         executeFileInfo.setSuccess(true);
     }
