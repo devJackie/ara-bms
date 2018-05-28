@@ -1,6 +1,8 @@
 package com.kthcorp.daisy.bms.fao;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.text.SimpleDateFormat;
@@ -52,8 +54,26 @@ public class TemplatePathSourceHandler implements SourceHandler {
         log.debug("createPath: {}", paths);
 
         Set<RemoteFileInfo> remoteFileSet = new HashSet<>();
-        for (String globPath : paths) {
-            remoteFileSet.addAll(remoteFSHelper.getListRemoteFiles(globPath));
+//        for (String globPath : paths) {
+//            remoteFileSet.addAll(remoteFSHelper.getListRemoteFiles(globPath));
+//        }
+
+        Map<String, Object> attr = null;
+        boolean chkFsr = false;
+        if (pathAttributes != null && pathAttributes.size() > 0) {
+            attr = pathAttributes.get(0);
+            if(MapUtils.isNotEmpty(attr) && StringUtils.isNotEmpty((String) attr.get(FILE_SCAN_RANGE)))
+                chkFsr = true;
+        }
+        log.info("check fileScanRange : {}", chkFsr);
+        if (chkFsr) {
+            for (String globPath : paths) {
+                remoteFileSet.addAll(remoteFSHelper.getListRemoteFiles(globPath, (String) attr.get(FILE_SCAN_RANGE), (String) attr.get(DATE_PATTERN)));
+            }
+        } else { // 원격 전체 파일을 get 이거나 fileScanRange 아니거나 scanRange 이거나
+            for (String globPath : paths) {
+                remoteFileSet.addAll(remoteFSHelper.getListRemoteFiles(globPath));
+            }
         }
 
         List<RemoteFileInfo> remoteFiles = new ArrayList<>(remoteFileSet);

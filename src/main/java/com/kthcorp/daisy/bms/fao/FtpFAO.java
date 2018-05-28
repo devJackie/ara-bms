@@ -122,6 +122,11 @@ public class FtpFAO implements RemoteFAO {
     }
 
     @Override
+    public List<RemoteFileInfo> getListRemoteFiles(String remotePath, String fileScanRange, String datePattern) throws Exception {
+        return null;
+    }
+
+    @Override
     public List<RemoteFileInfo> getListRemoteFiles(String remotePath, Pattern p, String fileScanRange, String datePattern) throws Exception {
         remotePath = remotePath.endsWith("/") ? remotePath.substring(0, remotePath.length() - 1) : remotePath;
         statusCheck();

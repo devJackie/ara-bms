@@ -12,6 +12,7 @@ sourceConfig:
 #  password: sunchun!
 #  dataConnectionMode: active
 #  path: /data/cuton_logs/kt/ad_sche/
+
   type: sftp
   server: localhost
   port: 22
@@ -24,6 +25,28 @@ sourceConfig:
   - type: none
   filePattern: ad_sche_([\d+]{8}).DAT$
 
-
 fileIOConfig:
-  type: ats
+  type: none
+
+headerExtractConfig:
+- type: filenameDate
+  regex: ad_sche_([\d+]{8}).DAT$
+  datePattern: yyyyMMdd
+
+parserConfig:
+- type: bypass
+
+sinkConfig:
+#  type: sftp
+#  server: 10.45.160.82
+#  port: 22
+#  id: sunchun
+#  password: sunchun!
+#  dataConnectionMode: active
+#  path: /data/cuton_logs/kt/ad_sche/
+  type: sftp
+  server: localhost
+  port: 22
+  id: devjackie
+  password: Tjddydwozl12
+  path: /Users/devjackie/ara-bms/ats_result/

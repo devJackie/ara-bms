@@ -3,15 +3,18 @@ package com.kthcorp.daisy.bms.executor;
 import com.kthcorp.daisy.bms.fao.SinkHandler;
 import com.kthcorp.daisy.bms.fao.SourceHandler;
 import com.kthcorp.daisy.bms.fileio.FileIO;
+import com.kthcorp.daisy.bms.headerextractor.HeaderExtractor;
 import com.kthcorp.daisy.bms.indexstore.IndexStore;
+import com.kthcorp.daisy.bms.parser.ParserBase;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.util.CollectorUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
@@ -21,36 +24,57 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public abstract class BaseExecutor implements CommonExecutor {
 
-    protected ApplicationContext context;
-    protected Map<String, Object> config;
-    protected BmsMetaProperties bmsMetaProperties;
-    protected IndexStore indexStore;
-    final SourceHandler sourceHandler;
-    final SinkHandler sinkHandler;
-    final FileIO fileIO;
-    final ExecuteService executeService;
     private static final String INDEX_CONFIG = "indexConfig";
     private static final String SOURCE_CONFIG = "sourceConfig";
     private static final String FILE_IO_CONFIG = "fileIOConfig";
     private static final String SINK_CONFIG = "sinkConfig";
+    private static final String PARSER_CONFIG = "parserConfig";
+    private static final String HEADER_EXTRACT_CONFIG = "headerExtractConfig";
+
+    protected ApplicationContext context;
+    protected Map<String, Object> config;
+    protected BmsMetaProperties bmsMetaProperties;
+    private final String baseWorkDir;
+    protected IndexStore indexStore;
+    final SourceHandler sourceHandler;
+    final SinkHandler sinkHandler;
+    private final List<ParserBase> parsers;
+    private final List<HeaderExtractor> headerExtractors;
+    final FileIO fileIO;
+    final ExecuteService executeService;
+
+    private String executeGroup;
+    private String executeName;
+    private Date downloadTime = new Date();
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
     BaseExecutor(ApplicationContext context, Map<String, Object> config, BmsMetaProperties bmsMetaProperties) {
         this.context = context;
         this.config = config;
         this.bmsMetaProperties = bmsMetaProperties;
+        this.baseWorkDir = context.getEnvironment().getProperty("daisy.collector.baseWorkDir");
         IndexStore indexStore = context.getBean(IndexStore.class, config.get(INDEX_CONFIG));
-        this.indexStore = indexStore;
         SourceHandler sourceHandler = context.getBean(SourceHandler.class, config.get(SOURCE_CONFIG));
-        this.sourceHandler = sourceHandler;
         FileIO fileIO = context.getBean(FileIO.class, config.get(FILE_IO_CONFIG));
-        this.fileIO = fileIO;
         SinkHandler sinkHandler = context.getBean(SinkHandler.class, config.get(SINK_CONFIG));
-        this.sinkHandler = sinkHandler;
-
-//        config.put("sinkHandler", this.sinkHandler);
-//        config.put("bmsMetaProperties", bmsMetaProperties);
+        List<ParserBase> parsers = (List<ParserBase>) context.getBean("parsers", config.get(PARSER_CONFIG));
+        List<HeaderExtractor> headerExtractors = (List<HeaderExtractor>) context.getBean("headerExtractors", config.get(HEADER_EXTRACT_CONFIG));
         ExecuteService executeService = context.getBean(ExecuteService.class, config);
+
+        File baseWorkDir = new File(this.baseWorkDir);
+        if (!baseWorkDir.exists()) {
+            baseWorkDir.mkdir();
+        }
+        this.indexStore = indexStore;
+        this.sourceHandler = sourceHandler;
+        this.fileIO = fileIO;
+        this.headerExtractors = headerExtractors;
+        this.sinkHandler = sinkHandler;
+        this.parsers = parsers;
         this.executeService = executeService;
+
+        this.executeGroup = (String) config.get("executeGroup");
+        this.executeName = (String) config.get("executeName");
 
         log.debug("config: {}", config);
     }
@@ -59,8 +83,30 @@ public abstract class BaseExecutor implements CommonExecutor {
 
     abstract void setIndex(ExecuteFileInfo executeFileInfo) throws Exception;
 
-//    @Autowired
-//    ExecuteService executeService;
+    protected void createHeaders(ExecuteFileInfo executeFileInfo) {
+        for (HeaderExtractor headerExtractor : headerExtractors) {
+            headerExtractor.extract(executeFileInfo);
+        }
+        executeFileInfo.getHeader().put("executeTime", executeFileInfo.getExecuteTime());
+    }
+
+    private boolean getSourceFile(ExecuteFileInfo executeFileInfo) throws Exception {
+        log.info("{} download start", executeFileInfo.getSourceFile().getFileName());
+        File executorWorkDir = new File(baseWorkDir + "/" + executeName);
+        if(!executorWorkDir.exists() && !executorWorkDir.isDirectory()) {
+            executorWorkDir.mkdirs();
+        }
+        executeFileInfo.setDownloadFile(new File(baseWorkDir + "/" + executeName + "/" + executeFileInfo.getSourceFile().getFileName()));
+        log.info("{}", executeFileInfo);
+        long time1 = System.currentTimeMillis();
+        boolean result = sourceHandler.get(executeFileInfo.getSourceFile().getAbsolutePath(), executeFileInfo.getDownloadFile().getAbsolutePath());
+        long time2 = System.currentTimeMillis();
+
+        downloadTime.setTime(time2);
+        executeFileInfo.setExecuteTime(sdf.format(downloadTime));
+        executeFileInfo.setDownloadElapsedTime(time2 - time1);
+        return result;
+    }
 
     @Async("threadPoolTaskExecutor")
     public CompletableFuture<String> executeCollect() {
@@ -79,7 +125,18 @@ public abstract class BaseExecutor implements CommonExecutor {
                 if (!executeFileInfo.isFinished()) {
 
                     try {
-                        log.info("RecFile: {}", executeFileInfo.getSourceFile().getFileName());
+                        log.info("Start -> {}", executeFileInfo.getSourceFile().getFileName());
+
+                        if (!getSourceFile(executeFileInfo)) {
+                            throw new Exception("getSourceFile fail");
+                        }
+
+                        log.info("Download end: {}", executeFileInfo);
+
+                        createHeaders(executeFileInfo);
+
+                        log.info("Create headers: {}", executeFileInfo.getHeader());
+
                         // business logic flow
                         // 1. 아메바 .idx 파일 존재 체크, .FIN 가 있을 경우는 주기마다 체크 하지 않도록 구현
                         // 1-1. .mp4, .jpg 파일 존재 체크 (zookeeper index 에 파일 .mp4 저장)
@@ -92,7 +149,7 @@ public abstract class BaseExecutor implements CommonExecutor {
                             executeService.executeMediaRecFileCollectTask(executeFileInfo);
                         } else if ("storedAtsAdScheInfo".equalsIgnoreCase((String) config.get("type"))) {
                             // 3. 선천 epg 수집, 모듈 개발
-                            executeService.executeAtsAdScheCollectTask(executeFileInfo);
+                            executeService.executeAtsAdScheCollectTask(executeFileInfo, sinkHandler, parsers);
                         } else if ("storedMssPrgmScheInfo".equalsIgnoreCase((String) config.get("type"))) {
                             // 4. mss 프로그램 epg 수집, 모듈 개발
                             executeService.executeMssPrgmScheCollectTask(executeFileInfo);

@@ -6,7 +6,7 @@ indexConfig:
 
 sourceConfig:
   type: local
-#  path: /data/amoeba/${date}/
+#  path: /data/ara-bms/admin/${date}/
   path: /Users/devjackie/ara-bms/admin/${date}/
   pathAttributes:
   - type: date
@@ -22,3 +22,9 @@ fileIOConfig:
     scanRange: -0d
   textEncoding : utf-8
   filePattern: ([\d+]{8}).[IDX|FIN]+
+
+parserConfig:
+- type: none
+
+sinkConfig:
+  type: none

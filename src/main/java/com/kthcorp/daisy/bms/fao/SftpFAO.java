@@ -109,6 +109,55 @@ public class SftpFAO implements RemoteFAO {
     }
 
     @Override
+    public List<RemoteFileInfo> getListRemoteFiles(String remotePath, String fileScanRange, String datePattern) throws Exception {
+        int dateRange = 0;
+        if (fileScanRange.contains("d")) {
+            dateRange = Integer.parseInt(fileScanRange.substring(0, fileScanRange.indexOf("d")));
+        }
+        List<String> dateList = new ArrayList<>();
+        SimpleDateFormat sdf = new SimpleDateFormat(datePattern);
+        for (int i = 0; i >= dateRange; i--) {
+            Calendar calendar = GregorianCalendar.getInstance();
+            calendar.add(Calendar.DATE, i);
+            dateList.add(sdf.format(calendar.getTime()));
+        }
+
+        ArrayList<RemoteFileInfo> ret = new ArrayList<RemoteFileInfo>();
+        try {
+
+            Vector vv = sftpClient.ls(remotePath);
+            if (vv != null) {
+                for (int ii = 0; ii < vv.size(); ii++) {
+                    Object obj = vv.elementAt(ii);
+                    if (obj instanceof LsEntry) {
+                        LsEntry entry = (LsEntry) obj;
+                        if (!entry.getAttrs().isDir()) {
+                            RemoteFileInfo remoteFile = new RemoteFileInfo();
+                            remoteFile.setFileName(entry.getFilename());
+                            remoteFile.setModifyTime((long) entry.getAttrs().getMTime());
+                            remoteFile.setSize(entry.getAttrs().getSize());
+                            remoteFile.setParent(remotePath);
+                            remoteFile.setAbsolutePath(remotePath + (remotePath.endsWith("/") ? "" : "/") + entry.getFilename());
+                        }
+                    }
+                }
+            }
+        } catch (SftpException e) {
+            if (e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE) {
+                throw e;
+            }
+        }
+        List<RemoteFileInfo> newRet = new ArrayList<>();
+        ret.stream().forEach(x -> {
+            for (String date : dateList) {
+                if(x.getFileName().indexOf(date) > 0)
+                    newRet.add(x);
+            }
+        });
+        return newRet;
+    }
+
+    @Override
     public List<RemoteFileInfo> getListRemoteFiles(String remotePath, Pattern p, String fileScanRange, String datePattern) throws Exception {
         int dateRange = 0;
         if (fileScanRange.contains("d")) {

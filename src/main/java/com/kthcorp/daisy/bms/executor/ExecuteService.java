@@ -1,20 +1,17 @@
 package com.kthcorp.daisy.bms.executor;
 
+import com.kthcorp.daisy.bms.fao.SinkHandler;
+import com.kthcorp.daisy.bms.parser.ParserBase;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
-import com.kthcorp.daisy.bms.repository.BmsDdAdResScheMapper;
-import com.kthcorp.daisy.bms.repository.BmsDdAdTmpResScheMapper;
-import com.kthcorp.daisy.bms.repository.BmsDdAmoebaRecordFilesMapper;
-import com.kthcorp.daisy.bms.repository.BmsDdMediaRecordFilesMapper;
-import com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche;
-import com.kthcorp.daisy.bms.repository.entity.BmsDdAdTmpResSche;
-import com.kthcorp.daisy.bms.repository.entity.BmsDdAmoebaRecordFiles;
-import com.kthcorp.daisy.bms.repository.entity.BmsDdMediaRecordFiles;
+import com.kthcorp.daisy.bms.repository.*;
+import com.kthcorp.daisy.bms.repository.entity.*;
 import com.kthcorp.daisy.bms.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -37,6 +34,9 @@ public class ExecuteService {
 
     @Autowired
     BmsDdAdResScheMapper bmsDdAdResScheMapper;
+
+    @Autowired
+    BmsDdAtsAdScheMapper bmsDdAtsAdScheMapper;
 
     @Autowired
     FileUtil fileUtil;
@@ -110,16 +110,37 @@ public class ExecuteService {
         }
     }
 
-    public void executeAtsAdScheCollectTask(ExecuteFileInfo executeFileInfo) throws Exception {
+    public void executeAtsAdScheCollectTask(ExecuteFileInfo executeFileInfo, SinkHandler sinkHandler, List<ParserBase> parsers) throws Exception {
+        log.debug("executeAtsAdScheCollectTask -> executeFileInfo: {}", executeFileInfo);
 
+        BmsDdAtsAdSche bmsDdAtsAdSche = new BmsDdAtsAdSche();
+//        bmsDdAtsAdSche.setYyyymmdd(executeFileInfo.getSourceFile().getYyyyMMdd());
+//        bmsDdAtsAdSche.setApln_form_id(executeFileInfo.getSourceFile());
+//        bmsDdAtsAdSche.setRec_file_path(executeFileInfo.getSourceFile().getAbsolutePath());
+
+        if (parsers != null) {
+            for (ParserBase parserBase : parsers) {
+
+                parserBase.addHeaders(executeFileInfo.getHeader());
+                File parsedFile = parserBase.process(executeFileInfo.getDownloadFile().getAbsolutePath());
+                log.info("parsedFile: {}", parsedFile);
+                String sinkPath = sinkHandler.send(parserBase.getHeader(), parsedFile);
+
+                executeFileInfo.putExecuteResult(parsedFile, sinkPath);
+            }
+        }
+
+//        bmsDdAtsAdScheMapper.insertAtsAdSche(bmsDdAtsAdSche);
+        executeFileInfo.setSuccess(true);
     }
 
     public void executeMssPrgmScheCollectTask(ExecuteFileInfo executeFileInfo) throws Exception {
+        log.debug("executeMssPrgmScheCollectTask -> executeFileInfo: {}", executeFileInfo);
 
+        executeFileInfo.setSuccess(true);
     }
 
     public void executeMakeAdScheTask() throws Exception {
-
         HashMap<String, Object> map = new LinkedHashMap<>();
         map.put("yyyymmdd", "20180428");
         map.put("brdcst_dt", "20180428");
@@ -143,13 +164,13 @@ public class ExecuteService {
         // 7. 6번 데이터 파일 생성(최종 편성표)
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("list", resScheList);
-        Map<String, Object> result = fileUtil.writeFileAdSches(args);
+        Map<String, Object> result = fileUtil.writeFileAdResSche(args);
 
         log.debug((String) result.get("filePath"));
     }
 
     public void executeMediaRecFileCollectTask(ExecuteFileInfo executeFileInfo) throws Exception {
-        log.debug("executeFileInfo: {}", executeFileInfo);
+        log.debug("executeMediaRecFileCollectTask -> executeFileInfo: {}", executeFileInfo);
 
         BmsDdMediaRecordFiles bmsDdMediaRecordFiles = new BmsDdMediaRecordFiles();
         bmsDdMediaRecordFiles.setYyyymmdd(executeFileInfo.getSourceFile().getYyyyMMdd());

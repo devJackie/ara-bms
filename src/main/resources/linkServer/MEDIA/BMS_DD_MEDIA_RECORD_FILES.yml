@@ -18,10 +18,13 @@ sourceConfig:
     scanRange: -0d
 
 fileIOConfig:
-  type: media
+  type: none
+
+parserConfig:
+- type: none
 
 sinkConfig:
-  type: ftp
+  type: none
 #  server: localhost
 #  port: 21
 #  id: devjackie

@@ -25,3 +25,9 @@ sourceConfig:
 
 fileIOConfig:
   type: mss
+
+parserConfig:
+- type: none
+
+sinkConfig:
+  type: none

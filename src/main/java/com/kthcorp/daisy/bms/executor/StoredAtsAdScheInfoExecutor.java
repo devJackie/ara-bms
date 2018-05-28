@@ -1,23 +1,21 @@
 package com.kthcorp.daisy.bms.executor;
 
 import com.kthcorp.daisy.bms.fao.RemoteFileInfo;
-import com.kthcorp.daisy.bms.fileio.FileIOInfo;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.context.ApplicationContext;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by devjackie on 2018. 5. 25..
+ * Created by devjackie on 2018. 5. 28..
  */
 @Slf4j
-public class StoredMediaRecInfoExecutor extends BaseExecutor {
+public class StoredAtsAdScheInfoExecutor extends BaseExecutor {
 
-    StoredMediaRecInfoExecutor(ApplicationContext context, Map<String, Object> config, BmsMetaProperties bmsMetaProperties) throws Exception {
+    StoredAtsAdScheInfoExecutor(ApplicationContext context, Map<String, Object> config, BmsMetaProperties bmsMetaProperties) throws Exception {
         super(context, config, bmsMetaProperties);
     }
 
@@ -31,18 +29,18 @@ public class StoredMediaRecInfoExecutor extends BaseExecutor {
         List<RemoteFileInfo> remoteFiles = sourceHandler.getRemoteFiles();
 
         Set<String> finFiles = new HashSet<>();
-        List<RemoteFileInfo> recFiles = new ArrayList<>();
+        List<RemoteFileInfo> atsFiles = new ArrayList<>();
 
         for (RemoteFileInfo remoteFile : remoteFiles) {
             if (remoteFile.getFileName().toUpperCase().endsWith(".FIN")) {
                 finFiles.add(remoteFile.getFileName().substring(0, remoteFile.getFileName().indexOf(".")));
-            } else if (remoteFile.getFileName().toUpperCase().endsWith(".MP4")) {
-                recFiles.add(remoteFile);
+            } else if (remoteFile.getFileName().toUpperCase().endsWith(".DAT")) {
+                atsFiles.add(remoteFile);
             }
         }
 
         // .FIN 파일이 있는지 체크
-        List<RemoteFileInfo> resultFiles = recFiles.stream().filter(f ->
+        List<RemoteFileInfo> resultFiles = atsFiles.stream().filter(f ->
                 finFiles.contains(f.getFileName().substring(0, f.getFileName().indexOf(".")))).collect(Collectors.toList());
 
         // 현재날짜 설정

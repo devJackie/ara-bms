@@ -68,7 +68,7 @@
                         from    bms_dd_ats_ad_sche
                         where   brdcst_dt = '20180428'
                         and     otv_ch_no is not null
-                        and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' /** 30분 단위 광고 제외 **/
+                        and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
                         and     ad_length not in ('60', '120')
                         and     otv_ch_no in
                         (
@@ -98,7 +98,7 @@
                         from    bms_dd_ats_ad_sche
                         where   brdcst_dt = '20180428'
                         and     ots_ch_no is not null
-                        and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' /** 30분 단위 광고 제외 **/
+                        and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
                         and     ad_length not in ('60', '120')
                         and     ots_ch_no in
                         (
@@ -132,7 +132,7 @@
                 from    ams_dd_mss_prgm_sche
                 where   yyyymmdd = '20180428'
                 ) e on  d.ch_no = e.ch_no and e.prgm_start_dt <![CDATA[<=]]> d.start_dt and d.start_dt <![CDATA[<]]> e.prgm_end_dt
-            /** where   d.ch_no = '17' **/
+            --where   d.ch_no = '17'
             ) f
             where   f.rnum = 1
         ) g

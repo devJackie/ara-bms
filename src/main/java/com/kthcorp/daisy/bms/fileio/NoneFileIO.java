@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by devjackie on 2018. 5. 9..
+ * Created by devjackie on 2018. 5. 28..
  */
 @Slf4j
-public class MediaFileIO extends BaseFileIO {
+public class NoneFileIO extends BaseFileIO {
 
-    MediaFileIO(Map<String, Object> config, BmsMetaProperties bmsMetaProperties) {
+    NoneFileIO(Map<String, Object> config, BmsMetaProperties bmsMetaProperties) {
         super(config, bmsMetaProperties);
     }
 

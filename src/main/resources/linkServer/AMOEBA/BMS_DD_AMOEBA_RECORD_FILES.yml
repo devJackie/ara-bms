@@ -6,7 +6,7 @@ indexConfig:
 
 sourceConfig:
   type: local
-#  path: /data/amoeba/${date}/
+#  path: /data/ara-bms/amoeba/${date}/
   path: /Users/devjackie/ara-bms/amoeba/${date}/
   pathAttributes:
   - type: date
@@ -23,8 +23,11 @@ fileIOConfig:
   textEncoding : utf-8
   filePattern: ([\d+]{8}).[IDX|FIN]+
 
+parserConfig:
+- type: none
+
 sinkConfig:
-  type: ftp
+  type: none
 #  server: localhost
 #  port: 21
 #  id: devjackie

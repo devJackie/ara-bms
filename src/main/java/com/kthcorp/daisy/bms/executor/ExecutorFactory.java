@@ -44,6 +44,9 @@ public class ExecutorFactory {
         } else if ("storedMediaRecInfo".equals(indexType)) {
             log.info("Create StoredMediaRecInfoExecutor");
             return new StoredMediaRecInfoExecutor(context, config, bmsMetaProperties);
+        } else if ("storedAtsAdScheInfo".equals(indexType)) {
+            log.info("Create StoredAtsAdScheInfoExecutor");
+            return new StoredAtsAdScheInfoExecutor(context, config, bmsMetaProperties);
         }
         throw new IllegalArgumentException("type: " + indexType);
     }

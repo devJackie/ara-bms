@@ -34,9 +34,9 @@ public class FileIOFactory {
         if ("AMOEBA".equalsIgnoreCase(indexType)) {
             log.info("Create AmoebaFileIO");
             return new AmoebaFileIO(config, bmsMetaProperties);
-        } else if ("MEDIA".equalsIgnoreCase(indexType)) {
-            log.info("Create AmoebaFileIO");
-            return new MediaFileIO(config, bmsMetaProperties);
+        } else if ("none".equalsIgnoreCase(indexType)) {
+            log.info("Create NoneFileIO");
+            return new NoneFileIO(config, bmsMetaProperties);
         }
         throw new IllegalArgumentException("type: " + indexType);
     }

@@ -18,6 +18,8 @@ public interface RemoteFAO {
 
     List<RemoteFileInfo> getListRemoteFiles(String remotePath, Pattern p) throws Exception;
 
+    List<RemoteFileInfo> getListRemoteFiles(String remotePath, String fileScanRange, String datePattern) throws Exception;
+
     List<RemoteFileInfo> getListRemoteFiles(String remotePath, Pattern p, String fileScanRange, String datePattern) throws Exception;
 
     boolean copyToLocal(String remote, String local) throws Exception;

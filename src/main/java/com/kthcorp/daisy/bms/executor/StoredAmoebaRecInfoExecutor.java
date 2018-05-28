@@ -50,7 +50,7 @@ public class StoredAmoebaRecInfoExecutor extends BaseExecutor {
         List<RemoteFileInfo> finCheckFiles = idxFiles.stream().filter(f ->
                 !finFiles.isEmpty()).collect(Collectors.toList());
 
-        List<RemoteFileInfo> resultRemoteRecFiles = new ArrayList<>();
+        List<RemoteFileInfo> resultRemoteFiles = new ArrayList<>();
         if (finCheckFiles != null && finCheckFiles.size() > 0) {
             // thumb path set
             recFiles.stream().forEach(x -> thumbFiles.stream().filter(y -> FilenameUtils.getBaseName(x.getFileName()).equals(FilenameUtils.getBaseName(y.getFileName())))
@@ -84,7 +84,7 @@ public class StoredAmoebaRecInfoExecutor extends BaseExecutor {
                 log.debug("{}", x);
             });
 
-            resultRemoteRecFiles = fileIOFiles.stream().map(x -> {
+            resultRemoteFiles = fileIOFiles.stream().map(x -> {
                 RemoteFileInfo remoteFileInfo = new RemoteFileInfo();
                 remoteRecFiles.stream().filter(y -> x.getIdxRecFilePath().contains(y.getFileId()))
                         .forEach(y -> {
@@ -106,11 +106,11 @@ public class StoredAmoebaRecInfoExecutor extends BaseExecutor {
             log.info("The .FIN file is not found");
         }
 
-        resultRemoteRecFiles.forEach(x -> {
+        resultRemoteFiles.forEach(x -> {
             log.debug("resultRemoteRecFiles: {}", x);
         });
 
-    executeFileInfos = resultRemoteRecFiles.stream().map(x -> {
+    executeFileInfos = resultRemoteFiles.stream().map(x -> {
         ExecuteFileInfo executeFileInfo = new ExecuteFileInfo();
         executeFileInfo.setSourceFile(x);
         executeFileInfo.setFinished(indexStr.contains(x.getAbsolutePath()));
