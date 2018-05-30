@@ -1,5 +1,6 @@
 package com.kthcorp.daisy.bms.util;
 
+import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -18,11 +19,17 @@ import java.util.Map;
 @Slf4j
 public class FileUtil {
 
+    private BmsMetaProperties bmsMetaProperties;
+
     public Map<String,Object> writeFileAdResSche(Map<String, Object> param) throws Exception {
+
+        List<BmsDdAdResSche> resScheList = (List<BmsDdAdResSche>) param.get("list");
+        bmsMetaProperties = (BmsMetaProperties) param.get("bmsMetaProperties");
+
         BufferedWriter bw = null;
         FileWriter fw = null;
         Map<String,Object> result = new LinkedHashMap<>();
-        File file = new File("/Users/devjackie/ara-bms/bms/sche/");
+        File file = new File((String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-path"));
         try {
             // local
             // path : /Users/devjackie/ara-bms/bms/sche/
@@ -31,15 +38,13 @@ public class FileUtil {
             // path : /Users/devjackie/ara-bms/bms/sche/
             // file : /Users/devjackie/ara-bms/bms/sche/2018042802_24.dat
 
-            List<BmsDdAdResSche> resScheList = (List<BmsDdAdResSche>) param.get("list");
-
             if(!file.isDirectory()) { //디렉토리가 존재하지 않으면
                 file.mkdirs();
             }
 
             // /Users/devjackie/ara-bms/bms/sche/2018042802_24.dat
             // /Users/devjackie/ara-bms/bms/sche/2018042900_02.dat
-            file = new File("/Users/devjackie/ara-bms/bms/sche/2018042802_24.dat");
+            file = new File((String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-path") + bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-1"));
             if (file.exists()) { // 파일이 존재하면
                 log.info("file already exists, {}", file.getAbsolutePath());
                 result.put("file", file);

@@ -143,16 +143,16 @@ public abstract class BaseExecutor implements CommonExecutor {
                         // 1-2. 1 과 1-1 를 fileId 로 매핑 후 merge 하고 녹화된 파일정보 db 저장
                         // 1-3. .idx 가 없을 경우 프로세스 종료, 매분 또는 일정 주기마다 .idx 가 있는지 체크 (30분마다 또는 1시간마다 배치 실행할 예정 또는 sping boot 의 schedule 또는 cron 사용)
                         if ("storedAmoebaRecInfo".equalsIgnoreCase((String) config.get("type"))) {
-                            executeService.executeAmoebaRecFileCollectTask(executeFileInfo);
+                            executeService.executeAmoebaRecFileCollectTask(executeFileInfo, sinkHandler, parsers, fileIO);
                         } else if ("storedMediaRecInfo".equalsIgnoreCase((String) config.get("type"))) {
                             // 2. skylife 에서 제공하는 미디어 서버 광고 파일 수집 및 db 저장 (분당 ara 서버에 put 방식으로 진행 예정)
-                            executeService.executeMediaRecFileCollectTask(executeFileInfo);
+                            executeService.executeMediaRecFileCollectTask(executeFileInfo, sinkHandler, parsers, fileIO);
                         } else if ("storedAtsAdScheInfo".equalsIgnoreCase((String) config.get("type"))) {
                             // 3. 선천 epg 수집, 모듈 개발
-                            executeService.executeAtsAdScheCollectTask(executeFileInfo, sinkHandler, parsers);
+                            executeService.executeAtsAdScheCollectTask(executeFileInfo, sinkHandler, parsers, fileIO);
                         } else if ("storedMssPrgmScheInfo".equalsIgnoreCase((String) config.get("type"))) {
                             // 4. mss 프로그램 epg 수집, 모듈 개발
-                            executeService.executeMssPrgmScheCollectTask(executeFileInfo);
+                            executeService.executeMssPrgmScheCollectTask(executeFileInfo, sinkHandler, parsers, fileIO);
                         }
                     } catch (Exception e) {
                         throw e;

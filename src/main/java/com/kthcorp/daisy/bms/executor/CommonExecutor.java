@@ -8,5 +8,6 @@ import java.util.concurrent.CompletableFuture;
 public interface CommonExecutor {
 
     CompletableFuture<String> executeCollect();
+
     CompletableFuture<String> executeWorkFlow();
 }

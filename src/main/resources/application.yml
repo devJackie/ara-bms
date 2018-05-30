@@ -28,6 +28,10 @@ bms-meta:
     text-encoding: textEncoding
   execute:
     default-execute-group: LIMIT
+  file-info:
+    res-sche-path: /Users/devjackie/ara-bms/bms/sche/
+    res-sche-filename-1: bms_sche_2018042802_24.dat
+    res-sche-filename-2: bms_sche_2018042900_02.dat
 
 # sample test
 name: prod-YAML

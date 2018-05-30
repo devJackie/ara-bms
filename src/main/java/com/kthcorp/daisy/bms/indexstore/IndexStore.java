@@ -8,7 +8,10 @@ import java.util.List;
 public interface IndexStore {
 
     String getIndex() throws Exception;
+
     List<String> getIndexAsList() throws Exception;
+
     void setIndex(String index) throws Exception;
+
     void setIndex(List<String> indexes) throws Exception;
 }

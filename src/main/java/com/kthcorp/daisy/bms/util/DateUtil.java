@@ -70,7 +70,7 @@ public class DateUtil {
      * @author devjackie
      * @Description 현재 날짜 > current month 의 첫번째 일자
      */
-    public static String getFirDayOfCurrentMonth() throws Exception {
+    public static String getFirstDayOfCurrentMonth() throws Exception {
 
         String result;
         try {
@@ -105,7 +105,7 @@ public class DateUtil {
      * @Description 현재 날짜 - 1 month > prev month 의 첫번째 일자
      * @Ref https://gist.github.com/marti1125/7405008
      */
-    public static String getFirDayOfPrevMonth() throws Exception {
+    public static String getFirstDayOfPrevMonth() throws Exception {
 
         String result;
         try {

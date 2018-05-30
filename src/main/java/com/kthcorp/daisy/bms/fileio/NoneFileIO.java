@@ -4,6 +4,7 @@ import com.kthcorp.daisy.bms.fao.RemoteFileInfo;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +20,16 @@ public class NoneFileIO extends BaseFileIO {
 
     @Override
     public List<FileIOInfo> readAmeobaRecFileList(List<RemoteFileInfo> idxFiles) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> readAmeobaIdxRecInfoList(String[] fileArray) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> readAtsAdScheList(File remoteFile) throws Exception {
         return null;
     }
 }

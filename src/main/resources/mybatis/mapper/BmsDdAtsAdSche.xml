@@ -1,0 +1,38 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kthcorp.daisy.bms.repository.BmsDdAtsAdScheMapper">
+
+    <!--<insert id="insertAtsAdSche" parameterType="com.kthcorp.daisy.bms.repository.entity.BmsDdAtsAdSche">-->
+        <!--/** insertAtsAdSche **/-->
+        <!--insert into bms_dd_ats_ad_sche (-->
+            <!--yyyymmdd, ch_nm, brdcst_dt, ch_id, otv_ch_no, ots_ch_no, hhmmss, ad_order, ad_id, ad_nm, ad_length, apln_form_id, reg_dt-->
+        <!--) values (-->
+            <!--#{yyyymmdd}, #{ch_nm}, #{brdcst_dt}, #{ch_id}, #{otv_ch_no}, #{ots_ch_no}, #{hhmmss}, #{ad_order}, #{ad_id}, #{ad_nm}, #{ad_length}, #{apln_form_id}, now()-->
+        <!--)-->
+    <!--</insert>-->
+
+    <insert id="insertAtsAdSche" parameterType="java.util.HashMap">
+        <!--<foreach item="item" collection="mapList" index="index" open="INSERT ALL " separator=" " close="">-->
+        insert into bms_dd_ats_ad_sche (
+            yyyymmdd, ch_nm, brdcst_dt, ch_id, otv_ch_no, ots_ch_no, hhmmss, ad_order, ad_id, ad_nm, ad_length, apln_form_id, reg_dt
+        ) values
+        <foreach collection="mapList" item="item" open="" separator="," close="" >
+            (
+                #{item.yyyymmdd},
+                #{item.ch_nm},
+                #{item.brdcst_dt},
+                #{item.ch_id},
+                #{item.otv_ch_no},
+                #{item.ots_ch_no},
+                #{item.hhmmss},
+                #{item.ad_order},
+                #{item.ad_id},
+                #{item.ad_nm},
+                #{item.ad_length},
+                #{item.apln_form_id},
+                now()
+            )
+        </foreach>
+
+    </insert>
+
+</mapper>

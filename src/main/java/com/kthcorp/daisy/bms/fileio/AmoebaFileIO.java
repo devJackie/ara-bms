@@ -5,12 +5,11 @@ import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.util.CollectorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.text.StrSubstitutor;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,17 +24,17 @@ public class AmoebaFileIO extends BaseFileIO {
     }
 
     @Override
-    public List<FileIOInfo> readAmeobaRecFileList(List<RemoteFileInfo> idxFiles) throws Exception {
+    public List<FileIOInfo> readAmeobaRecFileList(List<RemoteFileInfo> remoteFiles) throws Exception {
         log.debug("config : {}", config);
 
         List<FileIOInfo> fileIOList = new ArrayList<>();
         List<FileIOInfo> recFileList = new ArrayList<>();
         List<FileIOInfo> recThumbFileList = new ArrayList<>();
 
-        for (RemoteFileInfo idxFile : idxFiles) {
+        for (RemoteFileInfo remoteFile : remoteFiles) {
             // yyyyMMdd 설정
-            idxFile.setYyyyMMdd(idxFile.getFileName().split("\\.")[0]);
-            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(idxFile.getAbsolutePath()), textEncoding));
+            remoteFile.setYyyyMMdd(remoteFile.getFileName().split("\\.")[0]);
+            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(remoteFile.getAbsolutePath()), textEncoding));
 
             try {
                 String line;
@@ -43,18 +42,18 @@ public class AmoebaFileIO extends BaseFileIO {
                     FileIOInfo fileIOInfo;
                     if (line.toUpperCase().endsWith(".MP4")) {
                         fileIOInfo = new FileIOInfo();
-                        fileIOInfo.setYyyyMMdd(idxFile.getYyyyMMdd());
-                        fileIOInfo.setFileName(idxFile.getFileName());
-                        fileIOInfo.setParent(idxFile.getParent());
-                        fileIOInfo.setAbsolutePath(idxFile.getAbsolutePath());
+                        fileIOInfo.setYyyyMMdd(remoteFile.getYyyyMMdd());
+                        fileIOInfo.setFileName(remoteFile.getFileName());
+                        fileIOInfo.setParent(remoteFile.getParent());
+                        fileIOInfo.setAbsolutePath(remoteFile.getAbsolutePath());
                         fileIOInfo.setIdxRecFilePath(line);
                         recFileList.add(fileIOInfo);
                     } else if (line.toUpperCase().endsWith(".JPG")) {
                         fileIOInfo = new FileIOInfo();
-                        fileIOInfo.setYyyyMMdd(idxFile.getYyyyMMdd());
-                        fileIOInfo.setFileName(idxFile.getFileName());
-                        fileIOInfo.setParent(idxFile.getParent());
-                        fileIOInfo.setAbsolutePath(idxFile.getAbsolutePath());
+                        fileIOInfo.setYyyyMMdd(remoteFile.getYyyyMMdd());
+                        fileIOInfo.setFileName(remoteFile.getFileName());
+                        fileIOInfo.setParent(remoteFile.getParent());
+                        fileIOInfo.setAbsolutePath(remoteFile.getAbsolutePath());
                         fileIOInfo.setIdxRecThumbFilePath(line);
                         recThumbFileList.add(fileIOInfo);
                     }
@@ -81,46 +80,41 @@ public class AmoebaFileIO extends BaseFileIO {
         return fileIOList;
     }
 
-    private List<String> createPath(String rootPath, Map<String, String> header, List<Map<String, Object>> subAttrs, int depthIdx) throws Exception{
-        if(header == null) {
-            header = new HashMap();
-        }
+    @Override
+    public List<Map<String, Object>> readAmeobaIdxRecInfoList(String[] fileArray) throws Exception {
 
-        Set<String> paths = new HashSet<>();
-        if (subAttrs != null && subAttrs.size() > depthIdx) {
-            Map<String, Object> attr = (Map) subAttrs.get(depthIdx);
-            String type = (String) attr.get(bmsMetaProperties.getBmsMeta().get("common").get("type"));
+        // firFileInfo : [AAAAAAAAAA]
+        // secFileInfo : [20180517053610, 20180517, 0109, 32]
+        // thiFileInfo : [201804019, 180416GSPB30]
+        List<String> firFileInfo = new ArrayList<>(Arrays.asList(fileArray[0]));
+        log.debug("firFileInfo : {}", firFileInfo);
 
-            if(type.startsWith((String) bmsMetaProperties.getBmsMeta().get("common").get("date"))) {
+        List<Map<String, Object>> resultRecInfoFiles = new ArrayList<>();
 
-                log.debug("attr --> {}", attr);
-                SimpleDateFormat sdf = new SimpleDateFormat((String) attr.get(bmsMetaProperties.getBmsMeta().get("common").get("date-pattern")));
-                String scanRange = (String) attr.get(bmsMetaProperties.getBmsMeta().get("common").get("scan-range"));
-                if (scanRange.contains("h")) {
-                    throw new IllegalArgumentException("'h' char not support");
-                }
-
-                int dateRange = 0;
-
-                if (scanRange.contains("d")) {
-                    dateRange = Integer.parseInt(scanRange.substring(0, scanRange.indexOf("d")));
-                }
-
-                for (int i = 0; i >= dateRange; i--) {
-                    Calendar calendar = GregorianCalendar.getInstance();
-                    calendar.add(Calendar.DATE, i);
-                    header.put((String) bmsMetaProperties.getBmsMeta().get("common").get("date"), sdf.format(calendar.getTime()));
-                    paths.addAll(createPath(rootPath, header, subAttrs, depthIdx + 1));
-                }
-            } else if(type.startsWith("none")){
-                paths.add(rootPath);
+        for (int i = 0; i < firFileInfo.size(); i++) {
+            Map<String, Object> map = new LinkedHashMap<>();
+            map.put("fileId", firFileInfo.get(i));
+            String temp1 = fileArray[1];
+            StringTokenizer tokenizer1 = new StringTokenizer(temp1, "_");
+            while (tokenizer1.hasMoreTokens()) {
+                map.put("startDt", tokenizer1.nextToken());
+                map.put("brdcstDt", tokenizer1.nextToken());
+                map.put("chId", tokenizer1.nextToken());
+                map.put("chNo", tokenizer1.nextToken());
             }
-        } else {
-            StrSubstitutor sub = new StrSubstitutor(header);
-            paths.add(sub.replace(rootPath));
+            String temp2 = fileArray[2];
+            StringTokenizer tokenizer2 = new StringTokenizer(temp2, "_");
+            while (tokenizer2.hasMoreTokens()) {
+                map.put("aplnFormId", tokenizer2.nextToken());
+                map.put("adId", tokenizer2.nextToken());
+            }
+            resultRecInfoFiles.add(map);
         }
-        List<String> result = new ArrayList<>(paths);
-        Collections.sort(result);
-        return result;
+        return resultRecInfoFiles;
+    }
+
+    @Override
+    public List<Map<String, Object>> readAtsAdScheList(File remoteFile) throws Exception {
+        return null;
     }
 }

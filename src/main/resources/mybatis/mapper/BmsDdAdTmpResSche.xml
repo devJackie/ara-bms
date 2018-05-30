@@ -65,7 +65,7 @@
                                 , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'YYYYMMDDHH24MISS')::timestamp, 'YYYY-MM-DD HH24:MI:SS') as start_dt
                                 , 'OTV' as screen_gubn
                         from    bms_dd_ats_ad_sche
-                        where   brdcst_dt = '20180428'
+                        where   brdcst_dt = #{brdcst_dt}
                         and     otv_ch_no is not null
                         and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
                         and     ad_length not in ('60', '120')
@@ -82,7 +82,7 @@
                                     select
                                             otv_ch_no, sum(cast(otv_view_cnt as bigint)) as sum_otv_view_cnt
                                     from    ad_result
-                                    where   brdcst_dt between '20180401' and '20180430'
+                                    where   brdcst_dt between #{prev_from_yyyymmdd} and #{prev_to_yyyymmdd}
                                     and     p_cmpl_yn = 'y'
                                     group   by otv_ch_no
                                 ) a
@@ -95,7 +95,7 @@
                                 , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'YYYYMMDDHH24MISS')::timestamp, 'YYYY-MM-DD HH24:MI:SS') as start_dt
                                 , 'OTS' as screen_gubn
                         from    bms_dd_ats_ad_sche
-                        where   brdcst_dt = '20180428'
+                        where   brdcst_dt = #{brdcst_dt}
                         and     ots_ch_no is not null
                         and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
                         and     ad_length not in ('60', '120')
@@ -112,7 +112,7 @@
                                     select
                                             ots_ch_no, sum(cast(ots_view_cnt as bigint)) as sum_ots_view_cnt
                                     from    ad_result
-                                    where   brdcst_dt between '20180401' and '20180430'
+                                    where   brdcst_dt between #{prev_from_yyyymmdd} and #{prev_to_yyyymmdd}
                                     and     p_cmpl_yn = 'y'
                                     group   by ots_ch_no
                             ) a
@@ -129,7 +129,7 @@
                         , prgm_start_dt
                         , prgm_end_dt
                 from    ams_dd_mss_prgm_sche
-                where   yyyymmdd = '20180428'
+                where   yyyymmdd = #{yyyymmdd}
                 ) e on  <![CDATA[ d.ch_no = e.ch_no and e.prgm_start_dt <= d.start_dt and d.start_dt < e.prgm_end_dt ]]>
             --where   d.ch_no = '17'
             ) f
