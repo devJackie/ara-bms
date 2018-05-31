@@ -47,6 +47,9 @@ public class ExecutorFactory {
         } else if ("storedAtsAdScheInfo".equals(indexType)) {
             log.info("Create StoredAtsAdScheInfoExecutor");
             return new StoredAtsAdScheInfoExecutor(context, config, bmsMetaProperties);
+        } else if ("storedMssPrgmScheInfo".equals(indexType)) {
+            log.info("Create StoredMssPrgmScheInfoExecutor");
+            return new StoredMssPrgmScheInfoExecutor(context, config, bmsMetaProperties);
         }
         throw new IllegalArgumentException("type: " + indexType);
     }

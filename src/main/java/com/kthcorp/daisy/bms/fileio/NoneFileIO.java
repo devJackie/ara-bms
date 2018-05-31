@@ -32,4 +32,9 @@ public class NoneFileIO extends BaseFileIO {
     public List<Map<String, Object>> readAtsAdScheList(File remoteFile) throws Exception {
         return null;
     }
+
+    @Override
+    public List<Map<String, Object>> readMssPrgmScheList(File remoteFile) throws Exception {
+        return null;
+    }
 }

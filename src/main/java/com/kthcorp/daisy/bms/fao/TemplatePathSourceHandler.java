@@ -54,9 +54,6 @@ public class TemplatePathSourceHandler implements SourceHandler {
         log.debug("createPath: {}", paths);
 
         Set<RemoteFileInfo> remoteFileSet = new HashSet<>();
-//        for (String globPath : paths) {
-//            remoteFileSet.addAll(remoteFSHelper.getListRemoteFiles(globPath));
-//        }
 
         Map<String, Object> attr = null;
         boolean chkFsr = false;

@@ -12,22 +12,30 @@ sourceConfig:
 #  password: sunchun!
 #  dataConnectionMode: active
 #  path: /data/cuton_logs/kt/ad_sche/
+
   type: sftp
   server: localhost
   port: 22
   id: devjackie
   password: Tjddydwozl12
 #  path: /data/ara-bms/mss/
-  path: /Users/devjackie/ara-bms/mss/
+  path: /Users/devjackie/ara-bms/mss/${date}/
   pathAttributes:
-  - type: none
-  filePattern: prgm_sche_([\d+]{8}).DAT$
+  - type: date
+    datePattern: yyyyMMdd
+    scanRange: -0d
+  filePattern: META_DD_ABMS_PRGM_SCHE.DAT$
 
 fileIOConfig:
   type: mss
 
 parserConfig:
-- type: none
+- type: bypass
 
 sinkConfig:
-  type: none
+  type: sftp
+  server: localhost
+  port: 22
+  id: devjackie
+  password: Tjddydwozl12
+  path: /Users/devjackie/ara-bms/mss_result/

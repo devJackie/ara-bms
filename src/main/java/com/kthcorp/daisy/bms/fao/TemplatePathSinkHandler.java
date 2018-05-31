@@ -45,5 +45,4 @@ public class TemplatePathSinkHandler implements SinkHandler {
     public void close() {
         remoteFAO.close();
     }
-
 }

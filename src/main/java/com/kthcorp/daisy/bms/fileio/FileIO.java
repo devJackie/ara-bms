@@ -16,4 +16,6 @@ public interface FileIO {
     List<Map<String, Object>> readAmeobaIdxRecInfoList(String[] fileArray) throws Exception;
 
     List<Map<String, Object>> readAtsAdScheList(File remoteFile) throws Exception;
+
+    List<Map<String, Object>> readMssPrgmScheList(File remoteFile) throws Exception;
 }

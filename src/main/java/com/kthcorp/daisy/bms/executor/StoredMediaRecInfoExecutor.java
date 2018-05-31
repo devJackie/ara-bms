@@ -1,11 +1,9 @@
 package com.kthcorp.daisy.bms.executor;
 
 import com.kthcorp.daisy.bms.fao.RemoteFileInfo;
-import com.kthcorp.daisy.bms.fileio.FileIOInfo;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.context.ApplicationContext;
 
 import java.util.*;
@@ -71,8 +69,8 @@ public class StoredMediaRecInfoExecutor extends BaseExecutor {
         log.info("executeFileInfos : {}", executeFileInfos);
         log.info("1-{}. Remote file`s index checked. ", logIdx++);
 
-    return executeFileInfos;
-}
+       return executeFileInfos;
+    }
 
     @Override
     void setIndex(ExecuteFileInfo executeFileInfo) throws Exception {

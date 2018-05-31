@@ -3,9 +3,7 @@ package com.kthcorp.daisy.bms.fileio;
 import com.kthcorp.daisy.bms.fao.RemoteFileInfo;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.util.CollectorUtil;
-import com.kthcorp.daisy.bms.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.MapUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,9 +14,9 @@ import java.util.*;
  * Created by devjackie on 2018. 5. 28..
  */
 @Slf4j
-public class AtsFileIO extends BaseFileIO {
+public class MssFileIO extends BaseFileIO {
 
-    AtsFileIO(Map<String, Object> config, BmsMetaProperties bmsMetaProperties) {
+    MssFileIO(Map<String, Object> config, BmsMetaProperties bmsMetaProperties) {
         super(config, bmsMetaProperties);
     }
 
@@ -34,36 +32,32 @@ public class AtsFileIO extends BaseFileIO {
 
     @Override
     public List<Map<String, Object>> readAtsAdScheList(File remoteFile) throws Exception {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> readMssPrgmScheList(File remoteFile) throws Exception {
         log.debug("config : {}", config);
 
         List<Map<String, Object>>  mapList = new ArrayList<>();
         Scanner sc1 = null;
         Scanner sc2 = null;
-        // https://netjs.blogspot.kr/2016/06/reading-delimited-file-in-java-using-scanner.html
-
-        // 현재날짜 설정
-        String currentDay = DateUtil.getCurrentDay();
 
         try {
             sc1 = new Scanner(new FileInputStream(remoteFile), "UTF-8");
             while(sc1.hasNextLine()) {
                 String line = sc1.nextLine();
                 sc2 = new Scanner(line);
-                sc2.useDelimiter("\\|");
+                sc2.useDelimiter("\\036");
                 Map<String, Object> map = new LinkedHashMap<>();
                 while(sc2.hasNext()) {
-                    map.put("ch_nm", sc2.hasNext() ? sc2.next() : "");
-                    map.put("brdcst_dt", sc2.hasNext() ? sc2.next() : "");
-                    map.put("yyyymmdd", MapUtils.getString(map, "brdcst_dt") != null ? map.get("brdcst_dt") : "");
-                    map.put("hhmmss", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ch_id", sc2.hasNext() ? sc2.next() : "");
-                    map.put("otv_ch_no", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ots_ch_no", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ad_order", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ad_id", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ad_nm", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ad_length", sc2.hasNext() ? sc2.next() : "");
-                    map.put("apln_form_id", sc2.hasNext() ? sc2.next() : "");
+                    map.put("yyyymmdd", sc2.hasNext() ? sc2.next() : "");
+                    map.put("ch_no", sc2.hasNext() ? sc2.next() : "");
+                    map.put("prgm_id", sc2.hasNext() ? sc2.next() : "");
+                    map.put("prgm_nm", sc2.hasNext() ? sc2.next() : "");
+                    map.put("screen_gubn", sc2.hasNext() ? sc2.next() : "");
+                    map.put("prgm_start_dt", sc2.hasNext() ? sc2.next() : "");
+                    map.put("prgm_end_dt", sc2.hasNext() ? sc2.next() : "");
                 }
                 mapList.add(map);
             }
@@ -74,10 +68,5 @@ public class AtsFileIO extends BaseFileIO {
             CollectorUtil.quietlyClose(sc1);
         }
         return mapList;
-    }
-
-    @Override
-    public List<Map<String, Object>> readMssPrgmScheList(File remoteFile) throws Exception {
-        return null;
     }
 }

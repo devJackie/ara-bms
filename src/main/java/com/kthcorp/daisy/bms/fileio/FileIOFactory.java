@@ -35,8 +35,11 @@ public class FileIOFactory {
             log.info("Create AmoebaFileIO");
             return new AmoebaFileIO(config, bmsMetaProperties);
         } else if ("ATS".equalsIgnoreCase(indexType)) {
-            log.info("Create NoneFileIO");
+            log.info("Create AtsFileIO");
             return new AtsFileIO(config, bmsMetaProperties);
+        } else if ("MSS".equalsIgnoreCase(indexType)) {
+            log.info("Create MssFileIO");
+            return new MssFileIO(config, bmsMetaProperties);
         } else if ("none".equalsIgnoreCase(indexType)) {
             log.info("Create NoneFileIO");
             return new NoneFileIO(config, bmsMetaProperties);

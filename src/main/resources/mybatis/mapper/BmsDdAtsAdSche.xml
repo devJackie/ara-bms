@@ -10,7 +10,8 @@
         <!--)-->
     <!--</insert>-->
 
-    <insert id="insertAtsAdSche" parameterType="java.util.HashMap">
+    <insert id="insertAtsAdSche" parameterType="java.util.LinkedHashMap">
+        /** insertAtsAdSche **/
         <!--<foreach item="item" collection="mapList" index="index" open="INSERT ALL " separator=" " close="">-->
         insert into bms_dd_ats_ad_sche (
             yyyymmdd, ch_nm, brdcst_dt, ch_id, otv_ch_no, ots_ch_no, hhmmss, ad_order, ad_id, ad_nm, ad_length, apln_form_id, reg_dt
@@ -32,7 +33,6 @@
                 now()
             )
         </foreach>
-
     </insert>
 
 </mapper>

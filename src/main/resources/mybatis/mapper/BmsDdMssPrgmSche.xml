@@ -1,0 +1,31 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kthcorp.daisy.bms.repository.BmsDdMssPrgmScheMapper">
+
+    <!--<insert id="insertMssPrgmSche" parameterType="com.kthcorp.daisy.bms.repository.entity.BmsDdMssPrgmSche">-->
+        <!--/** insertMssPrgmSche **/-->
+        <!--insert into bms_dd_mss_prgm_sche (-->
+            <!--yyyymmdd, ch_nm, brdcst_dt, ch_id, otv_ch_no, ots_ch_no, hhmmss, ad_order, ad_id, ad_nm, ad_length, apln_form_id, reg_dt-->
+        <!--) values (-->
+            <!--#{yyyymmdd}, #{ch_nm}, #{brdcst_dt}, #{ch_id}, #{otv_ch_no}, #{ots_ch_no}, #{hhmmss}, #{ad_order}, #{ad_id}, #{ad_nm}, #{ad_length}, #{apln_form_id}, now()-->
+        <!--)-->
+    <!--</insert>-->
+
+    <insert id="insertMssPrgmSche" parameterType="java.util.LinkedHashMap">
+        /** insertMssPrgmSche **/
+        insert into bms_dd_mss_prgm_sche (
+            yyyymmdd, ch_no, prgm_id, prgm_nm, screen_gubn, prgm_start_dt, prgm_end_dt
+        ) values
+        <foreach collection="mapList" item="item" open="" separator="," close="" >
+            (
+                #{item.yyyymmdd},
+                #{item.ch_no},
+                #{item.prgm_id},
+                #{item.prgm_nm},
+                #{item.screen_gubn},
+                #{item.prgm_start_dt},
+                #{item.prgm_end_dt}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

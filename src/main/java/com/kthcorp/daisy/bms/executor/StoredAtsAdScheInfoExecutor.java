@@ -2,7 +2,6 @@ package com.kthcorp.daisy.bms.executor;
 
 import com.kthcorp.daisy.bms.fao.RemoteFileInfo;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
-import com.kthcorp.daisy.bms.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 
@@ -40,23 +39,8 @@ public class StoredAtsAdScheInfoExecutor extends BaseExecutor {
         }
 
         // .FIN 파일이 있는지 체크
-        List<RemoteFileInfo> resultFiles = atsFiles.stream().filter(f ->
+        List<RemoteFileInfo> resultRemoteFiles = atsFiles.stream().filter(f ->
                 finFiles.contains(f.getFileName().substring(0, f.getFileName().indexOf(".")))).collect(Collectors.toList());
-
-        // 현재날짜 설정
-        String currentDay = DateUtil.getCurrentDay();
-
-        List<RemoteFileInfo> resultRemoteFiles = resultFiles.stream().map(x -> {
-            RemoteFileInfo remoteFileInfo = new RemoteFileInfo();
-            remoteFileInfo.setYyyyMMdd(currentDay);
-            remoteFileInfo.setFileName(x.getFileName());
-            remoteFileInfo.setModifyTime(x.getModifyTime());
-            remoteFileInfo.setSize(x.getSize());
-            remoteFileInfo.setPath(x.getPath());
-            remoteFileInfo.setAbsolutePath(x.getAbsolutePath());
-            remoteFileInfo.setParent(x.getParent());
-            return remoteFileInfo;
-        }).collect(Collectors.toList());
 
         executeFileInfos = resultRemoteFiles.stream().map(x -> {
             ExecuteFileInfo executeFileInfo = new ExecuteFileInfo();
@@ -69,8 +53,8 @@ public class StoredAtsAdScheInfoExecutor extends BaseExecutor {
         log.info("executeFileInfos : {}", executeFileInfos);
         log.info("1-{}. Remote file`s index checked. ", logIdx++);
 
-    return executeFileInfos;
-}
+        return executeFileInfos;
+    }
 
     @Override
     void setIndex(ExecuteFileInfo executeFileInfo) throws Exception {

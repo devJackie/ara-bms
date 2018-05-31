@@ -13,5 +13,4 @@ public interface SourceHandler extends Closeable, AutoCloseable {
     boolean get(String remote, String local) throws Exception;
 
     boolean send(String local, String remote) throws Exception;
-
 }

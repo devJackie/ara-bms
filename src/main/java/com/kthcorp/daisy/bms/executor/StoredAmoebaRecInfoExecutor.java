@@ -110,19 +110,19 @@ public class StoredAmoebaRecInfoExecutor extends BaseExecutor {
             log.debug("resultRemoteRecFiles: {}", x);
         });
 
-    executeFileInfos = resultRemoteFiles.stream().map(x -> {
-        ExecuteFileInfo executeFileInfo = new ExecuteFileInfo();
-        executeFileInfo.setSourceFile(x);
-        executeFileInfo.setFinished(indexStr.contains(x.getAbsolutePath()));
-        executeFileInfo.setSuccess(indexStr.contains(x.getAbsolutePath()));
-        return executeFileInfo;
-    }).collect(Collectors.toList());
+        executeFileInfos = resultRemoteFiles.stream().map(x -> {
+            ExecuteFileInfo executeFileInfo = new ExecuteFileInfo();
+            executeFileInfo.setSourceFile(x);
+            executeFileInfo.setFinished(indexStr.contains(x.getAbsolutePath()));
+            executeFileInfo.setSuccess(indexStr.contains(x.getAbsolutePath()));
+            return executeFileInfo;
+        }).collect(Collectors.toList());
 
         log.info("executeFileInfos : {}", executeFileInfos);
         log.info("1-{}. Remote file`s index checked. ", logIdx++);
 
         return executeFileInfos;
-}
+    }
 
     @Override
     void setIndex(ExecuteFileInfo executeFileInfo) throws Exception {

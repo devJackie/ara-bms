@@ -52,7 +52,7 @@ class BmsDatabaseConfig extends DatabaseConfig {
     @Override
     protected void initialize(org.apache.tomcat.jdbc.pool.DataSource dataSource) {
 //        PathMatchingResourcePatternResolver pathResolver = new PathMatchingResourcePatternResolver();
-////        Resource schema = pathResolver.getResource("classpath:script/bms-user-schema.sql");
+////        Resource schema = pathResolver.getResource("classpath:script/bms-schema.sql");
 //        Resource data = pathResolver.getResource("classpath:script/bms-user-data.sql");
 ////        DatabasePopulator databasePopulator = new ResourceDatabasePopulator(schema, data);
 //        DatabasePopulator databasePopulator = new ResourceDatabasePopulator(data);

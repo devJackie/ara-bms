@@ -41,6 +41,9 @@ public class ExecuteService {
     BmsDdAtsAdScheMapper bmsDdAtsAdScheMapper;
 
     @Autowired
+    BmsDdMssPrgmScheMapper bmsDdMssPrgmScheMapper;
+
+    @Autowired
     FileUtil fileUtil;
 
     Map<String, Object> config = new HashMap<>();
@@ -126,28 +129,70 @@ public class ExecuteService {
 
 
         // bulk insert
-        Map<String, Object> param = new HashMap<>();
+        Map<String, Object> param = new LinkedHashMap<>();
         List<Map<String, Object>> list = new ArrayList<>();
-        log.debug("list : {}", mapList.size());
+
+        int totalCount = 0;
         for (int i = 0; i < mapList.size(); i++) {
             Map<String, Object> tmpParam = mapList.get(i);
             list.add(tmpParam);
-            if (i > 0 && i % 2000 == 0) { // 2000개씩 bulk insert
+            if (i > 0 && list.size() % 2000 == 0) { // 2000개씩 bulk insert
                 param.put("mapList", list);
                 bmsDdAtsAdScheMapper.insertAtsAdSche(param);
+                totalCount += list.size();
                 list.clear();
-            } else if (mapList.size() - i < 2000 && i == mapList.size() - 1) { // 2000개 미만 bulk insert
+            } else if (mapList.size() - totalCount < 2000 && i == (mapList.size() - 1)) { // 2000개 미만 bulk insert
                 param.put("mapList", list);
                 bmsDdAtsAdScheMapper.insertAtsAdSche(param);
+                totalCount += list.size();
                 list.clear();
             }
         }
+        log.debug("mapList size : {}, ad epg total count : {}", mapList.size(), totalCount);
 
         executeFileInfo.setSuccess(true);
     }
 
     public void executeMssPrgmScheCollectTask(ExecuteFileInfo executeFileInfo, SinkHandler sinkHandler, List<ParserBase> parsers, FileIO fileIO) throws Exception {
         log.debug("executeMssPrgmScheCollectTask -> executeFileInfo: {}", executeFileInfo);
+
+        List<Map<String, Object>> mapList = new ArrayList<>();
+
+        if (parsers != null) {
+            for (ParserBase parserBase : parsers) {
+
+                parserBase.addHeaders(executeFileInfo.getHeader());
+                File parsedFile = parserBase.process(executeFileInfo.getDownloadFile().getAbsolutePath());
+                log.info("parsedFile: {}", parsedFile);
+                String sinkPath = sinkHandler.send(parserBase.getHeader(), parsedFile);
+
+                mapList = fileIO.readMssPrgmScheList(parsedFile);
+
+                executeFileInfo.putExecuteResult(parsedFile, sinkPath);
+            }
+        }
+
+        // bulk insert
+        Map<String, Object> param = new LinkedHashMap<>();
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        int totalCount = 0;
+        for (int i = 0; i < mapList.size(); i++) {
+            Map<String, Object> tmpParam = mapList.get(i);
+            list.add(tmpParam);
+            if (i > 0 && list.size() % 2000 == 0) { // 2000개씩 bulk insert
+                param.put("mapList", list);
+                bmsDdMssPrgmScheMapper.insertMssPrgmSche(param);
+                totalCount += list.size();
+                list.clear();
+            } else if (mapList.size() - totalCount < 2000 && i == (mapList.size() - 1)) { // 2000개 미만 bulk insert
+                param.put("mapList", list);
+                bmsDdMssPrgmScheMapper.insertMssPrgmSche(param);
+                totalCount += list.size();
+                list.clear();
+            }
+        }
+        log.debug("mapList size : {}, prgm epg total count : {}", mapList.size(), totalCount);
 
         executeFileInfo.setSuccess(true);
     }
