@@ -80,6 +80,12 @@ public class ZkClient {
         }
     }
 
+    public void creatingIfNeeded(String path) throws Exception {
+        if (client.checkExists().forPath(path) == null) {
+            client.create().creatingParentsIfNeeded().forPath(path, "".getBytes());
+        }
+    }
+
     public String getData(String path) throws Exception {
         if (client.checkExists().forPath(path) != null) {
             return new String(client.getData().forPath(path));

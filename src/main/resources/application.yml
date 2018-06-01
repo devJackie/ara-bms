@@ -32,6 +32,10 @@ bms-meta:
     res-sche-path: /Users/devjackie/ara-bms/bms/sche/
     res-sche-filename-1: bms_sche_2018042802_24.dat
     res-sche-filename-2: bms_sche_2018042900_02.dat
+  zookeeper-info:
+#    mss-uri: /index/BMS_DD_MSS_PRGM_SCHE
+    mss-prgm-sche-step1-uri: /mss/PRGM_SCHE/STEP1
+    mss-prgm-sche-step2-uri: /mss/PRGM_SCHE/STEP2
 
 # sample test
 name: prod-YAML

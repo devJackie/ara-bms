@@ -4,8 +4,8 @@ package com.kthcorp.daisy.bms.repository;
 import com.kthcorp.daisy.bms.repository.entity.BmsDdAdTmpResSche;
 import com.kthcorp.daisy.bms.repository.support.BmsSchema;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by devjackie on 2018. 5. 13..
@@ -13,6 +13,9 @@ import java.util.List;
 @BmsSchema
 public interface BmsDdAdTmpResScheMapper {
 
-    List<BmsDdAdTmpResSche> selAdNprgmEpgForMerge(HashMap<String, Object> param);
-    void insertAdTmpResSche(BmsDdAdTmpResSche bmsDdAdTmpResSche);
+    Map<String, Object> selPrgmScheNextDay(Map<String, Object> param);
+    List<BmsDdAdTmpResSche> selAdNprgmScheMergeForToDay(Map<String, Object> param);
+    List<BmsDdAdTmpResSche> selAdNprgmScheMergeForNextDay(Map<String, Object> param);
+    void insertAdTmpResScheForToDay(BmsDdAdTmpResSche bmsDdAdTmpResSche);
+    void insertAdTmpResScheForNextDay(BmsDdAdTmpResSche bmsDdAdTmpResSche);
 }

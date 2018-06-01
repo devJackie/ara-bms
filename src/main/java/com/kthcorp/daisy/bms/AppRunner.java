@@ -3,6 +3,7 @@ package com.kthcorp.daisy.bms;
 import com.kthcorp.daisy.bms.executor.CommonExecutor;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -65,13 +66,17 @@ public class AppRunner implements ApplicationRunner {
             }
 
             // collector
-            ((List<Map<String, String>>) executeGroupConfig.get(LINK_SERVER)).forEach(x -> x.forEach(this::executeProcess));
-
-            // business work flow
-            phase2 = executor.executeWorkFlow();
-            // Wait until they are all done
-            CompletableFuture.allOf(phase1, phase2).join();
-            log.info("--> {}, {}", phase1.get(), phase2.get());
+            if (((List<Map<String, String>>) executeGroupConfig.get(LINK_SERVER)) != null &&
+                    ((List<Map<String, String>>) executeGroupConfig.get(LINK_SERVER)).size() > 0) {
+                ((List<Map<String, String>>) executeGroupConfig.get(LINK_SERVER)).forEach(x -> x.forEach(this::executeProcess));
+                // business work flow
+                phase2 = executor.executeWorkFlow();
+                // Wait until they are all done
+                CompletableFuture.allOf(phase1, phase2).join();
+                log.info("--> {}, {}", phase1.get(), phase2.get());
+            } else {
+                log.info("linkServer -> executeGroup is not found, process termination");
+            }
 
             if (mutex != null) {
                 String groupMutexUri = (String) mutex.get("uri");
