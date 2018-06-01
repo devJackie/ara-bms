@@ -204,8 +204,6 @@ public class ExecuteService {
     public void executeMakeAdScheTask() throws Exception {
 
         try {
-
-
             Map<String, Object> map = new LinkedHashMap<>();
             //        map.put("yyyymmdd", DateUtil.getCurrentDay());
             //        map.put("from_yyyymmdd", DateUtil.getCurrentDay());
@@ -319,15 +317,15 @@ public class ExecuteService {
                 }
             }
 
-            //        // 7. 6번 데이터 파일 생성(최종 편성표)
-            //        Map<String, Object> args = new LinkedHashMap<>();
-            //        args.put("list", resScheList);
-            //        args.put("bmsMetaProperties", bmsMetaProperties);
-            //        Map<String, Object> result = fileUtil.writeFileAdResSche(args);
-            //
-            //        // 8. .FIN 파일 생성해줘야함
-            //
-            //        log.debug("filePath: {}", result.get("filePath"));
+            // 7. 6번 데이터 파일 생성(최종 편성표)
+//            Map<String, Object> args = new LinkedHashMap<>();
+//            args.put("list", resScheList);
+//            args.put("bmsMetaProperties", bmsMetaProperties);
+//            Map<String, Object> result = fileUtil.writeFileAdResSche(args);
+//
+//            // 8. .FIN 파일 생성해줘야함
+//
+//            log.debug("filePath: {}", result.get("filePath"));
         } catch (Exception e) {
             // step1, step2 zookeeper index 삭제
 
