@@ -368,6 +368,7 @@ public class ExecuteService {
 //            mssIndexStoreStep1.deleteForDate("20180428" + "/" + "1", "02-24");
 //            mssIndexStoreStep1.deleteForDate("20180429" + "/" + "1", "00-02");
 //            mssIndexStoreStep2.deleteForDate("20180429" + "/" + "1", "00-02");
+            // rollback
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw e;
         }
