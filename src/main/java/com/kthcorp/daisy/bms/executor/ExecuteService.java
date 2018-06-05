@@ -7,6 +7,7 @@ import com.kthcorp.daisy.bms.parser.ParserBase;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.repository.*;
 import com.kthcorp.daisy.bms.repository.entity.*;
+import com.kthcorp.daisy.bms.util.CollectorUtil;
 import com.kthcorp.daisy.bms.util.DateUtil;
 import com.kthcorp.daisy.bms.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -233,6 +234,12 @@ public class ExecuteService {
         IndexStore mssIndexStoreStep1 = context.getBean(IndexStore.class, config);
         IndexStore mssIndexStoreStep2 = null;
 
+        // sink handler 생성 및 최종 편성표 파일, fin 파일 sftp 전송
+        Yaml yaml = new Yaml();
+        Map rootConfig = yaml.load(new ClassPathResource((String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-yaml-path")).getInputStream());
+        SinkHandler sinkHandler = context.getBean(SinkHandler.class, rootConfig.get(SINK_CONFIG));
+        Map<String, String> sinkConfig = (Map<String, String>) rootConfig.get(SINK_CONFIG);
+
         try {
             // mss 의 익일 편성표가 있을 때 생성
             Map<String, Object> latelyMap = bmsDdAdTmpResScheMapper.selPrgmScheNextDay(map);
@@ -304,12 +311,6 @@ public class ExecuteService {
             // 7. 6번 데이터 파일 생성(최종 편성표)
             Map<String, Object> args = new LinkedHashMap<>();
 
-            // sink handler 생성 및 최종 편성표 파일, fin 파일 sftp 전송
-            Yaml yaml = new Yaml();
-            Map rootConfig = yaml.load(new ClassPathResource((String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-yaml-path")).getInputStream());
-            SinkHandler sinkHandler = context.getBean(SinkHandler.class, rootConfig.get(SINK_CONFIG));
-            Map<String, String> sinkConfig = (Map<String, String>) rootConfig.get(SINK_CONFIG);
-
             if (ToDayExistStep1.contains("02-24") && !ToDayExistStep2.contains("02-24")) { // step1, step2 zookeeper index 존재 유무 체크
                 resScheList = bmsDdAdResScheMapper.selTmpScheNadminScheMergeForToDay(map);
 
@@ -371,8 +372,9 @@ public class ExecuteService {
             // rollback
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw e;
+        } finally {
+            CollectorUtil.quietlyClose(sinkHandler);
         }
-
         return resMap;
     }
 
