@@ -1,3 +1,4 @@
+# http://smasue.github.io/spring-yml-datasources
 spring:
   profiles.active: local
 
