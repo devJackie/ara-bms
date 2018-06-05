@@ -1,0 +1,7 @@
+sinkConfig:
+  type: sftp
+  server: localhost
+  port: 22
+  id: devjackie
+  password: Tjddydwozl12
+  path: /Users/devjackie/ara-bms/bms_result/sche/
