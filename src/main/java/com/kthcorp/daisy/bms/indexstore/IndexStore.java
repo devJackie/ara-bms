@@ -20,4 +20,6 @@ public interface IndexStore {
     void setIndex(List<String> indexes) throws Exception;
 
     void setIndexForDate(List<String> indexes, String date, String index) throws Exception;
+
+    void deleteForDate(String index, String subIndex) throws Exception;
 }

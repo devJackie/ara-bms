@@ -1,8 +1,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kthcorp.daisy.bms.repository.BmsDdAdTmpResScheMapper">
 
-    <insert id="insertAdTmpResScheForToDay" parameterType="BmsDdAdTmpResSche">
-    /** insertAdTmpResScheForToDay **/
+    <insert id="insertAdTmpResSche" parameterType="BmsDdAdTmpResSche">
+    /** insertAdTmpResSche **/
         insert into bms_dd_ad_tmp_res_sche (
             yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, ori_start_dt, start_dt, end_dt, prgm_id, prgm_start_dt, prgm_end_dt
         ) values (
@@ -32,15 +32,6 @@
             <!--)-->
         <!--</foreach>-->
 
-    </insert>
-
-    <insert id="insertAdTmpResScheForNextDay" parameterType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdTmpResSche">
-    /** insertAdTmpResScheForNextDay **/
-        insert into bms_dd_ad_tmp_res_sche (
-            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, ori_start_dt, start_dt, end_dt, prgm_id, prgm_start_dt, prgm_end_dt
-        ) values (
-            #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{ori_start_dt}, #{start_dt}, #{end_dt}, #{prgm_id}, #{prgm_start_dt}, #{prgm_end_dt}
-        )
     </insert>
 
     <select id="selPrgmScheNextDay" parameterType="java.util.LinkedHashMap" resultType="java.util.LinkedHashMap">
@@ -106,7 +97,7 @@
                         where   brdcst_dt = #{brdcst_dt}
                         and     otv_ch_no is not null
                         and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
-                        and     ad_length not in ('60', '120')
+                        and     ad_length not in ('120') -- 120초 인포모셜 광고 제외
                         and     otv_ch_no in
                         (
                             select
@@ -136,7 +127,7 @@
                         where   brdcst_dt = #{brdcst_dt}
                         and     ots_ch_no is not null
                         and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
-                        and     ad_length not in ('60', '120')
+                        and     ad_length not in ('120') -- 120초 인포모셜 광고 제외
                         and     ots_ch_no in
                         (
                             select
@@ -235,7 +226,7 @@
                         where   brdcst_dt = #{brdcst_dt}
                         and     otv_ch_no is not null
                         and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
-                        and     ad_length not in ('60', '120')
+                        and     ad_length not in ('120') -- 120초 인포모셜 광고 제외
                         and     otv_ch_no in
                         (
                             select
@@ -265,7 +256,7 @@
                         where   brdcst_dt = #{brdcst_dt}
                         and     ots_ch_no is not null
                         and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
-                        and     ad_length not in ('60', '120')
+                        and     ad_length not in ('120') -- 120초 인포모셜 광고 제외
                         and     ots_ch_no in
                         (
                             select

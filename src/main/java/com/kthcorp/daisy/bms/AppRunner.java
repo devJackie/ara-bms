@@ -66,7 +66,7 @@ public class AppRunner implements ApplicationRunner {
             }
 
             // collector
-            if (((List<Map<String, String>>) executeGroupConfig.get(LINK_SERVER)) != null &&
+            if ((executeGroupConfig.get(LINK_SERVER)) != null &&
                     ((List<Map<String, String>>) executeGroupConfig.get(LINK_SERVER)).size() > 0) {
                 ((List<Map<String, String>>) executeGroupConfig.get(LINK_SERVER)).forEach(x -> x.forEach(this::executeProcess));
                 // business work flow
@@ -97,7 +97,7 @@ public class AppRunner implements ApplicationRunner {
             Yaml yaml = new Yaml();
             log.debug("profileName: {}", profileName);
             log.debug("ymlPath: {}", ymlPath);
-            Map config = (Map) yaml.load(new ClassPathResource(ymlPath).getInputStream());
+            Map config = yaml.load(new ClassPathResource(ymlPath).getInputStream());
             config.put("executeGroup", executeGroup);
             config.put("executeName", profileName);
             config.put("profileName", profileName);

@@ -24,6 +24,7 @@ public class BmsDdAdResSche {
     private String brdcst_dt;
     private String start_dt;
     private String end_dt;
+    private String emgy_yn;
 
     public BmsDdAdResSche() {}
 }

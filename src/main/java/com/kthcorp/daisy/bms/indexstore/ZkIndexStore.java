@@ -154,4 +154,11 @@ public class ZkIndexStore implements IndexStore {
             subIndexes.clear();
         }
     }
+
+    @Override
+    public void deleteForDate(String index, String subIndex) throws Exception {
+//        zkClient.delete(indexPath + "/" + index);
+        List<String> subIndexes = new ArrayList<>();
+        zkClient.setData(indexPath + "/" + index, CollectorUtil.createJsonArray(subIndexes));
+    }
 }

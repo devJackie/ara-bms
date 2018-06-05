@@ -16,6 +16,5 @@ public interface BmsDdAdTmpResScheMapper {
     Map<String, Object> selPrgmScheNextDay(Map<String, Object> param);
     List<BmsDdAdTmpResSche> selAdNprgmScheMergeForToDay(Map<String, Object> param);
     List<BmsDdAdTmpResSche> selAdNprgmScheMergeForNextDay(Map<String, Object> param);
-    void insertAdTmpResScheForToDay(BmsDdAdTmpResSche bmsDdAdTmpResSche);
-    void insertAdTmpResScheForNextDay(BmsDdAdTmpResSche bmsDdAdTmpResSche);
+    void insertAdTmpResSche(BmsDdAdTmpResSche bmsDdAdTmpResSche);
 }

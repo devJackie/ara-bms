@@ -27,7 +27,7 @@ public class FileUtil {
         bmsMetaProperties = (BmsMetaProperties) param.get("bmsMetaProperties");
 
         BufferedWriter bw = null;
-        FileWriter fw = null;
+        BufferedWriter fbw = null;
         Map<String,Object> result = new LinkedHashMap<>();
         File file = new File((String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-path"));
         try {
@@ -44,7 +44,14 @@ public class FileUtil {
 
             // /Users/devjackie/ara-bms/bms/sche/2018042802_24.dat
             // /Users/devjackie/ara-bms/bms/sche/2018042900_02.dat
-            file = new File((String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-path") + bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-1"));
+
+            String scheGubnFileName = null;
+            if ("1".equals(param.get("sche_gubn"))) {
+                scheGubnFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-1");
+            } else if ("2".equals(param.get("sche_gubn"))) {
+                scheGubnFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-2");
+            }
+            file = new File(bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-path") + scheGubnFileName);
             if (file.exists()) { // 파일이 존재하면
                 log.info("file already exists, {}", file.getAbsolutePath());
                 result.put("file", file);
@@ -79,7 +86,25 @@ public class FileUtil {
                         bw.newLine();
                     }
                 }
-                result.put("filePath", file.getAbsoluteFile().getAbsolutePath());
+                result.put("filePath", file);
+
+                // .FIN 파일 생성
+                if (file.exists()) {
+
+                    String scheGubnFinFileName = null;
+                    if ("1".equals(param.get("sche_gubn"))) {
+                        scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-1");
+                    } else if ("2".equals(param.get("sche_gubn"))) {
+                        scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-2");
+                    }
+
+                    File finFile = new File(bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-path") + scheGubnFinFileName);
+
+                    fbw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-path") + scheGubnFinFileName),"UTF-8"));
+                    fbw.write("");
+
+                    result.put("finFilePath", finFile);
+                }
             }
         } catch (Exception e) {
             if(!file.exists()) {
@@ -96,9 +121,9 @@ public class FileUtil {
                     throw e;
                 }
             }
-            if (fw != null) {
+            if (fbw != null) {
                 try {
-                    CollectorUtil.quietlyClose(fw);
+                    CollectorUtil.quietlyClose(fbw);
                 } catch (Exception e) {
                     throw e;
                 }
