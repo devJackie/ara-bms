@@ -23,7 +23,7 @@ sourceConfig:
   pathAttributes:
   - type: date
     datePattern: yyyyMMdd
-    scanRange: -0d
+    scanRange: -40d
   filePattern: META_DD_ABMS_PRGM_SCHE.DAT$
 
 fileIOConfig:

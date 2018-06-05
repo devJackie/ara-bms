@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
@@ -205,8 +206,10 @@ public class ExecuteService {
         executeFileInfo.setSuccess(true);
     }
 
-    public void executeMakeAdScheTask() throws Exception {
+    public Map<String, Object> executeMakeAdScheTask() throws Exception {
 
+        Map<String, Object> resMap = new HashMap<>();
+        resMap.put("result", false);
 
         Map<String, Object> map = new LinkedHashMap<>();
 //        map.put("yyyymmdd", DateUtil.getCurrentDay());
@@ -359,13 +362,17 @@ public class ExecuteService {
                 log.debug("sinkFilePath: {}", sinkFilePath);
                 log.debug("sinkFinFilePath: {}", sinkFinFilePath);
             }
+            resMap.put("result", true);
         } catch (Exception e) {
             // step1, step2 zookeeper index 삭제
 //            mssIndexStoreStep1.deleteForDate("20180428" + "/" + "1", "02-24");
 //            mssIndexStoreStep1.deleteForDate("20180429" + "/" + "1", "00-02");
 //            mssIndexStoreStep2.deleteForDate("20180429" + "/" + "1", "00-02");
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw e;
         }
+
+        return resMap;
     }
 
     public void executeMediaRecFileCollectTask(ExecuteFileInfo executeFileInfo, SinkHandler sinkHandler, List<ParserBase> parsers, FileIO fileIO) throws Exception {

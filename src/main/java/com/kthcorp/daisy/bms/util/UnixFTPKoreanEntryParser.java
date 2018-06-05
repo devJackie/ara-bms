@@ -1,10 +1,9 @@
 package com.kthcorp.daisy.bms.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.parser.ConfigurableFTPFileEntryParserImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.util.List;
@@ -13,9 +12,8 @@ import java.util.ListIterator;
 /**
  * Created by devjackie on 2018. 5. 25..
  */
+@Slf4j
 public class UnixFTPKoreanEntryParser extends ConfigurableFTPFileEntryParserImpl {
-
-    Logger logger = LoggerFactory.getLogger(UnixFTPKoreanEntryParser.class);
 
     private static String REGEX ="([bcdelfmpSs-])" // file type
             +"(((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-]))((r|-)(w|-)([xsStTL-])))\\+?" // permissions

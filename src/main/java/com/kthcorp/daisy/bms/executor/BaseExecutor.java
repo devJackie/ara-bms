@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -108,9 +109,14 @@ public abstract class BaseExecutor implements CommonExecutor {
         return result;
     }
 
+    @Transactional
     @Async("threadPoolTaskExecutor")
-    public CompletableFuture<String> executeCollect() {
-        String result = null;
+    public CompletableFuture<Map<String, Object>> executeCollect() {
+
+        // 작업 처리 결과 (true 성공, false 실패)
+        Map<String, Object> resMap = new HashMap<>();
+        resMap.put("result", false);
+
         try {
             log.debug("start {}", "executeCollect");
 
@@ -120,6 +126,10 @@ public abstract class BaseExecutor implements CommonExecutor {
 
             long totalTaskCount = executeFileInfos.stream().filter(x -> !x.isFinished()).count();
             log.info("Task count -> {}", totalTaskCount);
+            // 수집할 대상이 없으면 true
+            if (totalTaskCount == 0) {
+                resMap.put("result", true);
+            }
             for (ExecuteFileInfo executeFileInfo : executeFileInfos) {
 
                 if (!executeFileInfo.isFinished()) {
@@ -154,7 +164,10 @@ public abstract class BaseExecutor implements CommonExecutor {
                             // 4. mss 프로그램 epg 수집, 모듈 개발
                             executeService.executeMssPrgmScheCollectTask(executeFileInfo, sinkHandler, parsers, fileIO);
                         }
+                        // 성공일 때만 true
+                        resMap.put("result", true);
                     } catch (Exception e) {
+                        TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                         throw e;
                     } finally {
                         executeFileInfo.setFinished(true);
@@ -166,36 +179,33 @@ public abstract class BaseExecutor implements CommonExecutor {
                     log.debug("{} is not new file", executeFileInfo.getSourceFile());
                 }
             }
-
-            // Artificial delay of 1s for demonstration purposes
-            Thread.sleep(1000L);
         } catch (Exception e) {
             log.error("", e);
         } finally {
             CollectorUtil.quietlyClose(sourceHandler);
             CollectorUtil.quietlyClose(sinkHandler);
         }
-        return CompletableFuture.completedFuture(result);
+        return CompletableFuture.completedFuture(resMap);
     }
 
     @Transactional
     @Async("threadPoolTaskExecutor")
-    public CompletableFuture<String> executeWorkFlow() {
-        String result = null;
+    public CompletableFuture<Map<String, Object>> executeWorkFlow() {
+        Map<String, Object> resMap = new HashMap<>();
+        resMap.put("result", false);
+
+        log.debug("start {}", "executeWorkFlow");
+
         try {
-            log.debug("start {}", "executeWorkFlow");
             // 1. 상위 30개 채널 쿼리 get +  선천 광고 익일 epg 테이블 + 녹화파일 테이블 매핑, 녹화파일이 있으면 녹화파일은 제외
             // 1-1. mss 프로그램 epg 테이블 + 4번 선천 광고 익일 epg 테이블 매핑 (검증 필요)
             // (프로그램 종료시간 -15분을 start_dt, 15분후를 end_dt 로 기준 정함, 광고 epg 생성 되게 쿼리 생성 후 epg 데이터 db 저장)
-            executeService.executeMakeAdScheTask();
-
-            // Artificial delay of 1s for demonstration purposes
-            Thread.sleep(1000L);
+            resMap = executeService.executeMakeAdScheTask();
         } catch (Exception e) {
             log.error("", e);
         } finally {
 
         }
-        return CompletableFuture.completedFuture(result);
+        return CompletableFuture.completedFuture(resMap);
     }
 }

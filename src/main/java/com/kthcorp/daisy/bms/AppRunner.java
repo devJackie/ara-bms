@@ -12,6 +12,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -27,8 +28,8 @@ public class AppRunner implements ApplicationRunner {
     private final BmsMetaProperties bmsMetaProperties;
 
     String executeGroup;
-    CompletableFuture<String> phase1 = null;
-    CompletableFuture<String> phase2 = null;
+    CompletableFuture<Map<String, Object>> phase1 = null;
+    CompletableFuture<Map<String, Object>> phase2 = null;
     private CommonExecutor executor = null;
 
     @Autowired
@@ -53,7 +54,7 @@ public class AppRunner implements ApplicationRunner {
             log.info("executeGroup: {}", executeGroup);
 
             Yaml yaml = new Yaml();
-            Map rootConfig = (Map) yaml.load(new ClassPathResource("bms-collector.yml").getInputStream());
+            Map rootConfig = yaml.load(new ClassPathResource("bms-collector.yml").getInputStream());
             Map<String, Object> executeGroupConfig = (Map<String, Object>) rootConfig.get(executeGroup);
 
             Map mutex = (Map) executeGroupConfig.get(MUTEX);
@@ -73,7 +74,7 @@ public class AppRunner implements ApplicationRunner {
                 phase2 = executor.executeWorkFlow();
                 // Wait until they are all done
                 CompletableFuture.allOf(phase1, phase2).join();
-                log.info("--> {}, {}", phase1.get(), phase2.get());
+                log.info("Done --> phase1: {}, phase2: {}", phase1.get(), phase2.get());
             } else {
                 log.info("linkServer -> executeGroup is not found, process termination");
             }

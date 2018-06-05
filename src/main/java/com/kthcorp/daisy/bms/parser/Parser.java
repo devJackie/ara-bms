@@ -1,6 +1,5 @@
 package com.kthcorp.daisy.bms.parser;
 
-
 import java.io.File;
 
 /**

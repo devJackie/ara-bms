@@ -1,6 +1,5 @@
-package com.kthcorp.daisy.bms.parser.cvs;
+package com.kthcorp.daisy.bms.parser;
 
-import com.kthcorp.daisy.bms.parser.ParserBase;
 import com.kthcorp.daisy.bms.util.CollectorUtil;
 import lombok.extern.slf4j.Slf4j;
 

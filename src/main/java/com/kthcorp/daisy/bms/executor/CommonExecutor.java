@@ -1,5 +1,6 @@
 package com.kthcorp.daisy.bms.executor;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -7,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface CommonExecutor {
 
-    CompletableFuture<String> executeCollect();
+    CompletableFuture<Map<String, Object>> executeCollect();
 
-    CompletableFuture<String> executeWorkFlow();
+    CompletableFuture<Map<String, Object>> executeWorkFlow();
 }

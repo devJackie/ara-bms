@@ -1,11 +1,6 @@
 package com.kthcorp.daisy.bms.parser;
 
-import com.kthcorp.daisy.bms.parser.cvs.AsciiCodeLineParser;
-import com.kthcorp.daisy.bms.parser.cvs.CvsParser;
-import com.kthcorp.daisy.bms.parser.cvs.TemplateLineParser;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -28,11 +23,11 @@ public class ParserFactory {
 
         log.debug("Parser Config: {}", config);
 
-        ParserBase parserBase;
+        ParserBase parserBase = null;
         String type = (String) config.get(TYPE);
 
         if ("DAT".equalsIgnoreCase(type) || "TXT".equalsIgnoreCase(type) || "CSV".equalsIgnoreCase(type)) {
-            parserBase = new CvsParser(config);
+            parserBase = new CsvParser(config);
         } else if ("NONE".equalsIgnoreCase(type) || "BYPASS".equalsIgnoreCase(type)) {
             parserBase = new ByPassParser(config);
         } else if ("BYPASS_MAKE_FIN".equalsIgnoreCase(type)) {

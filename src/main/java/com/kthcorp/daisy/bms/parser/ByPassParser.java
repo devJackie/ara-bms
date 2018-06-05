@@ -20,5 +20,4 @@ public class ByPassParser extends ParserBase {
     public File process(String sourceFile) throws Exception {
         return new File(sourceFile);
     }
-
 }

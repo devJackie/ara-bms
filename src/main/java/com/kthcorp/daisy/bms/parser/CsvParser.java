@@ -1,9 +1,7 @@
-package com.kthcorp.daisy.bms.parser.cvs;
+package com.kthcorp.daisy.bms.parser;
 
-import com.kthcorp.daisy.bms.parser.ParserBase;
 import com.kthcorp.daisy.bms.util.CollectorUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
 import java.util.Map;
@@ -11,14 +9,14 @@ import java.util.Map;
 /**
  * Created by devjackie on 2018. 5. 28..
  */
-public class CvsParser extends ParserBase {
+@Slf4j
+public class CsvParser extends ParserBase {
 
     private static final String ENCODING = "encoding";
     private String delim = null;
-    private Logger logger = LoggerFactory.getLogger(CvsParser.class);
     private String textEncoding;
 
-    public CvsParser(Map<String, Object> config) {
+    public CsvParser(Map<String, Object> config) {
         super(config);
 
         String encoding = (String) config.get(ENCODING);
@@ -28,7 +26,7 @@ public class CvsParser extends ParserBase {
         }
         this.delim = delim;
         this.textEncoding = encoding;
-        logger.info("Create csv parser");
+        log.info("Create csv parser");
     }
 
     @Override
@@ -41,7 +39,7 @@ public class CvsParser extends ParserBase {
 
         File target = new File(sourceFile.getParent() + "/" + outputFilename);
 
-        logger.debug("CvsParser. source : {}, target : {}", sourceFile, target);
+        log.debug("CvsParser. source : {}, target : {}", sourceFile, target);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(sourceFile), textEncoding));
         FileWriter fw = new FileWriter(target);

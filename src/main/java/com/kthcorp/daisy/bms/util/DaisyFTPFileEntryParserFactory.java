@@ -1,20 +1,18 @@
 package com.kthcorp.daisy.bms.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.net.ftp.Configurable;
 import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFileEntryParser;
 import org.apache.commons.net.ftp.parser.DefaultFTPFileEntryParserFactory;
 import org.apache.commons.net.ftp.parser.FTPFileEntryParserFactory;
 import org.apache.commons.net.ftp.parser.ParserInitializationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created by devjackie on 2018. 5. 25..
  */
+@Slf4j
 public class DaisyFTPFileEntryParserFactory implements FTPFileEntryParserFactory {
-
-    private final Logger logger = LoggerFactory.getLogger(DaisyFTPFileEntryParserFactory.class);
 
     private FTPClientConfig config;
 
