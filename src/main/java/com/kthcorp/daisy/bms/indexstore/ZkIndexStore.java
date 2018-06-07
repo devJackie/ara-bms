@@ -156,8 +156,7 @@ public class ZkIndexStore implements IndexStore {
     }
 
     @Override
-    public void deleteForDate(String index, String subIndex) throws Exception {
-//        zkClient.delete(indexPath + "/" + index);
+    public void deleteIndexForDate(String index) throws Exception {
         List<String> subIndexes = new ArrayList<>();
         zkClient.setData(indexPath + "/" + index, CollectorUtil.createJsonArray(subIndexes));
     }

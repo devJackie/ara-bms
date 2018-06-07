@@ -21,5 +21,5 @@ public interface IndexStore {
 
     void setIndexForDate(List<String> indexes, String date, String index) throws Exception;
 
-    void deleteForDate(String index, String subIndex) throws Exception;
+    void deleteIndexForDate(String index) throws Exception;
 }

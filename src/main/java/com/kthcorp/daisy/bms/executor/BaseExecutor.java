@@ -138,6 +138,7 @@ public abstract class BaseExecutor implements CommonExecutor {
                         log.info("Start -> {}", executeFileInfo.getSourceFile().getFileName());
 
                         if (!getSourceFile(executeFileInfo)) {
+                            resMap.put("result", false);
                             throw new Exception("getSourceFile fail");
                         }
 
@@ -167,6 +168,7 @@ public abstract class BaseExecutor implements CommonExecutor {
                         // 성공일 때만 true
                         resMap.put("result", true);
                     } catch (Exception e) {
+                        resMap.put("result", false);
                         // rollback
                         TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                         throw e;
@@ -184,6 +186,7 @@ public abstract class BaseExecutor implements CommonExecutor {
 //            // Artificial delay of 1s for demonstration purposes
 //            Thread.sleep(1000L);
         } catch (Exception e) {
+            resMap.put("result", false);
             log.error("", e);
         } finally {
             CollectorUtil.quietlyClose(sourceHandler);
