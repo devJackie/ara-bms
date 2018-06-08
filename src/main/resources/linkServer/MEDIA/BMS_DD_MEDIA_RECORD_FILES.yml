@@ -25,8 +25,3 @@ parserConfig:
 
 sinkConfig:
   type: none
-#  server: localhost
-#  port: 21
-#  id: devjackie
-#  password: Tjddydwozl12
-#  path: /data_backup/tCommerce/${yyyyMMdd}/moc/contents

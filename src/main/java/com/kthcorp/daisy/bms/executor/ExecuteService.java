@@ -12,6 +12,7 @@ import com.kthcorp.daisy.bms.util.DateUtil;
 import com.kthcorp.daisy.bms.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -243,9 +244,11 @@ public class ExecuteService {
         try {
             // mss 의 익일 편성표가 있을 때 생성
             Map<String, Object> latelyMap = bmsDdAdTmpResScheMapper.selPrgmScheNextDay(map);
+            if (MapUtils.isEmpty(latelyMap)) {
+                latelyMap = new LinkedHashMap<>();
+                latelyMap.put("lately_day", "");
+            }
             log.debug("{}", latelyMap.toString());
-
-            // if 문에 zookeeper index 등록
 
             // 편성표는 두벌 만들어야 함
             // mss 의 익일 편성표가 있는지 체크
@@ -268,11 +271,15 @@ public class ExecuteService {
                 log.info("start /index/mss/STEP1/{}/1", "20180428");
                 if (!ToDayExistStep1.contains("02-24")) { // zookeeper index 존재 유무 체크
                     List<BmsDdAdTmpResSche> tmpResScheList = bmsDdAdTmpResScheMapper.selAdNprgmScheMergeForToDay(map);
-                    tmpResScheList.stream().forEach(x -> bmsDdAdTmpResScheMapper.insertAdTmpResSche(x));
 
-                    // 생성 후 zookeeper 저장, ex) /mss/PRGM_SCHE/STEP1/20180428/02-24
+                    if (tmpResScheList != null && tmpResScheList.size() > 0) {
+                        tmpResScheList.stream().forEach(x -> bmsDdAdTmpResScheMapper.insertAdTmpResSche(x));
+                        // 생성 후 zookeeper 저장, ex) /mss/PRGM_SCHE/STEP1/20180428/02-24
 //                mssIndexStoreStep1.setIndexForDate(ToDayExistStep1, DateUtil.getCurrentDay(), "02-24");
-                    mssIndexStoreStep1.setIndexForDate(ToDayExistStep1, "20180428", "02-24");
+                        mssIndexStoreStep1.setIndexForDate(ToDayExistStep1, "20180428", "02-24");
+                    } else {
+                        log.info("STEP1 tmpResScheList is empty --> 1. not set index zookeeper [02-24], 2. not insert bms_dd_ad_tmp_res_sche");
+                    }
                 }
 
                 // mss 의 익일 편성표가 있을 때 생성, ex) 4월 28일 기준 -> 익일 4월 29일 00시 ~ 02시
@@ -281,15 +288,18 @@ public class ExecuteService {
 //            if (DateUtil.getNextDay().equals(latelyMap.get("lately_day")) && !NextDayExist.contains("00-02")) {
                 if ("20180429".equals(latelyMap.get("lately_day")) && !NextDayExistStep1.contains("00-02")) {
                     List<BmsDdAdTmpResSche> tmpResScheList = bmsDdAdTmpResScheMapper.selAdNprgmScheMergeForNextDay(map);
-                    tmpResScheList.stream().forEach(x -> bmsDdAdTmpResScheMapper.insertAdTmpResSche(x));
-
-                    // 생성 후 zookeeper 저장, ex) /mss/PRGM_SCHE/STEP1/20180429/00-02
+                    if (tmpResScheList != null && tmpResScheList.size() > 0) {
+                        tmpResScheList.stream().forEach(x -> bmsDdAdTmpResScheMapper.insertAdTmpResSche(x));
+                        // 생성 후 zookeeper 저장, ex) /mss/PRGM_SCHE/STEP1/20180429/00-02
 //                mssIndexStoreStep1.setIndexForDate(NextDayExistStep1, DateUtil.getNextDay(), "00-02");
-                    mssIndexStoreStep1.setIndexForDate(NextDayExistStep1, "20180429", "00-02");
+                        mssIndexStoreStep1.setIndexForDate(NextDayExistStep1, "20180429", "00-02");
+                    } else {
+                        log.info("STEP1 tmpResScheList is empty --> 1. not set index zookeeper [00-02], 2. not insert bms_dd_ad_tmp_res_sche");
+                    }
                 }
                 resMap.put("result", true);
             } catch (Exception e) {
-                // step1 zookeeper index 삭제
+                // step1 zookeeper index clean up
                 if (ToDayExistStep1.contains("02-24")) {
 //                    mssIndexStoreStep1.deleteIndexForDate(DateUtil.getCurrentDay() + "/" + "1");
                     mssIndexStoreStep1.deleteIndexForDate("20180429" + "/" + "1");
@@ -338,25 +348,29 @@ public class ExecuteService {
                 if (ToDayExistStep1.contains("02-24") && !ToDayExistStep2.contains("02-24")) { // step1, step2 zookeeper index 존재 유무 체크
                     resScheList = bmsDdAdResScheMapper.selTmpScheNadminScheMergeForToDay(map);
 
-                    // 생성 후 zookeeper 저장, ex) /mss/PRGM_SCHE/STEP2/20180428/02-24
-    //                mssIndexStoreStep2.setIndexForDate(ToDayExistStep2, DateUtil.getCurrentDay(), "02-24");
-                    mssIndexStoreStep2.setIndexForDate(ToDayExistStep2, "20180428", "02-24");
+                    if (resScheList != null && resScheList.size() > 0) {
+                        // 생성 후 zookeeper 저장, ex) /mss/PRGM_SCHE/STEP2/20180428/02-24
+                        //                mssIndexStoreStep2.setIndexForDate(ToDayExistStep2, DateUtil.getCurrentDay(), "02-24");
+                        mssIndexStoreStep2.setIndexForDate(ToDayExistStep2, "20180428", "02-24");
 
-                    resScheList.stream().forEach(x -> bmsDdAdResScheMapper.insertAdResSche(x));
+                        resScheList.stream().forEach(x -> bmsDdAdResScheMapper.insertAdResSche(x));
 
-                    args.put("list", resScheList);
-                    args.put("bmsMetaProperties", bmsMetaProperties);
-                    args.put("sche_gubn", "1");
-                    // 8. .dat, .fin 파일 생성
-                    Map<String, Object> result = fileUtil.writeFileAdResSche(args);
+                        args.put("list", resScheList);
+                        args.put("bmsMetaProperties", bmsMetaProperties);
+                        args.put("sche_gubn", "1");
+                        // 8. .dat, .fin 파일 생성
+                        Map<String, Object> result = fileUtil.writeFileAdResSche(args);
 
-                    log.debug("filePath: {}", result.get("filePath"));
+                        log.debug("filePath: {}", result.get("filePath"));
 
-                    // send sftp
-                    String sinkFilePath = sinkHandler.send(sinkConfig, (File) result.get("filePath"));
-                    String sinkFinFilePath = sinkHandler.send(sinkConfig, (File) result.get("finFilePath"));
-                    log.debug("sinkFilePath: {}", sinkFilePath);
-                    log.debug("sinkFinFilePath: {}", sinkFinFilePath);
+                        // send sftp
+                        String sinkFilePath = sinkHandler.send(sinkConfig, (File) result.get("filePath"));
+                        String sinkFinFilePath = sinkHandler.send(sinkConfig, (File) result.get("finFilePath"));
+                        log.debug("sinkFilePath: {}", sinkFilePath);
+                        log.debug("sinkFinFilePath: {}", sinkFinFilePath);
+                    } else {
+                        log.info("STEP2 resScheList is empty --> 1. not set index zookeeper [02-24], 2. not insert bms_dd_ad_res_sche");
+                    }
                 }
 
                 resScheList.clear();
@@ -369,29 +383,33 @@ public class ExecuteService {
                         (NextDayExistStep1.contains("00-02") && !NextDayExistStep2.contains("00-02"))) { // 익일 편성표, step1, step2 zookeeper index 존재 유무 체크
                     resScheList = bmsDdAdResScheMapper.selTmpScheNadminScheMergeForNextDay(map);
 
-                    // 생성 후 zookeeper 저장, ex) /mss/PRGM_SCHE/STEP2/20180429/00-02
-    //                mssIndexStoreStep2.setIndexForDate(NextDayExistStep2, DateUtil.getNextDay(), "00-02");
-                    mssIndexStoreStep2.setIndexForDate(NextDayExistStep2, "20180429", "00-02");
+                    if (resScheList != null && resScheList.size() > 0) {
+                        // 생성 후 zookeeper 저장, ex) /mss/PRGM_SCHE/STEP2/20180429/00-02
+                        //                mssIndexStoreStep2.setIndexForDate(NextDayExistStep2, DateUtil.getNextDay(), "00-02");
+                        mssIndexStoreStep2.setIndexForDate(NextDayExistStep2, "20180429", "00-02");
 
-                    resScheList.stream().forEach(x -> bmsDdAdResScheMapper.insertAdResSche(x));
+                        resScheList.stream().forEach(x -> bmsDdAdResScheMapper.insertAdResSche(x));
 
-                    args.put("list", resScheList);
-                    args.put("bmsMetaProperties", bmsMetaProperties);
-                    args.put("sche_gubn", "2");
-                    // 8. .dat, .fin 파일 생성
-                    Map<String, Object> result = fileUtil.writeFileAdResSche(args);
+                        args.put("list", resScheList);
+                        args.put("bmsMetaProperties", bmsMetaProperties);
+                        args.put("sche_gubn", "2");
+                        // 8. .dat, .fin 파일 생성
+                        Map<String, Object> result = fileUtil.writeFileAdResSche(args);
 
-                    log.debug("filePath: {}", result.get("filePath"));
+                        log.debug("filePath: {}", result.get("filePath"));
 
-                    // send sftp
-                    String sinkFilePath = sinkHandler.send(sinkConfig, (File) result.get("filePath"));
-                    String sinkFinFilePath = sinkHandler.send(sinkConfig, (File) result.get("finFilePath"));
-                    log.debug("sinkFilePath: {}", sinkFilePath);
-                    log.debug("sinkFinFilePath: {}", sinkFinFilePath);
+                        // send sftp
+                        String sinkFilePath = sinkHandler.send(sinkConfig, (File) result.get("filePath"));
+                        String sinkFinFilePath = sinkHandler.send(sinkConfig, (File) result.get("finFilePath"));
+                        log.debug("sinkFilePath: {}", sinkFilePath);
+                        log.debug("sinkFinFilePath: {}", sinkFinFilePath);
+                    } else {
+                        log.info("STEP2 resScheList is empty --> 1. not set index zookeeper [00-02], 2. not insert bms_dd_ad_res_sche");
+                    }
                 }
                 resMap.put("result", true);
             } catch (Exception e) {
-                // step1, step2 zookeeper index 삭제
+                // step1, step2 zookeeper index clean up
                 if (ToDayExistStep1.contains("02-24")) {
 //                    mssIndexStoreStep1.deleteIndexForDate(DateUtil.getCurrentDay() + "/" + "1");
                     mssIndexStoreStep1.deleteIndexForDate("20180428" + "/" + "1");

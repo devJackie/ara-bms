@@ -4,26 +4,42 @@ indexConfig:
   type: zookeeper
   uri: /index/BMS_DD_ATS_AD_SCHE
 
-sourceConfig:
+# --- local
+#sourceConfig:
 #  type: sftp
-#  server: 10.45.160.82
+#  server: localhost
 #  port: 22
-#  id: sunchun
-#  password: sunchun!
-#  dataConnectionMode: active
-#  path: /data/cuton_logs/kt/ad_sche/
+#  id: devjackie
+#  password: Tjddydwozl12
+#  path: /Users/devjackie/ara-bms/ats/
+#  pathAttributes:
+#  - type: none
+#  filePattern: ad_sche_([\d+]{8}).DAT$
 
+# --- develop
+sourceConfig:
   type: sftp
-  server: localhost
+  server: 14.63.172.240
   port: 22
-  id: devjackie
-  password: Tjddydwozl12
-#  dataConnectionMode: active
-#  path: /data/ara-bms/ats/
-  path: /Users/devjackie/ara-bms/ats/
+  id: daisy
+  password: daisy!
+  path: /data/ara-bms/ats/sche/
   pathAttributes:
   - type: none
   filePattern: ad_sche_([\d+]{8}).DAT$
+
+# --- production
+#sourceConfig:
+#  type: ftp
+#  server: 10.45.160.82
+#  port: 21
+#  id: sucnhun
+#  password: sucnhun!
+#  dataConnectionMode: active
+#  path: /data/ara-bms/ats/sche/
+#  pathAttributes:
+#  - type: none
+#  filePattern: ad_sche_([\d+]{8}).DAT$
 
 fileIOConfig:
   type: ats
@@ -36,17 +52,29 @@ headerExtractConfig:
 parserConfig:
 - type: bypass
 
-sinkConfig:
+# --- local
+#sinkConfig:
 #  type: sftp
-#  server: 10.45.160.82
+#  server: localhost
 #  port: 22
-#  id: sunchun
-#  password: sunchun!
-#  dataConnectionMode: active
-#  path: /data/cuton_logs/kt/ad_sche/
+#  id: devjackie
+#  password: Tjddydwozl12
+#  path: /Users/devjackie/ara-bms/ats_result/
+
+# --- develop
+sinkConfig:
   type: sftp
-  server: localhost
+  server: 14.63.172.240
   port: 22
-  id: devjackie
-  password: Tjddydwozl12
-  path: /Users/devjackie/ara-bms/ats_result/
+  id: daisy
+  password: daisy!
+  path: /data/ara-bms/ats/sche_result/
+
+# --- production
+#sinkConfig:
+#  type: sftp
+#  server: 211.45.160.72
+#  port: 22
+#  id: daisy
+#  password: daisy!
+#  path: /data/ara-bms/ats/sche/

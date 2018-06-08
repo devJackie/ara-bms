@@ -182,9 +182,6 @@ public abstract class BaseExecutor implements CommonExecutor {
                     log.debug("{} is not new file", executeFileInfo.getSourceFile());
                 }
             }
-
-//            // Artificial delay of 1s for demonstration purposes
-//            Thread.sleep(1000L);
         } catch (Exception e) {
             resMap.put("result", false);
             log.error("", e);
@@ -208,9 +205,6 @@ public abstract class BaseExecutor implements CommonExecutor {
             // 1-1. mss 프로그램 epg 테이블 + 4번 선천 광고 익일 epg 테이블 매핑 (검증 필요)
             // (프로그램 종료시간 -15분을 start_dt, 15분후를 end_dt 로 기준 정함, 광고 epg 생성 되게 쿼리 생성 후 epg 데이터 db 저장)
             resMap = executeService.executeMakeAdScheTask();
-
-//            // Artificial delay of 1s for demonstration purposes
-//            Thread.sleep(1000L);
         } catch (Exception e) {
             log.error("", e);
         } finally {

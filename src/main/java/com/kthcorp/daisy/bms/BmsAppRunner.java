@@ -3,7 +3,6 @@ package com.kthcorp.daisy.bms;
 import com.kthcorp.daisy.bms.executor.CommonExecutor;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -12,14 +11,13 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Component
 @Slf4j
-public class AppRunner implements ApplicationRunner {
+public class BmsAppRunner implements ApplicationRunner {
 
     private final ApplicationContext context;
     private final static String MUTEX = "mutex";
@@ -33,7 +31,7 @@ public class AppRunner implements ApplicationRunner {
     private CommonExecutor executor = null;
 
     @Autowired
-    public AppRunner(ApplicationContext context, ZkClient zkClient, BmsMetaProperties bmsMetaProperties) {
+    public BmsAppRunner(ApplicationContext context, ZkClient zkClient, BmsMetaProperties bmsMetaProperties) {
         this.context = context;
         this.zkClient = zkClient;
         this.bmsMetaProperties = bmsMetaProperties;

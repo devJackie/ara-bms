@@ -31,15 +31,14 @@
                 <!--#{item.prgm_end_dt}-->
             <!--)-->
         <!--</foreach>-->
-
     </insert>
 
     <select id="selPrgmScheNextDay" parameterType="java.util.LinkedHashMap" resultType="java.util.LinkedHashMap">
     /** selPrgmScheNextDay **/
-        select yyyymmdd as lately_day from bms_dd_mss_prgm_sche where yyyymmdd <![CDATA[ > ]]> #{yyyymmdd} order by yyyymmdd desc limit 1
+        select coalesce(yyyymmdd, '') as lately_day from bms_dd_mss_prgm_sche where yyyymmdd <![CDATA[ > ]]> #{yyyymmdd} order by yyyymmdd desc limit 1
     </select>
 
-    <select id="selAdNprgmScheMergeForToDay" parameterType="java.util.LinkedHashMap" resultType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdTmpResSche">
+    <select id="selAdNprgmScheMergeForToDay" parameterType="java.util.LinkedHashMap" resultType="BmsDdAdTmpResSche">
     /** selAdNprgmScheMergeForToDay **/
         select
                 g.yyyymmdd
@@ -157,7 +156,7 @@
                         yyyymmdd, ch_no, prgm_id, prgm_nm, screen_gubn
                         , prgm_start_dt
                         , prgm_end_dt
-                from    ams_dd_mss_prgm_sche
+                from    bms_dd_mss_prgm_sche
                 where   yyyymmdd = #{yyyymmdd}
                 ) e on  <![CDATA[ d.ch_no = e.ch_no and e.prgm_start_dt <= d.start_dt and d.start_dt < e.prgm_end_dt ]]>
             --where   d.ch_no = '17'
@@ -168,7 +167,7 @@
         order by    g.start_dt
     </select>
 
-    <select id="selAdNprgmScheMergeForNextDay" parameterType="java.util.LinkedHashMap" resultType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdTmpResSche">
+    <select id="selAdNprgmScheMergeForNextDay" parameterType="java.util.LinkedHashMap" resultType="BmsDdAdTmpResSche">
     /** selAdNprgmScheMergeForNextDay **/
         select
                 g.yyyymmdd
@@ -286,7 +285,7 @@
                             yyyymmdd, ch_no, prgm_id, prgm_nm, screen_gubn
                             , prgm_start_dt
                             , prgm_end_dt
-                    from    ams_dd_mss_prgm_sche
+                    from    bms_dd_mss_prgm_sche
                     where   yyyymmdd between #{from_yyyymmdd} and #{to_yyyymmdd}
                     and
                     (

@@ -1,6 +1,6 @@
 sinkConfig:
   type: sftp
-  server: 211.45.160.72
+  server: 14.63.172.240
   port: 22
   id: daisy
   password: daisy!

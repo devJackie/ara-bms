@@ -35,7 +35,7 @@ bms-meta:
   execute:
     default-execute-group: LIMIT
   file-info:
-    res-sche-yaml-path: linkServer/BMS/BMS_DD_AD_RES_SCHE.yml
+    res-sche-yaml-path: linkServer/BMS/BMS_DD_AD_RES_SCHE_LOCAL.yml
     res-sche-path: /Users/devjackie/ara-bms/bms/sche/
     res-sche-filename-1: bms_sche_2018042802_24.dat
     res-sche-filename-2: bms_sche_2018042900_02.dat
@@ -80,17 +80,18 @@ bms-meta:
   execute:
     default-execute-group: LIMIT
   file-info:
-    res-sche-yaml-path: linkServer/BMS/BMS_DD_AD_RES_SCHE.yml
-    res-sche-path: /Users/devjackie/ara-bms/bms/sche/
+    res-sche-yaml-path: linkServer/BMS/BMS_DD_AD_RES_SCHE_DEVELOP.yml
+    res-sche-path: /data/ara-bms/bms/sche/
     res-sche-filename-1: bms_sche_2018042802_24.dat
     res-sche-filename-2: bms_sche_2018042900_02.dat
-    res-sche-fin-path: /Users/devjackie/ara-bms/bms/sche/
+    res-sche-fin-path: /data/ara-bms/bms/sche/
     res-sche-fin-filename-1: bms_sche_2018042802_24.fin
     res-sche-fin-filename-2: bms_sche_2018042900_02.fin
   zookeeper-info:
 #    mss-uri: /index/BMS_DD_MSS_PRGM_SCHE
     mss-prgm-sche-step1-uri: /mss/PRGM_SCHE/STEP1
     mss-prgm-sche-step2-uri: /mss/PRGM_SCHE/STEP2
+
 
 --- # production
 spring:
@@ -100,7 +101,7 @@ datasource:
   bms:
     initialize: true
     driver-class-name: "org.postgresql.Driver"
-    url: "jdbc:postgresql://localhost:5432/test"
+    url: "jdbc:postgresql://daisy-ara01:5432/test"
     user-name: "daisy"
     password: "daisy!"
     initial-size: 10
@@ -125,10 +126,10 @@ bms-meta:
     default-execute-group: LIMIT
   file-info:
     res-sche-yaml-path: linkServer/BMS/BMS_DD_AD_RES_SCHE.yml
-    res-sche-path: /Users/devjackie/ara-bms/bms/sche/
+    res-sche-path: /data/ara-bms/bms/sche/
     res-sche-filename-1: bms_sche_2018042802_24.dat
     res-sche-filename-2: bms_sche_2018042900_02.dat
-    res-sche-fin-path: /Users/devjackie/ara-bms/bms/sche/
+    res-sche-fin-path: /data/ara-bms/bms/sche/
     res-sche-fin-filename-1: bms_sche_2018042802_24.fin
     res-sche-fin-filename-2: bms_sche_2018042900_02.fin
   zookeeper-info:
