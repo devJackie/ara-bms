@@ -52,66 +52,54 @@ public class FileUtil {
                 scheGubnFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-2");
             }
             file = new File(bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-path") + scheGubnFileName);
-            if (file.exists()) { // 파일이 존재하면
-                log.info("file already exists, {}", file.getAbsolutePath());
-                result.put("file", file);
-                result.put("filePath", file.getAbsoluteFile().getAbsolutePath());
-                return result;
-            } else {
-                file.createNewFile();
 
-                bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
+            String scheGubnFinFileName = null;
+            if ("1".equals(param.get("sche_gubn"))) {
+                scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-1");
+            } else if ("2".equals(param.get("sche_gubn"))) {
+                scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-2");
+            }
 
-                for (int i = 0; i < resScheList.size(); i++) {
-                    BmsDdAdResSche lines = resScheList.get(i);
-                    List<String> strList = new ArrayList<>();
-                    strList.add(lines.getYyyymmdd());
-                    strList.add(lines.getSche_gubn());
-                    strList.add(lines.getApln_form_id());
-                    strList.add(lines.getAd_id());
-                    strList.add(lines.getAd_nm());
-                    strList.add(lines.getAd_length());
-                    strList.add(lines.getCh_id());
-                    strList.add(lines.getCh_no());
-                    strList.add(lines.getCh_nm());
-                    strList.add(lines.getBrdcst_dt());
-                    strList.add(lines.getStart_dt());
-                    strList.add(lines.getEnd_dt());
-                    String[] strArray = strList.stream().toArray(x -> new String[x]);
-                    String line = StringUtils.join(strArray, '\036');
+            File finFile = new File(bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-path") + scheGubnFinFileName);
 
-                    bw.write(line);
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file),"UTF-8"));
 
-                    if (i < resScheList.size() - 1) { // file 의 마지막 개행문자는 제외
-                        bw.newLine();
-                    }
+            for (int i = 0; i < resScheList.size(); i++) {
+                BmsDdAdResSche lines = resScheList.get(i);
+                List<String> strList = new ArrayList<>();
+                strList.add(lines.getYyyymmdd());
+                strList.add(lines.getSche_gubn());
+                strList.add(lines.getApln_form_id());
+                strList.add(lines.getAd_id());
+                strList.add(lines.getAd_nm());
+                strList.add(lines.getAd_length());
+                strList.add(lines.getCh_id());
+                strList.add(lines.getCh_no());
+                strList.add(lines.getCh_nm());
+                strList.add(lines.getBrdcst_dt());
+                strList.add(lines.getStart_dt());
+                strList.add(lines.getEnd_dt());
+                String[] strArray = strList.stream().toArray(x -> new String[x]);
+                String line = StringUtils.join(strArray, '\036');
+
+                bw.write(line);
+
+                if (i < resScheList.size() - 1) { // file 의 마지막 개행문자는 제외
+                    bw.newLine();
                 }
-                result.put("filePath", file);
+            }
+            result.put("filePath", file);
 
-                // .FIN 파일 생성
-                if (file.exists()) {
+            // .FIN 파일 생성
+            if (file.exists()) {
+                fbw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-path") + scheGubnFinFileName),"UTF-8"));
+                fbw.write("");
 
-                    String scheGubnFinFileName = null;
-                    if ("1".equals(param.get("sche_gubn"))) {
-                        scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-1");
-                    } else if ("2".equals(param.get("sche_gubn"))) {
-                        scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-2");
-                    }
-
-                    File finFile = new File(bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-path") + scheGubnFinFileName);
-
-                    fbw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-path") + scheGubnFinFileName),"UTF-8"));
-                    fbw.write("");
-
-                    result.put("finFilePath", finFile);
-                }
+                result.put("finFilePath", finFile);
             }
         } catch (Exception e) {
-            if(!file.exists()) {
-                log.error("exception -> file delete, {}", file.getAbsolutePath());
-                file.delete();
-            }
             result.put("filePath", null);
+            result.put("finFilePath", null);
             throw e;
         } finally {
             if (bw != null) {

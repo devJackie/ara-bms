@@ -14,7 +14,7 @@ sourceConfig:
   pathAttributes:
   - type: date
     datePattern: yyyyMMdd
-    scanRange: -40d
+    scanRange: -50d
   filePattern: META_DD_ABMS_PRGM_SCHE.DAT$
 
 fileIOConfig:
@@ -24,10 +24,9 @@ parserConfig:
 - type: bypass
 
 sinkConfig:
-  type: none
-#  type: sftp
-#  server: 14.63.172.240
-#  port: 22
-#  id: daisy
-#  password: daisy!
-#  path: /data/ara-bms/mss_result/sche/
+  type: sftp
+  server: 14.63.172.240
+  port: 22
+  id: daisy
+  password: daisy!
+  path: /data/ara-bms/mss_result/sche/

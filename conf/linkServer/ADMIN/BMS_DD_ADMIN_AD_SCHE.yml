@@ -1,0 +1,34 @@
+type: storedRecInfo
+
+indexConfig:
+  type: zookeeper
+  uri: /index/BMS_DD_ADMIN_AD_SCHE
+
+sourceConfig:
+  type: ftp
+  server: 10.45.160.82
+  port: 21
+  id: sucnhun
+  password: sucnhun!
+  dataConnectionMode: active
+  path: /data/ara-bms/admin/${date}/
+  pathAttributes:
+  - type: date
+    datePattern: yyyyMMdd
+    scanRange: -0d
+
+fileIOConfig:
+  type: admin
+  path: /data/ara-bms/admin/${date}/
+  pathAttributes:
+  - type: date
+    datePattern: yyyyMMdd
+    scanRange: -0d
+  textEncoding : utf-8
+  filePattern: ([\d+]{8}).[IDX|FIN]+
+
+parserConfig:
+- type: none
+
+sinkConfig:
+  type: none

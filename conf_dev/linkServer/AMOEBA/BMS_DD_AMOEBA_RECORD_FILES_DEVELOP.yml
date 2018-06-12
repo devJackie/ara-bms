@@ -1,0 +1,38 @@
+type: storedAmoebaRecInfo
+
+indexConfig:
+  type: zookeeper
+  uri: /index/BMS_DD_AMOEBA_RECORD_FILES
+
+sourceConfig:
+  type: sftp
+  server: 14.63.172.240
+  port: 22
+  id: daisy
+  password: daisy!
+  path: /data/ara-bms/amoeba/${date}/
+  pathAttributes:
+  - type: date
+    datePattern: yyyyMMdd
+    scanRange: -0d
+
+fileIOConfig:
+  type: amoeba
+  path: /data/ara-bms/amoeba/${date}/
+  pathAttributes:
+  - type: date
+    datePattern: yyyyMMdd
+    scanRange: -0d
+  textEncoding : utf-8
+  filePattern: ([\d+]{8}).[IDX|FIN]+
+
+parserConfig:
+- type: none
+
+sinkConfig:
+  type: none
+#  server: localhost
+#  port: 21
+#  id: devjackie
+#  password: Tjddydwozl12
+#  path: /data_backup/tCommerce/${yyyyMMdd}/moc/contents

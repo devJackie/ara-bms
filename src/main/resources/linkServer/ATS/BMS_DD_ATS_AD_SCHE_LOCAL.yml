@@ -1,0 +1,37 @@
+type: storedAtsAdScheInfo
+
+indexConfig:
+  type: zookeeper
+  uri: /index/BMS_DD_ATS_AD_SCHE
+
+# --- local
+sourceConfig:
+  type: sftp
+  server: localhost
+  port: 22
+  id: devjackie
+  password: Tjddydwozl12
+  path: /Users/devjackie/ara-bms/ats/
+  pathAttributes:
+  - type: none
+  filePattern: ad_sche_([\d+]{8}).DAT$
+
+fileIOConfig:
+  type: ats
+
+headerExtractConfig:
+- type: filenameDate
+  regex: ad_sche_([\d+]{8}).DAT$
+  datePattern: yyyyMMdd
+
+parserConfig:
+- type: bypass
+
+# --- local
+sinkConfig:
+  type: sftp
+  server: localhost
+  port: 22
+  id: devjackie
+  password: Tjddydwozl12
+  path: /Users/devjackie/ara-bms/ats_result/

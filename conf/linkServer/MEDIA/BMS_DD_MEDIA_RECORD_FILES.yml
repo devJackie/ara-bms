@@ -1,0 +1,26 @@
+type: storedMediaRecInfo
+
+indexConfig:
+  type: zookeeper
+  uri: /index/BMS_DD_MEDIA_RECORD_FILES
+
+sourceConfig:
+  type: sftp
+  server: 211.45.160.72
+  port: 22
+  id: daisy
+  password: daisy!
+  path: /data/ara-bms/media/${date}/
+  pathAttributes:
+  - type: date
+    datePattern: yyyyMMdd
+    scanRange: -0d
+
+fileIOConfig:
+  type: none
+
+parserConfig:
+- type: none
+
+sinkConfig:
+  type: none

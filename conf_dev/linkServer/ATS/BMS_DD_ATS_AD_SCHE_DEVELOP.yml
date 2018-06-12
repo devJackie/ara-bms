@@ -1,0 +1,35 @@
+type: storedAtsAdScheInfo
+
+indexConfig:
+  type: zookeeper
+  uri: /index/BMS_DD_ATS_AD_SCHE
+
+sourceConfig:
+  type: sftp
+  server: 14.63.172.240
+  port: 22
+  id: daisy
+  password: daisy!
+  path: /data/ara-bms/ats/sche/
+  pathAttributes:
+  - type: none
+  filePattern: ad_sche_([\d+]{8}).DAT$
+
+fileIOConfig:
+  type: ats
+
+headerExtractConfig:
+- type: filenameDate
+  regex: ad_sche_([\d+]{8}).DAT$
+  datePattern: yyyyMMdd
+
+parserConfig:
+- type: bypass
+
+sinkConfig:
+  type: sftp
+  server: 14.63.172.240
+  port: 22
+  id: daisy
+  password: daisy!
+  path: /data/ara-bms/ats_result/sche/

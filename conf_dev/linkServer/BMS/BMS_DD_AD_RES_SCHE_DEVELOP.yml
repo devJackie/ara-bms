@@ -4,4 +4,4 @@ sinkConfig:
   port: 22
   id: daisy
   password: daisy!
-  path: /data/ara-bms/bms/sche/
+  path: /data/ara-bms/bms_result/sche/

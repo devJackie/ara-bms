@@ -136,10 +136,3 @@ bms-meta:
 #    mss-uri: /index/BMS_DD_MSS_PRGM_SCHE
     mss-prgm-sche-step1-uri: /mss/PRGM_SCHE/STEP1
     mss-prgm-sche-step2-uri: /mss/PRGM_SCHE/STEP2
-
-# sample test
-name: prod-YAML
-environment: production
-servers:
-    - www.abc.com
-    - www.xyz.com
