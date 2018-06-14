@@ -17,6 +17,7 @@ sourceConfig:
 
 fileIOConfig:
   type: ats
+  textEncoding : utf-8
 
 headerExtractConfig:
 - type: filenameDate

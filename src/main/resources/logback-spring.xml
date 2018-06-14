@@ -27,7 +27,7 @@
     <logger name="org.apache.ibatis" level="INFO" additivity="false"/>
     <logger name="ch.qos.logback" level="WARN"/>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </root>

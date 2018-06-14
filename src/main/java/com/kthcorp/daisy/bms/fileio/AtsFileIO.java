@@ -41,11 +41,8 @@ public class AtsFileIO extends BaseFileIO {
         Scanner sc2 = null;
         // https://netjs.blogspot.kr/2016/06/reading-delimited-file-in-java-using-scanner.html
 
-        // 현재날짜 설정
-        String currentDay = DateUtil.getCurrentDay();
-
         try {
-            sc1 = new Scanner(new FileInputStream(remoteFile), "UTF-8");
+            sc1 = new Scanner(new FileInputStream(remoteFile), textEncoding);
             while(sc1.hasNextLine()) {
                 String line = sc1.nextLine();
                 sc2 = new Scanner(line);

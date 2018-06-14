@@ -10,11 +10,9 @@ sourceConfig:
   port: 22
   id: daisy
   password: daisy!
-  path: /data/ara-bms/media/${date}/
+  path: /data/ara-bms/media/
   pathAttributes:
-  - type: date
-    datePattern: yyyyMMdd
-    scanRange: -0d
+  - type: none
 
 fileIOConfig:
   type: none

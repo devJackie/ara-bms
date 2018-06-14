@@ -15,13 +15,7 @@ sourceConfig:
 
 fileIOConfig:
   type: amoeba
-  path: /Users/devjackie/ara-bms/amoeba/${date}/
-  pathAttributes:
-  - type: date
-    datePattern: yyyyMMdd
-    scanRange: -0d
   textEncoding : utf-8
-  filePattern: ([\d+]{8}).[IDX|FIN]+
 
 parserConfig:
 - type: none

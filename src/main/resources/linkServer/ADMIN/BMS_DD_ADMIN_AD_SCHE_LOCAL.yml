@@ -14,14 +14,7 @@ sourceConfig:
     scanRange: -0d
 
 fileIOConfig:
-  type: admin
-  path: /Users/devjackie/ara-bms/admin/${date}/
-  pathAttributes:
-  - type: date
-    datePattern: yyyyMMdd
-    scanRange: -0d
-  textEncoding : utf-8
-  filePattern: ([\d+]{8}).[IDX|FIN]+
+  type: none
 
 parserConfig:
 - type: none

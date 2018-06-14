@@ -44,7 +44,7 @@ public class MssFileIO extends BaseFileIO {
         Scanner sc2 = null;
 
         try {
-            sc1 = new Scanner(new FileInputStream(remoteFile), "UTF-8");
+            sc1 = new Scanner(new FileInputStream(remoteFile), textEncoding);
             while(sc1.hasNextLine()) {
                 String line = sc1.nextLine();
                 sc2 = new Scanner(line);

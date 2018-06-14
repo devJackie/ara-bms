@@ -11,11 +11,9 @@ sourceConfig:
   id: devjackie
   password: Tjddydwozl12
 #  path: /data/ara-bms/media/
-  path: /Users/devjackie/ara-bms/media/${date}/
+  path: /Users/devjackie/ara-bms/media/
   pathAttributes:
-  - type: date
-    datePattern: yyyyMMdd
-    scanRange: -0d
+  - type: none
 
 fileIOConfig:
   type: none

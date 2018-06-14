@@ -143,6 +143,7 @@ public class ExecuteService {
         Map<String, Object> param = new LinkedHashMap<>();
         List<Map<String, Object>> list = new ArrayList<>();
 
+        log.info("start insertAtsAdSche");
         int totalCount = 0;
         for (int i = 0; i < mapList.size(); i++) {
             Map<String, Object> tmpParam = mapList.get(i);
@@ -159,7 +160,7 @@ public class ExecuteService {
                 list.clear();
             }
         }
-        log.debug("mapList size : {}, ad epg total count : {}", mapList.size(), totalCount);
+        log.info("end insertAtsAdSche -> mapList size : {}, ad epg total count : {}", mapList.size(), totalCount);
 
         executeFileInfo.setSuccess(true);
     }
@@ -187,6 +188,7 @@ public class ExecuteService {
         Map<String, Object> param = new LinkedHashMap<>();
         List<Map<String, Object>> list = new ArrayList<>();
 
+        log.info("start insertMssPrgmSche");
         int totalCount = 0;
         for (int i = 0; i < mapList.size(); i++) {
             Map<String, Object> tmpParam = mapList.get(i);
@@ -203,7 +205,7 @@ public class ExecuteService {
                 list.clear();
             }
         }
-        log.debug("mapList size : {}, prgm epg total count : {}", mapList.size(), totalCount);
+        log.debug("end insertMssPrgmSche -> mapList size : {}, prgm epg total count : {}", mapList.size(), totalCount);
 
         executeFileInfo.setSuccess(true);
     }
