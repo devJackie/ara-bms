@@ -5,21 +5,22 @@ indexConfig:
   uri: /index/BMS_DD_MSS_PRGM_SCHE
 
 sourceConfig:
-  type: ftp
-  server: 10.45.160.82
-  port: 21
-  id: sucnhun
-  password: sucnhun!
+  type: sftp
+  server: 211.45.160.82
+  port: 22
+  id: daisy
+  password: daisy!
   dataConnectionMode: active
   path: /data/ara-bms/mss/sche/${date}/
   pathAttributes:
   - type: date
     datePattern: yyyyMMdd
-    scanRange: -40d
+    scanRange: -0d
   filePattern: META_DD_ABMS_PRGM_SCHE.DAT$
 
 fileIOConfig:
   type: mss
+  textEncoding : utf-8
 
 parserConfig:
 - type: bypass

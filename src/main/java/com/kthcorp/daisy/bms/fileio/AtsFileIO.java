@@ -3,14 +3,14 @@ package com.kthcorp.daisy.bms.fileio;
 import com.kthcorp.daisy.bms.fao.RemoteFileInfo;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.util.CollectorUtil;
-import com.kthcorp.daisy.bms.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by devjackie on 2018. 5. 28..
@@ -37,38 +37,34 @@ public class AtsFileIO extends BaseFileIO {
         log.debug("config : {}", config);
 
         List<Map<String, Object>>  mapList = new ArrayList<>();
-        Scanner sc1 = null;
-        Scanner sc2 = null;
+        BufferedReader in = null;
         // https://netjs.blogspot.kr/2016/06/reading-delimited-file-in-java-using-scanner.html
 
         try {
-            sc1 = new Scanner(new FileInputStream(remoteFile), textEncoding);
-            while(sc1.hasNextLine()) {
-                String line = sc1.nextLine();
-                sc2 = new Scanner(line);
-                sc2.useDelimiter("\\|");
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(remoteFile), textEncoding));
+
+            String line = null;
+            while ((line = in.readLine()) != null) {
                 Map<String, Object> map = new LinkedHashMap<>();
-                while(sc2.hasNext()) {
-                    map.put("ch_nm", sc2.hasNext() ? sc2.next() : "");
-                    map.put("brdcst_dt", sc2.hasNext() ? sc2.next() : "");
-                    map.put("yyyymmdd", MapUtils.getString(map, "brdcst_dt") != null ? map.get("brdcst_dt") : "");
-                    map.put("hhmmss", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ch_id", sc2.hasNext() ? sc2.next() : "");
-                    map.put("otv_ch_no", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ots_ch_no", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ad_order", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ad_id", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ad_nm", sc2.hasNext() ? sc2.next() : "");
-                    map.put("ad_length", sc2.hasNext() ? sc2.next() : "");
-                    map.put("apln_form_id", sc2.hasNext() ? sc2.next() : "");
-                }
+                String[] array = line.split("\\|");
+                map.put("ots_ch_no", array[0]);
+                map.put("otv_ch_no", array[1]);
+                map.put("ch_nm", array[2]);
+                map.put("brdcst_dt", array[3]);
+                map.put("yyyymmdd", MapUtils.getString(map, "brdcst_dt") != null ? map.get("brdcst_dt") : "");
+                map.put("ch_id", array[4]);
+                map.put("hhmmss", array[5]);
+                map.put("ad_order", array[6]);
+                map.put("ad_id", array[7]);
+                map.put("ad_nm", array[8]);
+                map.put("ad_length", array[9]);
+                map.put("apln_form_id", array[10]);
                 mapList.add(map);
             }
         } catch (IOException e) {
             throw e;
         } finally {
-            CollectorUtil.quietlyClose(sc2);
-            CollectorUtil.quietlyClose(sc1);
+            CollectorUtil.quietlyClose(in);
         }
         return mapList;
     }

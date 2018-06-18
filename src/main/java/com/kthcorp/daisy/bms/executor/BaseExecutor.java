@@ -45,6 +45,7 @@ public abstract class BaseExecutor implements CommonExecutor {
     final ExecuteService executeService;
 
     private String executeGroup;
+    private String executeDate;
     private String executeName;
     private Date downloadTime = new Date();
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -75,6 +76,7 @@ public abstract class BaseExecutor implements CommonExecutor {
         this.executeService = executeService;
 
         this.executeGroup = (String) config.get("executeGroup");
+        this.executeDate = (String) config.get("executeDate");
         this.executeName = (String) config.get("executeName");
 
         log.debug("config: {}", config);
@@ -92,7 +94,7 @@ public abstract class BaseExecutor implements CommonExecutor {
     }
 
     private boolean getSourceFile(ExecuteFileInfo executeFileInfo) throws Exception {
-        log.info("{} download start", executeFileInfo.getSourceFile().getFileName());
+        log.info("{} -> download start", executeFileInfo.getSourceFile().getFileName());
         File executorWorkDir = new File(baseWorkDir + "/" + executeName);
         if(!executorWorkDir.exists() && !executorWorkDir.isDirectory()) {
             executorWorkDir.mkdirs();
@@ -204,7 +206,7 @@ public abstract class BaseExecutor implements CommonExecutor {
             // 1. 상위 30개 채널 쿼리 get +  선천 광고 익일 epg 테이블 + 녹화파일 테이블 매핑, 녹화파일이 있으면 녹화파일은 제외
             // 1-1. mss 프로그램 epg 테이블 + 4번 선천 광고 익일 epg 테이블 매핑 (검증 필요)
             // (프로그램 종료시간 -15분을 start_dt, 15분후를 end_dt 로 기준 정함, 광고 epg 생성 되게 쿼리 생성 후 epg 데이터 db 저장)
-            resMap = executeService.executeMakeAdScheTask();
+            resMap = executeService.executeMakeAdScheTask(executeDate);
         } catch (Exception e) {
             log.error("", e);
         } finally {

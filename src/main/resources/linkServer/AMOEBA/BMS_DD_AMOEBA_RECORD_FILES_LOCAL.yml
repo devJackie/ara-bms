@@ -6,12 +6,11 @@ indexConfig:
 
 sourceConfig:
   type: local
-#  path: /data/ara-bms/amoeba/${date}/
   path: /Users/devjackie/ara-bms/amoeba/${date}/
   pathAttributes:
   - type: date
     datePattern: yyyyMMdd
-    scanRange: -0d
+    scanRange: -40d
 
 fileIOConfig:
   type: amoeba

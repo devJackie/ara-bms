@@ -10,7 +10,6 @@ sourceConfig:
   port: 22
   id: devjackie
   password: Tjddydwozl12
-#  path: /data/ara-bms/media/
   path: /Users/devjackie/ara-bms/media/
   pathAttributes:
   - type: none

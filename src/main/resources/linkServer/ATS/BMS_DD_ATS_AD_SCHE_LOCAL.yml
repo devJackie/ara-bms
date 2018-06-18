@@ -4,7 +4,6 @@ indexConfig:
   type: zookeeper
   uri: /index/BMS_DD_ATS_AD_SCHE
 
-# --- local
 sourceConfig:
   type: sftp
   server: localhost
@@ -28,7 +27,6 @@ headerExtractConfig:
 parserConfig:
 - type: bypass
 
-# --- local
 sinkConfig:
   type: sftp
   server: localhost

@@ -4,13 +4,11 @@ import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.StrSubstitutor;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by devjackie on 2018. 5. 24..
@@ -35,8 +33,8 @@ public class FileUtil {
             // path : /Users/devjackie/ara-bms/bms/sche/
             // file : /Users/devjackie/ara-bms/bms/sche/2018042802_24.dat
             // dev, dp
-            // path : /Users/devjackie/ara-bms/bms/sche/
-            // file : /Users/devjackie/ara-bms/bms/sche/2018042802_24.dat
+            // path : /data/ara-bms/bms/sche/
+            // file : /data/ara-bms/bms/sche/2018042802_24.dat
 
             if(!file.isDirectory()) { //디렉토리가 존재하지 않으면
                 file.mkdirs();
@@ -47,17 +45,22 @@ public class FileUtil {
 
             String scheGubnFileName = null;
             if ("1".equals(param.get("sche_gubn"))) {
-                scheGubnFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-1");
+//                scheGubnFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-1");
+                scheGubnFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-pre") + param.get("to_day") + bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-suf-1");
             } else if ("2".equals(param.get("sche_gubn"))) {
-                scheGubnFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-2");
+//                scheGubnFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-2");
+                scheGubnFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-pre") + param.get("next_day") + bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-suf-2");
             }
+            log.debug("scheGubnFileName: {}", scheGubnFileName);
             file = new File(bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-path") + scheGubnFileName);
 
             String scheGubnFinFileName = null;
             if ("1".equals(param.get("sche_gubn"))) {
-                scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-1");
+//                scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-1");
+                scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-pre") + param.get("to_day") + bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-suf-1");
             } else if ("2".equals(param.get("sche_gubn"))) {
-                scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-2");
+//                scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-2");
+                scheGubnFinFileName = (String) bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-filename-pre") + param.get("next_day") + bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-filename-suf-2");
             }
 
             File finFile = new File(bmsMetaProperties.getBmsMeta().get("file-info").get("res-sche-fin-path") + scheGubnFinFileName);
@@ -80,7 +83,8 @@ public class FileUtil {
                 strList.add(lines.getStart_dt());
                 strList.add(lines.getEnd_dt());
                 String[] strArray = strList.stream().toArray(x -> new String[x]);
-                String line = StringUtils.join(strArray, '\036');
+//                String line = StringUtils.join(strArray, '\036');
+                String line = StringUtils.join(strArray, '|');
 
                 bw.write(line);
 

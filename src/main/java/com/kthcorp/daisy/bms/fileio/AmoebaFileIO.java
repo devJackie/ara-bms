@@ -95,19 +95,17 @@ public class AmoebaFileIO extends BaseFileIO {
             Map<String, Object> map = new LinkedHashMap<>();
             map.put("fileId", firFileInfo.get(i));
             String temp1 = fileArray[1];
-            StringTokenizer tokenizer1 = new StringTokenizer(temp1, "_");
-            while (tokenizer1.hasMoreTokens()) {
-                map.put("startDt", tokenizer1.nextToken());
-                map.put("brdcstDt", tokenizer1.nextToken());
-                map.put("chId", tokenizer1.nextToken());
-                map.put("chNo", tokenizer1.nextToken());
-            }
+            String[] array1 = temp1.split("_");
+            map.put("startDt", array1[0]);
+            map.put("brdcstDt", array1[1]);
+            map.put("chId", array1[2]);
+            map.put("chNo", array1[3]);
+
             String temp2 = fileArray[2];
-            StringTokenizer tokenizer2 = new StringTokenizer(temp2, "_");
-            while (tokenizer2.hasMoreTokens()) {
-                map.put("aplnFormId", tokenizer2.nextToken());
-                map.put("adId", tokenizer2.nextToken());
-            }
+            String[] array2 = temp2.split("_");
+            map.put("aplnFormId", array2[0]);
+            map.put("adId", array2[1]);
+
             resultRecInfoFiles.add(map);
         }
         return resultRecInfoFiles;

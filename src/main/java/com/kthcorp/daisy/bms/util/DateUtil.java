@@ -68,6 +68,43 @@ public class DateUtil {
 
     /**
      * @author devjackie
+     * @Description 파라미터 날짜 - 1 > prev day
+     */
+    public static String getPrevDay(String yyyyMMdd) throws Exception {
+
+        String result;
+        try {
+            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMdd");
+            DateTime dt = dtf.parseDateTime(yyyyMMdd).minusDays(1);
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+            result = fmt.print(dt);
+        } catch (Exception e) {
+            throw e;
+        }
+        return result;
+    }
+
+    /**
+     * @author devjackie
+     * @Description 파라미터 날짜 + 1 > next day
+     */
+    public static String getNextDay(String yyyyMMdd) throws Exception {
+
+        String result;
+        try {
+            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMdd");
+            DateTime dt = dtf.parseDateTime(yyyyMMdd).plusDays(1);
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+            fmt.parseDateTime(yyyyMMdd);
+            result = fmt.print(dt);
+        } catch (Exception e) {
+            throw e;
+        }
+        return result;
+    }
+
+    /**
+     * @author devjackie
      * @Description 현재 날짜 > current month 의 첫번째 일자
      */
     public static String getFirstDayOfCurrentMonth() throws Exception {
@@ -128,6 +165,44 @@ public class DateUtil {
         String result;
         try {
             DateTime dt = new DateTime().minusMonths(1).dayOfMonth().withMaximumValue();
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+            result = new LocalDate(dt).toString(fmt);
+        } catch (Exception e) {
+            throw e;
+        }
+        return result;
+    }
+
+    /**
+     * @author devjackie
+     * @Description 파라미터 날짜 - 1 month > prev month 의 첫번째 일자
+     * @Ref https://gist.github.com/marti1125/7405008
+     */
+    public static String getFirstDayOfPrevMonth(String yyyyMMdd) throws Exception {
+
+        String result;
+        try {
+            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMdd");
+            DateTime dt = dtf.parseDateTime(yyyyMMdd).minusMonths(1).dayOfMonth().withMinimumValue();
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+            result = new LocalDate(dt).toString(fmt);
+        } catch (Exception e) {
+            throw e;
+        }
+        return result;
+    }
+
+    /**
+     * @author devjackie
+     * @Description 파라미터 날짜 - 1 month > prev month 의 마지막 일자
+     * @Ref https://gist.github.com/marti1125/7405008
+     */
+    public static String getLastDayOfPrevMonth(String yyyyMMdd) throws Exception {
+
+        String result;
+        try {
+            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMdd");
+            DateTime dt = dtf.parseDateTime(yyyyMMdd).minusMonths(1).dayOfMonth().withMaximumValue();
             DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
             result = new LocalDate(dt).toString(fmt);
         } catch (Exception e) {

@@ -26,6 +26,7 @@ public class BmsAppRunner implements ApplicationRunner {
     private final BmsMetaProperties bmsMetaProperties;
 
     String executeGroup;
+    String executeDate;
     CompletableFuture<Map<String, Object>> phase1 = null;
     CompletableFuture<Map<String, Object>> phase2 = null;
     private CommonExecutor executor = null;
@@ -50,6 +51,11 @@ public class BmsAppRunner implements ApplicationRunner {
                 executeGroup = (String) bmsMetaProperties.getBmsMeta().get("execute").get("default-execute-group");
             }
             log.info("executeGroup: {}", executeGroup);
+
+            if (args.getOptionValues("executeDate") != null && args.getOptionValues("executeDate").size() > 0) {
+                executeDate = args.getOptionValues("executeDate").get(0);
+            }
+            log.info("executeDate: {}", executeDate);
 
             Yaml yaml = new Yaml();
             Map rootConfig = yaml.load(new ClassPathResource("bms-collector.yml").getInputStream());
@@ -86,8 +92,6 @@ public class BmsAppRunner implements ApplicationRunner {
             log.info("Elapsed time: " + (System.currentTimeMillis() - start));
         } catch (Exception e) {
             log.error("", e);
-        } finally {
-
         }
     }
 
@@ -98,6 +102,7 @@ public class BmsAppRunner implements ApplicationRunner {
             log.debug("ymlPath: {}", ymlPath);
             Map config = yaml.load(new ClassPathResource(ymlPath).getInputStream());
             config.put("executeGroup", executeGroup);
+            config.put("executeDate", executeDate);
             config.put("executeName", profileName);
             config.put("profileName", profileName);
             log.debug("config: {}", config);

@@ -19,6 +19,7 @@ sourceConfig:
 
 fileIOConfig:
   type: mss
+  textEncoding : utf-8
 
 parserConfig:
 - type: bypass

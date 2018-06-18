@@ -37,11 +37,12 @@ bms-meta:
   file-info:
     res-sche-yaml-path: linkServer/BMS/BMS_DD_AD_RES_SCHE_LOCAL.yml
     res-sche-path: /Users/devjackie/ara-bms/bms/sche/
-    res-sche-filename-1: bms_sche_2018042802_24.dat
-    res-sche-filename-2: bms_sche_2018042900_02.dat
+    res-sche-filename-pre: bms_sche_
+    res-sche-filename-suf-1: _02-24.DAT
+    res-sche-filename-suf-2: _00-02.DAT
     res-sche-fin-path: /Users/devjackie/ara-bms/bms/sche/
-    res-sche-fin-filename-1: bms_sche_2018042802_24.fin
-    res-sche-fin-filename-2: bms_sche_2018042900_02.fin
+    res-sche-fin-filename-suf-1: _02-24.FIN
+    res-sche-fin-filename-suf-2: _00-02.FIN
   zookeeper-info:
 #    mss-uri: /index/BMS_DD_MSS_PRGM_SCHE
     mss-prgm-sche-step1-uri: /mss/PRGM_SCHE/STEP1
@@ -82,11 +83,12 @@ bms-meta:
   file-info:
     res-sche-yaml-path: linkServer/BMS/BMS_DD_AD_RES_SCHE_DEVELOP.yml
     res-sche-path: /data/ara-bms/bms/sche/
-    res-sche-filename-1: bms_sche_2018042802_24.dat
-    res-sche-filename-2: bms_sche_2018042900_02.dat
+    res-sche-filename-pre: bms_sche_
+    res-sche-filename-suf-1: _02-24.DAT
+    res-sche-filename-suf-2: _00-02.DAT
     res-sche-fin-path: /data/ara-bms/bms/sche/
-    res-sche-fin-filename-1: bms_sche_2018042802_24.fin
-    res-sche-fin-filename-2: bms_sche_2018042900_02.fin
+    res-sche-fin-filename-suf-1: _02-24.FIN
+    res-sche-fin-filename-suf-2: _00-02.FIN
   zookeeper-info:
 #    mss-uri: /index/BMS_DD_MSS_PRGM_SCHE
     mss-prgm-sche-step1-uri: /mss/PRGM_SCHE/STEP1
@@ -101,9 +103,9 @@ datasource:
   bms:
     initialize: true
     driver-class-name: "org.postgresql.Driver"
-    url: "jdbc:postgresql://daisy-ara01:5432/test"
-    user-name: "daisy"
-    password: "daisy!"
+    url: "jdbc:postgresql://daisy-ara01:5444/ara"
+    user-name: "daisyara"
+    password: "daisyara!"
     initial-size: 10
     max-active: 10
     max-idle: 10
@@ -127,11 +129,12 @@ bms-meta:
   file-info:
     res-sche-yaml-path: linkServer/BMS/BMS_DD_AD_RES_SCHE.yml
     res-sche-path: /data/ara-bms/bms/sche/
-    res-sche-filename-1: bms_sche_2018042802_24.dat
-    res-sche-filename-2: bms_sche_2018042900_02.dat
+    res-sche-filename-pre: bms_sche_
+    res-sche-filename-suf-1: _02-24.DAT
+    res-sche-filename-suf-2: _00-02.DAT
     res-sche-fin-path: /data/ara-bms/bms/sche/
-    res-sche-fin-filename-1: bms_sche_2018042802_24.fin
-    res-sche-fin-filename-2: bms_sche_2018042900_02.fin
+    res-sche-fin-filename-suf-1: _02-24.FIN
+    res-sche-fin-filename-suf-2: _00-02.FIN
   zookeeper-info:
 #    mss-uri: /index/BMS_DD_MSS_PRGM_SCHE
     mss-prgm-sche-step1-uri: /mss/PRGM_SCHE/STEP1

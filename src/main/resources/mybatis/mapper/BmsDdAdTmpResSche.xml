@@ -71,8 +71,8 @@
             from
             (
                 select
-                        d.yyyymmdd, d.ch_id, d.ch_nm, d.brdcst_dt, d.ch_no, d.apln_form_id, d.ad_id
-                        , d.ad_nm, d.ad_length
+                        d.yyyymmdd, d.ch_id, d.ch_nm, d.brdcst_dt, d.ch_no, d.apln_form_id
+                        , d.ad_id, d.ad_nm, d.ad_length
                         , d.start_dt as ori_start_dt
                         , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900) as start_dt
                         --, to_char(to_timestamp((extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900))::timestamp,'YYYY-MM-DD HH24:MI:SS') as start_dt_cvt
@@ -143,12 +143,13 @@
                                     where   brdcst_dt between #{prev_from_yyyymmdd} and #{prev_to_yyyymmdd}
                                     and     p_cmpl_yn = 'y'
                                     group   by ots_ch_no
-                            ) a
-                        ) b
-                        where   <![CDATA[ b.ots_rnum >= 1 and b.ots_rnum <= 30 ]]>
+                                ) a
+                            ) b
+                            where   <![CDATA[ b.ots_rnum >= 1 and b.ots_rnum <= 30 ]]>
                         )
-                ) c
+                    ) c
                 where   not exists ( select 1 from bms_dd_amoeba_record_files d where d.apln_form_id = c.apln_form_id and d.ad_id = c.ad_id and d.ch_id = c.ch_id )
+                and     ch_no not like 'S%' -- OTS 제외
                 ) d
                 join
                 (
@@ -164,6 +165,23 @@
             where   f.rnum = 1
         ) g
         where   g.rnum = 1
+        group by
+                    g.yyyymmdd
+                    , sche_gubn
+                    , g.apln_form_id
+                    , g.ad_id
+                    , g.ad_nm
+                    , g.ad_length
+                    , g.ch_id
+                    , g.ch_no
+                    , g.ch_nm
+                    , g.brdcst_dt
+                    , g.ori_start_dt
+                    , g.start_dt
+                    , g.end_dt
+                    , g.prgm_id
+                    , g.prgm_start_dt
+                    , g.prgm_end_dt
         order by    g.start_dt
     </select>
 
@@ -200,8 +218,8 @@
             from
             (
                 select
-                        d.yyyymmdd, d.ch_id, d.ch_nm, d.brdcst_dt, d.ch_no, d.apln_form_id, d.ad_id
-                        , d.ad_nm, d.ad_length
+                        d.yyyymmdd, d.ch_id, d.ch_nm, d.brdcst_dt, d.ch_no, d.apln_form_id
+                        , d.ad_id, d.ad_nm, d.ad_length
                         , d.start_dt as ori_start_dt
                         , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900) as start_dt
                         --, to_char(to_timestamp((extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900))::timestamp,'YYYY-MM-DD HH24:MI:SS') as start_dt_cvt
@@ -278,6 +296,7 @@
                         )
                     ) c
                 where   not exists ( select 1 from bms_dd_amoeba_record_files d where d.apln_form_id = c.apln_form_id and d.ad_id = c.ad_id and d.ch_id = c.ch_id )
+                and     ch_no not like 'S%' -- OTS 제외
                 ) d
                 join
                 (
@@ -299,6 +318,23 @@
             where   f.rnum = 1
         ) g
         where   g.rnum = 1
-        order by    g.start_dt
+        group by
+                    g.yyyymmdd
+                    , sche_gubn
+                    , g.apln_form_id
+                    , g.ad_id
+                    , g.ad_nm
+                    , g.ad_length
+                    , g.ch_id
+                    , g.ch_no
+                    , g.ch_nm
+                    , g.brdcst_dt
+                    , g.ori_start_dt
+                    , g.start_dt
+                    , g.end_dt
+                    , g.prgm_id
+                    , g.prgm_start_dt
+                    , g.prgm_end_dt
+    order by    g.start_dt
     </select>
 </mapper>

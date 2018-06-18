@@ -9,7 +9,12 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
@@ -52,10 +57,10 @@ class BmsDatabaseConfig extends DatabaseConfig {
     @Override
     protected void initialize(org.apache.tomcat.jdbc.pool.DataSource dataSource) {
 //        PathMatchingResourcePatternResolver pathResolver = new PathMatchingResourcePatternResolver();
-////        Resource schema = pathResolver.getResource("classpath:script/bms-schema.sql");
-//        Resource data = pathResolver.getResource("classpath:script/bms-user-data.sql");
+//        Resource schema = pathResolver.getResource("classpath:script/bms-schema.sql");
+////        Resource data = pathResolver.getResource("classpath:script/bms-user-data.sql");
 ////        DatabasePopulator databasePopulator = new ResourceDatabasePopulator(schema, data);
-//        DatabasePopulator databasePopulator = new ResourceDatabasePopulator(data);
+//        DatabasePopulator databasePopulator = new ResourceDatabasePopulator(schema);
 //        DatabasePopulatorUtils.execute(databasePopulator, dataSource);
     }
 

@@ -121,7 +121,6 @@ public class TemplatePathSourceHandler implements SourceHandler {
                 }
 
                 int dateRange = 0;
-                int hourRange = 0;
 
                 if (scanRange.contains("d")) {
                     dateRange = Integer.parseInt(scanRange.substring(0, scanRange.indexOf("d")));

@@ -5,11 +5,11 @@ indexConfig:
   uri: /index/BMS_DD_ADMIN_AD_SCHE
 
 sourceConfig:
-  type: ftp
-  server: 10.45.160.82
-  port: 21
-  id: sucnhun
-  password: sucnhun!
+  type: sftp
+  server: 211.45.160.82
+  port: 22
+  id: daisy
+  password: daisy!
   dataConnectionMode: active
   path: /data/ara-bms/admin/${date}/
   pathAttributes:
