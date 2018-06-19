@@ -68,6 +68,23 @@ public class DateUtil {
 
     /**
      * @author devjackie
+     * @Description 현재 날짜 + 2 > next day
+     */
+    public static String getNext2Day() throws Exception {
+
+        String result;
+        try {
+            DateTime dt = new DateTime().plusDays(2).toDateTime();
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+            result = fmt.print(dt);
+        } catch (Exception e) {
+            throw e;
+        }
+        return result;
+    }
+
+    /**
+     * @author devjackie
      * @Description 파라미터 날짜 - 1 > prev day
      */
     public static String getPrevDay(String yyyyMMdd) throws Exception {
@@ -94,6 +111,25 @@ public class DateUtil {
         try {
             DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMdd");
             DateTime dt = dtf.parseDateTime(yyyyMMdd).plusDays(1);
+            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+            fmt.parseDateTime(yyyyMMdd);
+            result = fmt.print(dt);
+        } catch (Exception e) {
+            throw e;
+        }
+        return result;
+    }
+
+    /**
+     * @author devjackie
+     * @Description 파라미터 날짜 + 2 > next day
+     */
+    public static String getNext2Day(String yyyyMMdd) throws Exception {
+
+        String result;
+        try {
+            DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyyMMdd");
+            DateTime dt = dtf.parseDateTime(yyyyMMdd).plusDays(2);
             DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
             fmt.parseDateTime(yyyyMMdd);
             result = fmt.print(dt);

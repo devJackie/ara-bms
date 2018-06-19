@@ -14,7 +14,10 @@ import java.util.Map;
 public interface BmsDdAdTmpResScheMapper {
 
     Map<String, Object> selPrgmScheNextDay(Map<String, Object> param);
+
     List<BmsDdAdTmpResSche> selAdNprgmScheMergeForToDay(Map<String, Object> param);
+
     List<BmsDdAdTmpResSche> selAdNprgmScheMergeForNextDay(Map<String, Object> param);
+
     void insertAdTmpResSche(BmsDdAdTmpResSche bmsDdAdTmpResSche);
 }

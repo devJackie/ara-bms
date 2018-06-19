@@ -10,11 +10,6 @@
         )
     </insert>
 
-    <select id="selAdminScheCheck" parameterType="java.util.LinkedHashMap" resultType="java.lang.Integer">
-        /** selAdminScheCheck **/
-        select count(1) from bms_dd_admin_ad_sche where brdcst_dt = '20180428' limit 1
-    </select>
-
     <select id="selTmpScheNadminScheMergeForToDay" parameterType="java.util.LinkedHashMap" resultType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche">
         /** selTmpScheNadminScheMergeForToDay **/
         select
@@ -24,7 +19,8 @@
             select
                     d.yyyymmdd, d.sche_gubn, d.apln_form_id, d.ad_id, d.ad_nm, d.ad_length, d.ch_id, d.ch_no, d.ch_nm, d.brdcst_dt, d.start_dt, d.end_dt, 'n' as emgy_yn
             from    bms_dd_ad_tmp_res_sche d
-            where   sche_gubn = '1'
+            where   brdcst_dt = #{brdcst_dt}
+            and     sche_gubn = '1'
             and     not exists
             (
                 select
@@ -107,7 +103,8 @@
             select
                     d.yyyymmdd, d.sche_gubn, d.apln_form_id, d.ad_id, d.ad_nm, d.ad_length, d.ch_id, d.ch_no, d.ch_nm, d.brdcst_dt, d.start_dt, d.end_dt, 'n' as emgy_yn
             from    bms_dd_ad_tmp_res_sche d
-            where   sche_gubn = '2'
+            where   brdcst_dt = #{brdcst_dt}
+            and     sche_gubn = '2'
             and     not exists
             (
                 select

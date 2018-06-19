@@ -35,5 +35,4 @@ public class RemoteFileInfo implements Comparator<RemoteFileInfo>, Comparable<Re
     public int compareTo(RemoteFileInfo o) {
         return this.absolutePath.compareTo(o.absolutePath);
     }
-
 }

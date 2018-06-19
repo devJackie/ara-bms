@@ -2,15 +2,20 @@ package com.kthcorp.daisy.bms;
 
 import com.kthcorp.daisy.bms.executor.CommonExecutor;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
+import com.kthcorp.daisy.bms.repository.BmsInitDDLMapper;
+import com.kthcorp.daisy.bms.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.Yaml;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -38,6 +43,11 @@ public class BmsAppRunner implements ApplicationRunner {
         this.bmsMetaProperties = bmsMetaProperties;
     }
 
+    @Autowired
+    BmsInitDDLMapper bmsInitDDLMapper;
+
+    String N1_DAY, N2_DAY;
+
     @Override
     public void run(ApplicationArguments args) {
         try {
@@ -56,6 +66,33 @@ public class BmsAppRunner implements ApplicationRunner {
                 executeDate = args.getOptionValues("executeDate").get(0);
             }
             log.info("executeDate: {}", executeDate);
+
+            // production 일 때 ppas partition 생성
+            if (context.getEnvironment().getActiveProfiles() != null && context.getEnvironment().getActiveProfiles().length > 0) {
+                log.debug("activeProfiles: {}", context.getEnvironment().getActiveProfiles()[0]);
+                if (context.getEnvironment().getActiveProfiles()[0].equalsIgnoreCase("PRODUCTION")) {
+                    if (executeDate != null && executeDate.length() > 0) { // 재처리 수동 날짜가 있을 시 --executeDate=${yyyyMMdd}
+                        N1_DAY = DateUtil.getNextDay(executeDate);
+                        N2_DAY = DateUtil.getNext2Day(executeDate);
+                    } else {
+                        N1_DAY = DateUtil.getNextDay();
+                        N2_DAY = DateUtil.getNext2Day();
+                    }
+                    Map<String, String> map1 = new LinkedHashMap<>();
+                    map1.put("p_date", "p" + N1_DAY);
+                    map1.put("date", N1_DAY);
+
+                    Map<String, String> map2 = new LinkedHashMap<>();
+                    map2.put("p_date", "p" + N2_DAY);
+                    map2.put("date", N2_DAY);
+                    try {
+                        bmsInitDDLMapper.addPartitionForPlus1day(map1);
+                        bmsInitDDLMapper.addPartitionForPlus2day(map2);
+                    } catch (BadSqlGrammarException e) {
+                        log.error("{}", e.getMessage());
+                    }
+                }
+            }
 
             Yaml yaml = new Yaml();
             Map rootConfig = yaml.load(new ClassPathResource("bms-collector.yml").getInputStream());

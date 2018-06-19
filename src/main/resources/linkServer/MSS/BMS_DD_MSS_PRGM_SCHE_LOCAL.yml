@@ -10,12 +10,10 @@ sourceConfig:
   port: 22
   id: devjackie
   password: Tjddydwozl12
-  path: /Users/devjackie/ara-bms/mss/${date}/
+  path: /Users/devjackie/ara-bms/mss/
   pathAttributes:
-  - type: date
-    datePattern: yyyyMMdd
-    scanRange: -40d
-  filePattern: META_DD_ABMS_PRGM_SCHE.DAT$
+  - type: none
+  filePattern: META_DD_ABMS_PRGM_SCHE_([\d+]{8}).DAT$
 
 fileIOConfig:
   type: mss

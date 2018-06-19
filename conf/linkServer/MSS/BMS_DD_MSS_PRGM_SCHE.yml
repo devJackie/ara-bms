@@ -11,12 +11,10 @@ sourceConfig:
   id: daisy
   password: daisy!
   dataConnectionMode: active
-  path: /data/ara-bms/mss/sche/${date}/
+  path: /data/ara-bms/mss/sche/
   pathAttributes:
-  - type: date
-    datePattern: yyyyMMdd
-    scanRange: -0d
-  filePattern: META_DD_ABMS_PRGM_SCHE.DAT$
+  - type: none
+  filePattern: META_DD_ABMS_PRGM_SCHE_([\d+]{8}).DAT$
 
 fileIOConfig:
   type: mss

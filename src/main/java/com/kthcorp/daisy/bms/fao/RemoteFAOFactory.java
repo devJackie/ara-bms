@@ -17,7 +17,6 @@ public class RemoteFAOFactory {
     private static final String NONE = "none";
     private static final String TYPE = "type";
 
-
     public static RemoteFAO createFAO(Map<String, Object> config) throws Exception {
         log.debug("RemoteFAO - createFAO config : {}", config);
         RemoteFAO remoteFSHandler = null;

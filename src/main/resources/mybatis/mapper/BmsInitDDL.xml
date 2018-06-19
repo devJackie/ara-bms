@@ -1,0 +1,25 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kthcorp.daisy.bms.repository.BmsInitDDLMapper">
+
+    <insert id="addPartitionForPlus1day" parameterType="java.util.LinkedHashMap">
+        /** addPartitionForPlus1day **/
+        ALTER TABLE bms_dd_amoeba_record_files ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_media_record_files ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_ats_ad_sche ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_mss_prgm_sche ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_ad_tmp_res_sche ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_admin_ad_sche ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_ad_res_sche ADD PARTITION ${p_date} VALUES(${date});
+    </insert>
+
+    <insert id="addPartitionForPlus2day" parameterType="java.util.LinkedHashMap">
+        /** addPartitionForPlus2day **/
+        ALTER TABLE bms_dd_amoeba_record_files ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_media_record_files ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_ats_ad_sche ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_mss_prgm_sche ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_ad_tmp_res_sche ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_admin_ad_sche ADD PARTITION ${p_date} VALUES(${date});
+        ALTER TABLE bms_dd_ad_res_sche ADD PARTITION ${p_date} VALUES(${date});
+    </insert>
+</mapper>

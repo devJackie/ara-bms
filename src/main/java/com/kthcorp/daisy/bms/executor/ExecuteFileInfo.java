@@ -38,5 +38,4 @@ public class ExecuteFileInfo {
     public void putExecuteResult(File executedFile, String sinkPath) {
         executeResult.put(executedFile, sinkPath);
     }
-
 }

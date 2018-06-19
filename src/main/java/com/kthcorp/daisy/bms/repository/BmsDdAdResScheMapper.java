@@ -14,8 +14,9 @@ import java.util.Map;
 @BmsSchema
 public interface BmsDdAdResScheMapper {
 
-    int selAdminScheCheck(HashMap<String, Object> param);
     List<BmsDdAdResSche> selTmpScheNadminScheMergeForToDay(Map<String, Object> param);
+
     List<BmsDdAdResSche> selTmpScheNadminScheMergeForNextDay(Map<String, Object> param);
+
     void insertAdResSche(BmsDdAdResSche bmsDdAdResSche);
 }

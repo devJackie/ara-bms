@@ -45,8 +45,8 @@ bms-meta:
     res-sche-fin-filename-suf-2: _00-02.FIN
   zookeeper-info:
 #    mss-uri: /index/BMS_DD_MSS_PRGM_SCHE
-    mss-prgm-sche-step1-uri: /mss/PRGM_SCHE/STEP1
-    mss-prgm-sche-step2-uri: /mss/PRGM_SCHE/STEP2
+    mss-prgm-sche-step1-uri: /bms/RES_SCHE/STEP1
+    mss-prgm-sche-step2-uri: /bms/RES_SCHE/STEP2
 
 
 --- # develop
@@ -91,8 +91,8 @@ bms-meta:
     res-sche-fin-filename-suf-2: _00-02.FIN
   zookeeper-info:
 #    mss-uri: /index/BMS_DD_MSS_PRGM_SCHE
-    mss-prgm-sche-step1-uri: /mss/PRGM_SCHE/STEP1
-    mss-prgm-sche-step2-uri: /mss/PRGM_SCHE/STEP2
+    mss-prgm-sche-step1-uri: /bms/RES_SCHE/STEP1
+    mss-prgm-sche-step2-uri: /bms/RES_SCHE/STEP2
 
 
 --- # production
@@ -137,5 +137,5 @@ bms-meta:
     res-sche-fin-filename-suf-2: _00-02.FIN
   zookeeper-info:
 #    mss-uri: /index/BMS_DD_MSS_PRGM_SCHE
-    mss-prgm-sche-step1-uri: /mss/PRGM_SCHE/STEP1
-    mss-prgm-sche-step2-uri: /mss/PRGM_SCHE/STEP2
+    mss-prgm-sche-step1-uri: /bms/RES_SCHE/STEP1
+    mss-prgm-sche-step2-uri: /bms/RES_SCHE/STEP2

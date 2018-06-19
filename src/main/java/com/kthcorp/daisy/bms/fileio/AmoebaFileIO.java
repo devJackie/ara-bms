@@ -83,17 +83,17 @@ public class AmoebaFileIO extends BaseFileIO {
     @Override
     public List<Map<String, Object>> readAmeobaIdxRecInfoList(String[] fileArray) throws Exception {
 
-        // firFileInfo : [AAAAAAAAAA]
-        // secFileInfo : [20180517053610, 20180517, 0109, 32]
-        // thiFileInfo : [201804019, 180416GSPB30]
-        List<String> firFileInfo = new ArrayList<>(Arrays.asList(fileArray[0]));
-        log.debug("firFileInfo : {}", firFileInfo);
+        // fileArray[0] : [AAAAAAAAAA]
+        // fileArray[1] : [20180517053610, 20180517, 0109, 32]
+        // fileArray[2] : [201804019, 180416GSPB30]
+        List<String> fileInfo = new ArrayList<>(Arrays.asList(fileArray[0]));
+        log.debug("fileInfo : {}", fileInfo);
 
         List<Map<String, Object>> resultRecInfoFiles = new ArrayList<>();
 
-        for (int i = 0; i < firFileInfo.size(); i++) {
+        for (int i = 0; i < fileInfo.size(); i++) {
             Map<String, Object> map = new LinkedHashMap<>();
-            map.put("fileId", firFileInfo.get(i));
+            map.put("fileId", fileInfo.get(i));
             String temp1 = fileArray[1];
             String[] array1 = temp1.split("_");
             map.put("startDt", array1[0]);
