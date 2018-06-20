@@ -53,12 +53,16 @@ public class AtsFileIO extends BaseFileIO {
                 map.put("brdcst_dt", array[3]);
                 map.put("yyyymmdd", MapUtils.getString(map, "brdcst_dt") != null ? map.get("brdcst_dt") : "");
                 map.put("ch_id", array[4]);
-                map.put("hhmmss", array[5]);
-                map.put("ad_order", array[6]);
-                map.put("ad_id", array[7]);
-                map.put("ad_nm", array[8]);
-                map.put("ad_length", array[9]);
-                map.put("apln_form_id", array[10]);
+                map.put("formation_no", array[5]);
+                map.put("formation_id", array[6]);
+                map.put("hhmmss", array[7]);
+                map.put("ad_order", array[8]);
+                map.put("ad_id", array[9]);
+                map.put("ad_nm", array[10]);
+                map.put("ad_length", array[11]);
+                map.put("apln_form_id", array[12]);
+                map.put("ad_type", array[13]);
+                map.put("dt_regist", array[14]);
                 mapList.add(map);
             }
         } catch (IOException e) {

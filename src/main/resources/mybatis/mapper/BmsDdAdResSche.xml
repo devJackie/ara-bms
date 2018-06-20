@@ -54,7 +54,7 @@
                 --and     substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) <![CDATA[ < <= ]]> substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
                 --and     substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) = substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
                 ) c
-                where   c.apln_form_id = d.apln_form_id and c.ad_id = d.ad_id and c.ch_id = d.ch_id
+                where   c.apln_form_id = d.apln_form_id and c.ad_id = d.ad_id and c.ch_id = d.ch_id and c.ch_no = d.ch_no
             )
             union all
             select
@@ -136,7 +136,7 @@
                     )
                     or substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) = substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
                 ) c
-                where   c.apln_form_id = d.apln_form_id and c.ad_id = d.ad_id and c.ch_id = d.ch_id
+                where   c.apln_form_id = d.apln_form_id and c.ad_id = d.ad_id and c.ch_id = d.ch_id and c.ch_no = d.ch_no
             )
             union all
             select

@@ -74,7 +74,7 @@
                         d.yyyymmdd, d.ch_id, d.ch_nm, d.brdcst_dt, d.ch_no, d.apln_form_id
                         , d.ad_id, d.ad_nm, d.ad_length
                         , d.start_dt as ori_start_dt
-                        , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900) as start_dt
+                        , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900) as start_dt -- 프로그램 종료 시간 - 15분 = 광고 시작 시간
                         --, to_char(to_timestamp((extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900))::timestamp,'YYYY-MM-DD HH24:MI:SS') as start_dt_cvt
                         , e.prgm_id
                         , e.prgm_nm
@@ -96,7 +96,8 @@
                         where   brdcst_dt = #{brdcst_dt}
                         and     otv_ch_no is not null
                         and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
-                        and     ad_length not in ('120') -- 120초 인포모셜 광고 제외
+                        -- and     ad_length not in ('120') -- 120초 인포모셜 광고 제외, ad_type 넣어주기전 로직
+                        and     ad_type not in ('002') -- 120초 인포모셜 광고 제외
                         and     otv_ch_no in
                         (
                             select
@@ -126,7 +127,8 @@
                         where   brdcst_dt = #{brdcst_dt}
                         and     ots_ch_no is not null
                         and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
-                        and     ad_length not in ('120') -- 120초 인포모셜 광고 제외
+                        -- and     ad_length not in ('120') -- 120초 인포모셜 광고 제외, ad_type 넣어주기전 로직
+                        and     ad_type not in ('002') -- 120초 인포모셜 광고 제외
                         and     ots_ch_no in
                         (
                             select
@@ -221,7 +223,7 @@
                         d.yyyymmdd, d.ch_id, d.ch_nm, d.brdcst_dt, d.ch_no, d.apln_form_id
                         , d.ad_id, d.ad_nm, d.ad_length
                         , d.start_dt as ori_start_dt
-                        , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900) as start_dt
+                        , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900) as start_dt -- 프로그램 종료 시간 - 15분 = 광고 시작 시간
                         --, to_char(to_timestamp((extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900))::timestamp,'YYYY-MM-DD HH24:MI:SS') as start_dt_cvt
                         , e.prgm_id
                         , e.prgm_nm
@@ -243,7 +245,8 @@
                         where   brdcst_dt = #{brdcst_dt}
                         and     otv_ch_no is not null
                         and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
-                        and     ad_length not in ('120') -- 120초 인포모셜 광고 제외
+                        -- and     ad_length not in ('120') -- 120초 인포모셜 광고 제외, ad_type 넣어주기전 로직
+                        and     ad_type not in ('002') -- 120초 인포모셜 광고 제외
                         and     otv_ch_no in
                         (
                             select
@@ -273,7 +276,8 @@
                         where   brdcst_dt = #{brdcst_dt}
                         and     ots_ch_no is not null
                         and     substr(lpad(hhmmss::text, 8, '0'),3,2) != '30' -- 30분 단위 광고 제외
-                        and     ad_length not in ('120') -- 120초 인포모셜 광고 제외
+                        -- and     ad_length not in ('120') -- 120초 인포모셜 광고 제외, ad_type 넣어주기전 로직
+                        and     ad_type not in ('002') -- 120초 인포모셜 광고 제외
                         and     ots_ch_no in
                         (
                             select
@@ -337,4 +341,5 @@
                     , g.prgm_end_dt
     order by    g.start_dt
     </select>
+
 </mapper>

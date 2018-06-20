@@ -13,17 +13,21 @@ import lombok.ToString;
 public class BmsDdAtsAdSche {
 
     private String yyyymmdd;
-    private String apln_form_id;
-    private String ad_id;
-    private String ad_nm;
-    private String ad_length;
-    private String ad_order;
-    private String ch_id;
     private String otv_ch_no;
     private String ots_ch_no;
     private String ch_nm;
     private String brdcst_dt;
+    private String ch_id;
+    private String formation_no;
+    private String formation_id;
     private String hhmmss;
+    private String ad_order;
+    private String ad_id;
+    private String ad_nm;
+    private String ad_length;
+    private String apln_form_id;
+    private String ad_type;
+    private String dt_regist;
 
     public BmsDdAtsAdSche() {}
 }

@@ -30,7 +30,7 @@ public class FileIOFactory {
     @Scope("prototype")
     public FileIO fileIO(Map<String, Object> config) throws Exception {
         log.debug("config -> {}", config);
-        String indexType = (String) config.get("type");
+        String indexType = (String) config.get(bmsMetaProperties.getBmsMeta().get("common").get("type"));
         if ("AMOEBA".equalsIgnoreCase(indexType)) {
             log.info("Create AmoebaFileIO");
             return new AmoebaFileIO(config, bmsMetaProperties);

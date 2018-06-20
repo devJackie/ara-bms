@@ -14,7 +14,7 @@ sourceConfig:
   path: /data/ara-bms/ats/sche/
   pathAttributes:
   - type: none
-  filePattern: ad_sche_([\d+]{8}).DAT$
+  filePattern: ad_bms_sche_([\d+]{8}).DAT$
 
 fileIOConfig:
   type: ats
@@ -22,7 +22,7 @@ fileIOConfig:
 
 headerExtractConfig:
 - type: filenameDate
-  regex: ad_sche_([\d+]{8}).DAT$
+  regex: ad_bms_sche_([\d+]{8}).DAT$
   datePattern: yyyyMMdd
 
 parserConfig:

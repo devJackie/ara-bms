@@ -14,7 +14,7 @@
         /** insertAtsAdSche **/
         <!--<foreach item="item" collection="mapList" index="index" open="INSERT ALL " separator=" " close="">-->
         insert into bms_dd_ats_ad_sche (
-            yyyymmdd, ots_ch_no, otv_ch_no, ch_nm, brdcst_dt, ch_id, hhmmss, ad_order, ad_id, ad_nm, ad_length, apln_form_id, reg_dt
+            yyyymmdd, ots_ch_no, otv_ch_no, ch_nm, brdcst_dt, ch_id, formation_no, formation_id, hhmmss, ad_order, ad_id, ad_nm, ad_length, apln_form_id, ad_type, dt_regist, reg_dt
         ) values
         <foreach collection="mapList" item="item" open="" separator="," close="" >
             (
@@ -24,12 +24,16 @@
                 #{item.ch_nm},
                 #{item.brdcst_dt},
                 #{item.ch_id},
+                #{item.formation_no},
+                #{item.formation_id},
                 #{item.hhmmss},
                 #{item.ad_order},
                 #{item.ad_id},
                 #{item.ad_nm},
                 #{item.ad_length},
                 #{item.apln_form_id},
+                #{item.ad_type},
+                #{item.dt_regist},
                 now()
             )
         </foreach>

@@ -241,7 +241,7 @@ public class ExecuteService {
 
         // get mss prgm sche zookeeper index
         Map<String, Object> config = new LinkedHashMap<>();
-        config.put("uri", bmsMetaProperties.getBmsMeta().get("zookeeper-info").get("mss-prgm-sche-step1-uri"));
+        config.put("uri", bmsMetaProperties.getBmsMeta().get("zookeeper-info").get("bms-sche-step1-uri"));
         IndexStore indexStoreStep1 = context.getBean(IndexStore.class, config);
         IndexStore indexStoreStep2 = null;
 
@@ -316,7 +316,7 @@ public class ExecuteService {
 
             // 긴급 편성표는 최상위로 편성될 수 있게 생성(긴급편성표 시간대의 편성표는 다 제거) 하는데 이미 긴급 편성표의 데이터가 존재하면 스킵, 아니면 db 저장
             config = new LinkedHashMap<>();
-            config.put("uri", bmsMetaProperties.getBmsMeta().get("zookeeper-info").get("mss-prgm-sche-step2-uri"));
+            config.put("uri", bmsMetaProperties.getBmsMeta().get("zookeeper-info").get("bms-sche-step2-uri"));
             indexStoreStep2 = context.getBean(IndexStore.class, config);
 
             // 편성표는 두벌 만들어야 함
