@@ -38,7 +38,6 @@ public class AtsFileIO extends BaseFileIO {
 
         List<Map<String, Object>>  mapList = new ArrayList<>();
         BufferedReader in = null;
-        // https://netjs.blogspot.kr/2016/06/reading-delimited-file-in-java-using-scanner.html
 
         try {
             in = new BufferedReader(new InputStreamReader(new FileInputStream(remoteFile), textEncoding));
@@ -57,6 +56,7 @@ public class AtsFileIO extends BaseFileIO {
                 map.put("formation_id", array[6]);
                 map.put("hhmmss", array[7]);
                 map.put("ad_order", array[8]);
+//                map.put("ad_id", array[9].startsWith("AD", 0) ? array[9].substring(2) : array[9]); //prefix "AD" 문자열 제거
                 map.put("ad_id", array[9]);
                 map.put("ad_nm", array[10]);
                 map.put("ad_length", array[11]);
