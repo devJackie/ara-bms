@@ -65,11 +65,11 @@ public class TemplatePathSourceHandler implements SourceHandler {
         log.info("check fileScanRange : {}", chkFsr);
         if (chkFsr) {
             for (String globPath : paths) {
-                remoteFileSet.addAll(remoteFSHelper.getListRemoteFiles(globPath, (String) attr.get(FILE_SCAN_RANGE), (String) attr.get(DATE_PATTERN)));
+                remoteFileSet.addAll(remoteFSHelper.getListRemoteFiles(globPath, filePattern, (String) attr.get(FILE_SCAN_RANGE), (String) attr.get(DATE_PATTERN)));
             }
         } else { // 원격 전체 파일을 get 이거나 fileScanRange 아니거나 scanRange 이거나
             for (String globPath : paths) {
-                remoteFileSet.addAll(remoteFSHelper.getListRemoteFiles(globPath));
+                remoteFileSet.addAll(remoteFSHelper.getListRemoteFiles(globPath, filePattern));
             }
         }
 

@@ -158,7 +158,7 @@ public abstract class BaseExecutor implements CommonExecutor {
                         if ("storedAmoebaRecInfo".equalsIgnoreCase((String) config.get("type"))) {
                             executeService.executeAmoebaRecFileCollectTask(executeFileInfo, sinkHandler, parsers, fileIO);
                         } else if ("storedMediaRecInfo".equalsIgnoreCase((String) config.get("type"))) {
-                            // 2. skylife 에서 제공하는 미디어 서버 광고 파일 수집 및 db 저장 (분당 ara 서버에 put 방식으로 진행 예정)
+                            // 2. skylife 에서 제공하는 미디어 서버 광고 파일 수집 및 db 저장 (분당 ara 서버에 put 방식으로 진행)
                             executeService.executeMediaRecFileCollectTask(executeFileInfo, sinkHandler, parsers, fileIO);
                         } else if ("storedAtsAdScheInfo".equalsIgnoreCase((String) config.get("type"))) {
                             // 3. 선천 epg 수집, 모듈 개발

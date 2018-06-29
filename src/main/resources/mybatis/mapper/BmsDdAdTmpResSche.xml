@@ -4,9 +4,9 @@
     <insert id="insertAdTmpResSche" parameterType="BmsDdAdTmpResSche">
     /** insertAdTmpResSche **/
         insert into bms_dd_ad_tmp_res_sche (
-            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, ori_start_dt, start_dt, end_dt, prgm_id, prgm_start_dt, prgm_end_dt
+            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, ori_start_dt, start_dt, end_dt, prgm_id, prgm_start_dt, prgm_end_dt, reg_dt
         ) values (
-            #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{ori_start_dt}, #{start_dt}, #{end_dt}, #{prgm_id}, #{prgm_start_dt}, #{prgm_end_dt}
+            #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{ori_start_dt}, #{start_dt}, #{end_dt}, #{prgm_id}, #{prgm_start_dt}, #{prgm_end_dt}, now()
         )
         <!--insert into bms_dd_ad_tmp_res_sche (-->
             <!--yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, ori_start_dt, start_dt, end_dt, prgm_id, prgm_start_dt, prgm_end_dt-->

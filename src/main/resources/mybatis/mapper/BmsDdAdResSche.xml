@@ -4,9 +4,9 @@
     <insert id="insertAdResSche" parameterType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche">
         /** insertAdResSche **/
         insert into bms_dd_ad_res_sche (
-            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn
+            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn, reg_dt
         ) values (
-            #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{start_dt}, #{end_dt}, #{emgy_yn}
+            #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{start_dt}, #{end_dt}, #{emgy_yn}, now()
         )
     </insert>
 

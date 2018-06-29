@@ -47,7 +47,7 @@ public class SftpFAO implements RemoteFAO {
 
     @Override
     public List<RemoteFileInfo> getListRemoteFiles(String remotePath) throws Exception {
-        ArrayList<RemoteFileInfo> ret = new ArrayList<RemoteFileInfo>();
+        ArrayList<RemoteFileInfo> ret = new ArrayList<>();
         try {
             Vector vv = sftpClient.ls(remotePath);
             if (vv != null) {
@@ -77,7 +77,7 @@ public class SftpFAO implements RemoteFAO {
 
     @Override
     public List<RemoteFileInfo> getListRemoteFiles(String remotePath, Pattern p) throws Exception {
-        ArrayList<RemoteFileInfo> ret = new ArrayList<RemoteFileInfo>();
+        ArrayList<RemoteFileInfo> ret = new ArrayList<>();
         try {
             Vector vv = sftpClient.ls(remotePath);
             if (vv != null) {
@@ -122,7 +122,7 @@ public class SftpFAO implements RemoteFAO {
             dateList.add(sdf.format(calendar.getTime()));
         }
 
-        ArrayList<RemoteFileInfo> ret = new ArrayList<RemoteFileInfo>();
+        ArrayList<RemoteFileInfo> ret = new ArrayList<>();
         try {
 
             Vector vv = sftpClient.ls(remotePath);
@@ -171,7 +171,7 @@ public class SftpFAO implements RemoteFAO {
             dateList.add(sdf.format(calendar.getTime()));
         }
 
-        ArrayList<RemoteFileInfo> ret = new ArrayList<RemoteFileInfo>();
+        ArrayList<RemoteFileInfo> ret = new ArrayList<>();
         try {
 
             Vector vv = sftpClient.ls(remotePath);

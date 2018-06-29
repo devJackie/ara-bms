@@ -13,7 +13,7 @@
     <insert id="insertMssPrgmSche" parameterType="java.util.LinkedHashMap">
         /** insertMssPrgmSche **/
         insert into bms_dd_mss_prgm_sche (
-            yyyymmdd, ch_no, prgm_id, prgm_nm, screen_gubn, prgm_start_dt, prgm_end_dt
+            yyyymmdd, ch_no, prgm_id, prgm_nm, screen_gubn, prgm_start_dt, prgm_end_dt, reg_dt
         ) values
         <foreach collection="mapList" item="item" open="" separator="," close="" >
             (
@@ -23,7 +23,8 @@
                 #{item.prgm_nm},
                 #{item.screen_gubn},
                 #{item.prgm_start_dt},
-                #{item.prgm_end_dt}
+                #{item.prgm_end_dt},
+                now()
             )
         </foreach>
     </insert>

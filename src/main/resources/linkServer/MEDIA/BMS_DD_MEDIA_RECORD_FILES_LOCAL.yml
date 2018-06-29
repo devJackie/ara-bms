@@ -13,6 +13,7 @@ sourceConfig:
   path: /Users/devjackie/ara-bms/media/
   pathAttributes:
   - type: none
+  filePattern: AD(\d+)[a-zA-Z]+(\d+).[mp4|FIN]+
 
 fileIOConfig:
   type: none

@@ -13,7 +13,7 @@ sourceConfig:
   path: /data/ara-bms/ats/sche/
   pathAttributes:
   - type: none
-  filePattern: ad_bms_sche_([\d+]{8}).DAT$
+  filePattern: ad_bms_sche_([\d+]{8}).[DAT|FIN]+
 
 fileIOConfig:
   type: ats
