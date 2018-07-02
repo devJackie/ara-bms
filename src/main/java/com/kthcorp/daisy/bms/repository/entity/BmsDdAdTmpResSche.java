@@ -18,6 +18,7 @@ public class BmsDdAdTmpResSche {
     private String ad_id;
     private String ad_nm;
     private String ad_length;
+    private String ad_order;
     private String ch_id;
     private String ch_no;
     private String ch_nm;
@@ -26,6 +27,7 @@ public class BmsDdAdTmpResSche {
     private String start_dt;
     private String end_dt;
     private String prgm_id;
+    private String prgm_nm;
     private String prgm_start_dt;
     private String prgm_end_dt;
 

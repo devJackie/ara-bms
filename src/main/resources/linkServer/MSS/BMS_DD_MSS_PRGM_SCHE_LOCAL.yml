@@ -10,7 +10,7 @@ sourceConfig:
   port: 22
   id: devjackie
   password: Tjddydwozl12
-  path: /Users/devjackie/ara-bms/mss/
+  path: /Users/devjackie/ara-bms/mss/sche/
   pathAttributes:
   - type: none
   filePattern: META_DD_ABMS_PRGM_SCHE_([\d+]{8}).DAT$

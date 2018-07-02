@@ -18,6 +18,7 @@ public class BmsDdAdResSche {
     private String ad_id;
     private String ad_nm;
     private String ad_length;
+    private String ad_order;
     private String ch_id;
     private String ch_no;
     private String ch_nm;

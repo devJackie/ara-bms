@@ -10,7 +10,7 @@ sourceConfig:
   port: 22
   id: devjackie
   password: Tjddydwozl12
-  path: /Users/devjackie/ara-bms/ats/
+  path: /Users/devjackie/ara-bms/ats/sche/
   pathAttributes:
   - type: none
   filePattern: ad_bms_sche_([\d+]{8}).[DAT|FIN]+

@@ -4,35 +4,35 @@
     <insert id="insertAdResSche" parameterType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche">
         /** insertAdResSche **/
         insert into bms_dd_ad_res_sche (
-            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn, reg_dt
+            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn, reg_dt
         ) values (
-            #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{start_dt}, #{end_dt}, #{emgy_yn}, now()
+            #{yyyymmdd}, #{sche_gubn}, #{apln_form_id}, #{ad_id}, #{ad_nm}, #{ad_length}, #{ad_order}, #{ch_id}, #{ch_no}, #{ch_nm}, #{brdcst_dt}, #{start_dt}, #{end_dt}, #{emgy_yn}, now()
         )
     </insert>
 
     <select id="selTmpScheNadminScheMergeForToDay" parameterType="java.util.LinkedHashMap" resultType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche">
         /** selTmpScheNadminScheMergeForToDay **/
         select
-                e.yyyymmdd, e.sche_gubn, e.apln_form_id, e.ad_id, e.ad_nm, e.ad_length, e.ch_id, e.ch_no, e.ch_nm, e.brdcst_dt, e.start_dt, e.end_dt, e.emgy_yn
+                e.yyyymmdd, e.sche_gubn, e.apln_form_id, e.ad_id, e.ad_nm, e.ad_length, e.ad_order, e.ch_id, e.ch_no, e.ch_nm, e.brdcst_dt, e.start_dt, e.end_dt, e.emgy_yn
         from
         (
             select
-                    d.yyyymmdd, d.sche_gubn, d.apln_form_id, d.ad_id, d.ad_nm, d.ad_length, d.ch_id, d.ch_no, d.ch_nm, d.brdcst_dt, d.start_dt, d.end_dt, 'n' as emgy_yn
+                    d.yyyymmdd, d.sche_gubn, d.apln_form_id, d.ad_id, d.ad_nm, d.ad_length, d.ad_order, d.ch_id, d.ch_no, d.ch_nm, d.brdcst_dt, d.start_dt, d.end_dt, 'n' as emgy_yn
             from    bms_dd_ad_tmp_res_sche d
             where   brdcst_dt = #{brdcst_dt}
             and     sche_gubn = '1'
             and     not exists
             (
                 select
-                        c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt
+                        c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ad_order, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt
                 from
                 (
                     select
-                            a.yyyymmdd, a.sche_gubn, a.apln_form_id, a.ad_id, a.ad_nm, a.ad_length, a.ch_id, a.ch_no, a.ch_nm, a.brdcst_dt, a.start_dt, a.end_dt
+                            a.yyyymmdd, a.sche_gubn, a.apln_form_id, a.ad_id, a.ad_nm, a.ad_length, a.ad_order, a.ch_id, a.ch_no, a.ch_nm, a.brdcst_dt, a.start_dt, a.end_dt
                     from
                     (
                         select
-                                yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
+                                yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
                         from    bms_dd_ad_tmp_res_sche
                         where   brdcst_dt = #{brdcst_dt}
                         and     sche_gubn = '1'
@@ -40,7 +40,7 @@
                     join
                     (
                         select
-                                yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
+                                yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, '1'::text as ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
                         from    bms_dd_admin_ad_sche where brdcst_dt = #{brdcst_dt}
                     ) b
                     on a.brdcst_dt = b.brdcst_dt
@@ -58,15 +58,15 @@
             )
             union all
             select
-                    c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt, c.emgy_yn
+                    c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ad_order, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt, c.emgy_yn
             from
             (
                 select
-                        b.yyyymmdd, a.sche_gubn, b.apln_form_id, b.ad_id, b.ad_nm, b.ad_length, b.ch_id, b.ch_no, b.ch_nm, b.brdcst_dt, b.start_dt, b.end_dt, b.emgy_yn
+                        b.yyyymmdd, a.sche_gubn, b.apln_form_id, b.ad_id, b.ad_nm, b.ad_length, b.ad_order, b.ch_id, b.ch_no, b.ch_nm, b.brdcst_dt, b.start_dt, b.end_dt, b.emgy_yn
                 from
                 (
                     select
-                            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
+                            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
                     from    bms_dd_ad_tmp_res_sche
                     where   brdcst_dt = #{brdcst_dt}
                     and     sche_gubn = '1'
@@ -74,7 +74,7 @@
                 join
                 (
                     select
-                            yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn
+                            yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, '1'::text as ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn
                     from    bms_dd_admin_ad_sche where brdcst_dt = #{brdcst_dt}
                 ) b
                 on a.brdcst_dt = b.brdcst_dt
@@ -88,35 +88,35 @@
             --and     substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) <![CDATA[ <= ]]> substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
             --and     substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) = substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
             ) c
-            group by    c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt, c.emgy_yn
+            group by    c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ad_order, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt, c.emgy_yn
         ) e
-        group by    e.yyyymmdd, e.sche_gubn, e.apln_form_id, e.ad_id, e.ad_nm, e.ad_length, e.ch_id, e.ch_no, e.ch_nm, e.brdcst_dt, e.start_dt, e.end_dt, e.emgy_yn
-        order by    e.brdcst_dt, e.start_dt, e.end_dt
+        group by    e.yyyymmdd, e.sche_gubn, e.apln_form_id, e.ad_id, e.ad_nm, e.ad_length, e.ad_order, e.ch_id, e.ch_no, e.ch_nm, e.brdcst_dt, e.start_dt, e.end_dt, e.emgy_yn
+        order by    e.start_dt, e.ch_no, e.ad_order
     </select>
 
     <select id="selTmpScheNadminScheMergeForNextDay" parameterType="java.util.LinkedHashMap" resultType="com.kthcorp.daisy.bms.repository.entity.BmsDdAdResSche">
         /** selTmpScheNadminScheMergeForNextDay **/
         select
-                e.yyyymmdd, e.sche_gubn, e.apln_form_id, e.ad_id, e.ad_nm, e.ad_length, e.ch_id, e.ch_no, e.ch_nm, e.brdcst_dt, e.start_dt, e.end_dt, e.emgy_yn
+                e.yyyymmdd, e.sche_gubn, e.apln_form_id, e.ad_id, e.ad_nm, e.ad_length, e.ad_order, e.ch_id, e.ch_no, e.ch_nm, e.brdcst_dt, e.start_dt, e.end_dt, e.emgy_yn
         from
         (
             select
-                    d.yyyymmdd, d.sche_gubn, d.apln_form_id, d.ad_id, d.ad_nm, d.ad_length, d.ch_id, d.ch_no, d.ch_nm, d.brdcst_dt, d.start_dt, d.end_dt, 'n' as emgy_yn
+                    d.yyyymmdd, d.sche_gubn, d.apln_form_id, d.ad_id, d.ad_nm, d.ad_length, d.ad_order, d.ch_id, d.ch_no, d.ch_nm, d.brdcst_dt, d.start_dt, d.end_dt, 'n' as emgy_yn
             from    bms_dd_ad_tmp_res_sche d
             where   brdcst_dt = #{brdcst_dt}
             and     sche_gubn = '2'
             and     not exists
             (
                 select
-                        c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt
+                        c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ad_order, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt
                 from
                 (
                     select
-                            a.yyyymmdd, a.sche_gubn, a.apln_form_id, a.ad_id, a.ad_nm, a.ad_length, a.ch_id, a.ch_no, a.ch_nm, a.brdcst_dt, a.start_dt, a.end_dt
+                            a.yyyymmdd, a.sche_gubn, a.apln_form_id, a.ad_id, a.ad_nm, a.ad_length, a.ad_order, a.ch_id, a.ch_no, a.ch_nm, a.brdcst_dt, a.start_dt, a.end_dt
                     from
                     (
                         select
-                                yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
+                                yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
                         from    bms_dd_ad_tmp_res_sche
                         where   brdcst_dt = #{brdcst_dt}
                         and     sche_gubn = '2'
@@ -124,7 +124,7 @@
                     join
                     (
                         select
-                                yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
+                                yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, '1'::text as ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
                         from    bms_dd_admin_ad_sche where brdcst_dt = #{brdcst_dt}
                     ) b
                     on a.brdcst_dt = b.brdcst_dt
@@ -140,15 +140,15 @@
             )
             union all
             select
-                    c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt, c.emgy_yn
+                    c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ad_order, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt, c.emgy_yn
             from
             (
                 select
-                        b.yyyymmdd, a.sche_gubn, b.apln_form_id, b.ad_id, b.ad_nm, b.ad_length, b.ch_id, b.ch_no, b.ch_nm, b.brdcst_dt, b.start_dt, b.end_dt, b.emgy_yn
+                        b.yyyymmdd, a.sche_gubn, b.apln_form_id, b.ad_id, b.ad_nm, b.ad_length, b.ad_order, b.ch_id, b.ch_no, b.ch_nm, b.brdcst_dt, b.start_dt, b.end_dt, b.emgy_yn
                 from
                 (
                     select
-                            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
+                            yyyymmdd, sche_gubn, apln_form_id, ad_id, ad_nm, ad_length, ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
                     from    bms_dd_ad_tmp_res_sche
                     where   brdcst_dt = #{brdcst_dt}
                     and     sche_gubn = '2'
@@ -156,7 +156,7 @@
                 join
                 (
                     select
-                            yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn
+                            yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, '1'::text as ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn
                     from    bms_dd_admin_ad_sche where brdcst_dt = #{brdcst_dt}
                 ) b
                 on a.brdcst_dt = b.brdcst_dt
@@ -168,10 +168,10 @@
                 )
                 or substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) = substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
             ) c
-            group by    c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt, c.emgy_yn
+            group by    c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ad_order, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt, c.emgy_yn
         ) e
-        group by    e.yyyymmdd, e.sche_gubn, e.apln_form_id, e.ad_id, e.ad_nm, e.ad_length, e.ch_id, e.ch_no, e.ch_nm, e.brdcst_dt, e.start_dt, e.end_dt, e.emgy_yn
-        order by    e.brdcst_dt, e.start_dt, e.end_dt
+        group by    e.yyyymmdd, e.sche_gubn, e.apln_form_id, e.ad_id, e.ad_nm, e.ad_length, e.ad_order, e.ch_id, e.ch_no, e.ch_nm, e.brdcst_dt, e.start_dt, e.end_dt, e.emgy_yn
+        order by    e.start_dt, e.ch_no, e.ad_order
     </select>
 
 </mapper>

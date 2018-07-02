@@ -76,6 +76,7 @@ public class FileUtil {
                 strList.add(lines.getAd_id());
                 strList.add(lines.getAd_nm());
                 strList.add(lines.getAd_length());
+                strList.add(lines.getAd_order());
                 strList.add(lines.getCh_id());
                 strList.add(lines.getCh_no());
                 strList.add(lines.getCh_nm());
