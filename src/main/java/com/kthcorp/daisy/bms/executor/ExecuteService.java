@@ -271,7 +271,7 @@ public class ExecuteService {
             log.debug("{}, {}", NEXT_DAY, NextDayExistStep1);
 
             try {
-                // mss 의 금일 편성표 있으면 광고 편성표와 매있을 때 생성, ex) 4월 28일 기준 -> 금일 4월 28일 02시 ~ 24시
+                // 임시 편성표 집계) mss 의 금일 편성표 있고 광고 편성표와 매핑됐을 때 생성, ex) 4월 28일 기준 -> 금일 4월 28일 02시 ~ 24시
                 log.info("STEP1 -> /bms/RES_SCHE/STEP1/{}/1", TO_DAY);
                 if (!ToDayExistStep1.contains("02-24")) { // zookeeper index 존재 유무 체크
                     List<BmsDdAdTmpResSche> tmpResScheList = bmsDdAdTmpResScheMapper.selAdNprgmScheMergeForToDay(map);
@@ -285,7 +285,7 @@ public class ExecuteService {
                     }
                 }
 
-                // mss 의 익일 편성표가 있을 때 생성, ex) 4월 28일 기준 -> 익일 4월 29일 00시 ~ 02시
+                // 임시 편성표 집계) mss 의 익일 편성표 있고 광고 편성표와 매핑됐을 때 생성, ex) 4월 28일 기준 -> 익일 4월 29일 00시 ~ 02시
                 log.info("STEP1 -> /bms/RES_SCHE/STEP1/{}/1", NEXT_DAY);
                 if (NEXT_DAY.equals(latelyMap.get("lately_day")) && !NextDayExistStep1.contains("00-02")) {
                     List<BmsDdAdTmpResSche> tmpResScheList = bmsDdAdTmpResScheMapper.selAdNprgmScheMergeForNextDay(map);
@@ -330,6 +330,7 @@ public class ExecuteService {
             List<BmsDdAdResSche> resScheList = new ArrayList<>();
             Map<String, Object> args = new LinkedHashMap<>();
             try {
+                // 최종 편성표 집계) mss 의 금일 편성표 있고 광고 편성표와 매핑됐을 때 생성, ex) 4월 28일 기준 -> 금일 4월 28일 02시 ~ 24시
                 log.info("STEP2 -> /bms/RES_SCHE/STEP2/{}/1", TO_DAY);
                 if (ToDayExistStep1.contains("02-24") && !ToDayExistStep2.contains("02-24")) { // step1, step2 zookeeper index 존재 유무 체크
                     resScheList = bmsDdAdResScheMapper.selTmpScheNadminScheMergeForToDay(map);
@@ -361,7 +362,7 @@ public class ExecuteService {
 
                 resScheList.clear();
                 args.clear();
-                // mss 의 익일 편성표가 있을 때 생성, ex) 4월 28일 기준 -> 익일 4월 29일 00시 ~ 02시
+                // 최종 편성표 집계) mss 의 익일 편성표 있고 광고 편성표와 매핑됐을 때 생성, ex) 4월 28일 기준 -> 익일 4월 29일 00시 ~ 02시
                 log.info("STEP2 -> /bms/RES_SCHE/STEP2/{}/1", NEXT_DAY);
                 if (NEXT_DAY.equals(latelyMap.get("lately_day")) &&
                         (NextDayExistStep1.contains("00-02") && !NextDayExistStep2.contains("00-02"))) { // 익일 편성표, step1, step2 zookeeper index 존재 유무 체크
