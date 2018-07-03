@@ -40,7 +40,7 @@
                     join
                     (
                         select
-                                yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, '1'::text as ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
+                                yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
                         from    bms_dd_admin_ad_sche where brdcst_dt = #{brdcst_dt}
                     ) b
                     on a.brdcst_dt = b.brdcst_dt
@@ -74,7 +74,7 @@
                 join
                 (
                     select
-                            yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, '1'::text as ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn
+                            yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn
                     from    bms_dd_admin_ad_sche where brdcst_dt = #{brdcst_dt}
                 ) b
                 on a.brdcst_dt = b.brdcst_dt
@@ -124,7 +124,7 @@
                     join
                     (
                         select
-                                yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, '1'::text as ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
+                                yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt
                         from    bms_dd_admin_ad_sche where brdcst_dt = #{brdcst_dt}
                     ) b
                     on a.brdcst_dt = b.brdcst_dt
@@ -156,7 +156,7 @@
                 join
                 (
                     select
-                            yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, '1'::text as ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn
+                            yyyymmdd, apln_form_id, ad_id, ad_nm, ad_length, ad_order, ch_id, ch_no, ch_nm, brdcst_dt, start_dt, end_dt, emgy_yn
                     from    bms_dd_admin_ad_sche where brdcst_dt = #{brdcst_dt}
                 ) b
                 on a.brdcst_dt = b.brdcst_dt
