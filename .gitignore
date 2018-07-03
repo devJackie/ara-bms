@@ -4,6 +4,7 @@ gradlew.bat
 gradlew
 build/
 logs/
+out/
 .idea/
 .settings/
 *.swp
