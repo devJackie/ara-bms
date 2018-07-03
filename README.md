@@ -14,7 +14,7 @@ production start script argument (수동 처리 날짜 입력 --executeDate=${yy
 2. resources -> linkServer -> .yml 을 local 에 맞게 수정후 BmsApplication.java main 실행
 
 # 수동 처리 날짜 실행전 삭제 목록
-e.g) 20180702 편성표를 삭제
+#e.g) 특정날짜 편성표를 삭제
 1. zookeeper index 삭제
     + rmr /bms/RES_SCHE/STEP1/20180702/1
     + rmr /bms/RES_SCHE/STEP2/20180702/1
@@ -22,13 +22,14 @@ e.g) 20180702 편성표를 삭제
     + rmr /bms/RES_SCHE/STEP2/20180703/1
 
 2. table 삭제
-  + bms_dd_ad_tmp_res_sche brdcst_dt 가 20180702 인 데이터 삭제
-  + bms_dd_ad_res_sche 가 20180702 인 데이터 삭제
+    + bms_dd_ad_tmp_res_sche brdcst_dt 가 20180702 인 데이터 삭제
+    + bms_dd_ad_res_sche 가 20180702 인 데이터 삭제
 
 ---
 
-+ e.g) 20180702 02-24 편성표만 삭제하고 싶을 때 
-+ (00-02도 같은 방식으로 진행 단, 20180702 02-24, 20180703 00-02 가 한 세트임, 00-02 는 익일 날짜임을 주의)
+#e.g) 특정날짜 02-24 편성표만 삭제하고 싶을 때 
+* (00-02도 같은 방식으로 진행 단, 20180702 02-24, 20180703 00-02 가 한 세트임, 00-02 는 익일 날짜임을 주의)
+
 1. zookeeper index 삭제 
     + 02-24 있는지 확인
       + get /bms/RES_SCHE/STEP1/20180702/1 ["00-02","02-24"]
