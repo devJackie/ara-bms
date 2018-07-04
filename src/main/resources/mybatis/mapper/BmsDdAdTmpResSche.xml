@@ -35,7 +35,7 @@
 
     <select id="selPrgmScheNextDay" parameterType="java.util.LinkedHashMap" resultType="java.util.LinkedHashMap">
     /** selPrgmScheNextDay **/
-        select coalesce(yyyymmdd, '') as lately_day from bms_dd_mss_prgm_sche where yyyymmdd <![CDATA[ > ]]> #{yyyymmdd} order by yyyymmdd desc limit 1
+        select coalesce(yyyymmdd, '') as lately_day from bms_dd_mss_prgm_sche where yyyymmdd = #{to_yyyymmdd} order by yyyymmdd desc limit 1
     </select>
 
     <select id="selAdNprgmScheMergeForToDay" parameterType="java.util.LinkedHashMap" resultType="BmsDdAdTmpResSche">
@@ -400,9 +400,9 @@
                         where   yyyymmdd between #{from_yyyymmdd} and #{to_yyyymmdd}
                         and
                         (
-                            ( to_char(to_timestamp(prgm_start_dt, 'YYYY-MM-DD HH24:MI:SS'), 'YYYYMMDDHH24MISS') <![CDATA[ > ]]> concat (#{to_yyyymmdd}, '000000' ) )
+                            ( to_char(to_timestamp(prgm_start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS') <![CDATA[ > ]]> concat (#{to_yyyymmdd}, '000000' ) )
                             and
-                            ( to_char(to_timestamp(prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS'), 'YYYYMMDDHH24MISS') <![CDATA[ <= ]]> concat (#{to_yyyymmdd}, '020000' ) )
+                            ( to_char(to_timestamp(prgm_end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS') <![CDATA[ <= ]]> concat (#{to_yyyymmdd}, '020000' ) )
                         )
                     ) e on  <![CDATA[ d.ch_no = e.ch_no and e.prgm_start_dt <= d.start_dt and d.start_dt <= e.prgm_end_dt ]]>
                 ) f
