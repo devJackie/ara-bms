@@ -13,8 +13,8 @@ sourceConfig:
   path: /data/ara-bms/amoeba/${date}/
   pathAttributes:
   - type: date
-    datePattern: yyyyMMdd
-    scanRange: -0d
+    datePattern: yyyy-MM-dd
+    scanRange: -2d
 
 fileIOConfig:
   type: amoeba

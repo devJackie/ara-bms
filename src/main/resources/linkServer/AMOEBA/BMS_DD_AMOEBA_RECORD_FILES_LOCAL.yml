@@ -9,8 +9,8 @@ sourceConfig:
   path: /Users/devjackie/ara-bms/amoeba/${date}/
   pathAttributes:
   - type: date
-    datePattern: yyyyMMdd
-    scanRange: -40d
+    datePattern: yyyy-MM-dd
+    scanRange: -2d
 
 fileIOConfig:
   type: amoeba
@@ -21,8 +21,3 @@ parserConfig:
 
 sinkConfig:
   type: none
-#  server: localhost
-#  port: 21
-#  id: devjackie
-#  password: Tjddydwozl12
-#  path: /data_backup/tCommerce/${yyyyMMdd}/moc/contents
