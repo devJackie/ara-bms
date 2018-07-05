@@ -47,9 +47,9 @@
                     on a.brdcst_dt = b.brdcst_dt
                     and
                     (
-                        substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) <![CDATA[ <= ]]> substr(to_char(to_timestamp(a.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
+                        substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12) <![CDATA[ <= ]]> substr(to_char(to_timestamp(a.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12)
                         and
-                        substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) <![CDATA[ < ]]> substr(to_char(to_timestamp(b.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
+                        substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12) <![CDATA[ < ]]> substr(to_char(to_timestamp(b.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12)
                     )
                 ) c
                 where   c.brdcst_dt = d.brdcst_dt and c.apln_form_id = d.apln_form_id and c.ad_id = d.ad_id and c.ch_id = d.ch_id and c.sche_gubn = d.sche_gubn
@@ -79,9 +79,9 @@
                 on a.brdcst_dt = b.brdcst_dt
                 and
                 (
-                    substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) <![CDATA[ <= ]]> substr(to_char(to_timestamp(a.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
+                    substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12) <![CDATA[ <= ]]> substr(to_char(to_timestamp(a.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12)
                     and
-                    substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) <![CDATA[ < ]]> substr(to_char(to_timestamp(b.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
+                    substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12) <![CDATA[ < ]]> substr(to_char(to_timestamp(b.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12)
                 )
             ) c
             group by    c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ad_order, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt, c.emgy_yn
@@ -133,9 +133,9 @@
                     on a.brdcst_dt = b.brdcst_dt
                     and
                     (
-                        substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) <![CDATA[ <= ]]> substr(to_char(to_timestamp(a.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
+                        substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12) <![CDATA[ <= ]]> substr(to_char(to_timestamp(a.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12)
                         and
-                        substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) <![CDATA[ < ]]> substr(to_char(to_timestamp(b.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
+                        substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12) <![CDATA[ < ]]> substr(to_char(to_timestamp(b.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12)
                     )
                 ) c
                 where   c.brdcst_dt = d.brdcst_dt and c.apln_form_id = d.apln_form_id and c.ad_id = d.ad_id and c.ch_id = d.ch_id and c.sche_gubn = d.sche_gubn
@@ -171,9 +171,9 @@
                 on a.brdcst_dt = b.brdcst_dt
                 and
                 (
-                    substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) <![CDATA[ <= ]]> substr(to_char(to_timestamp(a.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
+                    substr(to_char(to_timestamp(b.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12) <![CDATA[ <= ]]> substr(to_char(to_timestamp(a.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12)
                     and
-                    substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) <![CDATA[ < ]]> substr(to_char(to_timestamp(b.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10)
+                    substr(to_char(to_timestamp(a.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12) <![CDATA[ < ]]> substr(to_char(to_timestamp(b.end_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,12)
                 )
             ) c
             group by    c.yyyymmdd, c.sche_gubn, c.apln_form_id, c.ad_id, c.ad_nm, c.ad_length, c.ad_order, c.ch_id, c.ch_no, c.ch_nm, c.brdcst_dt, c.start_dt, c.end_dt, c.emgy_yn

@@ -96,7 +96,7 @@
                         , f.brdcst_dt
                         , f.ori_start_dt
                         , f.start_ts
-                        , to_char(to_timestamp((extract(epoch FROM to_timestamp(f.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900))::timestamp,'YYYY-MM-DD HH24:MI:SS') as start_dt
+                        , to_char(to_timestamp((extract(epoch FROM to_timestamp(f.prgm_end_dt, 'yyyy-MM-dd HH24:MI:SS')) - 900))::timestamp,'yyyy-MM-dd HH24:MI:SS') as start_dt
                         , f.prgm_end_dt as end_dt
                         , f.prgm_id
                         , f.prgm_nm
@@ -117,7 +117,7 @@
                             , d.ch_nm
                             , d.brdcst_dt
                             , d.start_dt as ori_start_dt
-                            , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900) as start_ts
+                            , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'yyyy-MM-dd HH24:MI:SS')) - 900) as start_ts
                             , e.prgm_id
                             , e.prgm_nm
                             , e.prgm_start_dt
@@ -131,7 +131,7 @@
                         (
                             select
                                     yyyymmdd, ch_nm, brdcst_dt, hhmmss, ch_id, otv_ch_no as ch_no, ad_order, ad_id, ad_nm, ad_length, apln_form_id
-                                    , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'YYYYMMDDHH24MISS')::timestamp, 'YYYY-MM-DD HH24:MI:SS') as start_dt
+                                    , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'yyyyMMddHH24MISS')::timestamp, 'yyyy-MM-dd HH24:MI:SS') as start_dt
                                     , 'OTV' as screen_gubn
                             from    bms_dd_ats_ad_sche
                             where   brdcst_dt = #{brdcst_dt}
@@ -163,7 +163,7 @@
                             union all
                             select
                                     yyyymmdd, ch_nm, brdcst_dt, hhmmss, ch_id, concat('S', ots_ch_no) as ch_no, ad_order, ad_id, ad_nm, ad_length, apln_form_id
-                                    , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'YYYYMMDDHH24MISS')::timestamp, 'YYYY-MM-DD HH24:MI:SS') as start_dt
+                                    , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'yyyyMMddHH24MISS')::timestamp, 'yyyy-MM-dd HH24:MI:SS') as start_dt
                                     , 'OTS' as screen_gubn
                             from    bms_dd_ats_ad_sche
                             where   brdcst_dt = #{brdcst_dt}
@@ -290,7 +290,7 @@
                         , f.brdcst_dt
                         , f.ori_start_dt
                         , f.start_ts
-                        , to_char(to_timestamp((extract(epoch FROM to_timestamp(f.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900))::timestamp,'YYYY-MM-DD HH24:MI:SS') as start_dt
+                        , to_char(to_timestamp((extract(epoch FROM to_timestamp(f.prgm_end_dt, 'yyyy-MM-dd HH24:MI:SS')) - 900))::timestamp,'yyyy-MM-dd HH24:MI:SS') as start_dt
                         , f.prgm_end_dt as end_dt
                         , f.prgm_id
                         , f.prgm_nm
@@ -311,7 +311,7 @@
                             , d.ch_nm
                             , d.brdcst_dt
                             , d.start_dt as ori_start_dt
-                            , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'YYYY-MM-DD HH24:MI:SS')) - 900) as start_ts
+                            , (extract(epoch FROM to_timestamp(e.prgm_end_dt, 'yyyy-MM-dd HH24:MI:SS')) - 900) as start_ts
                             , e.prgm_id
                             , e.prgm_nm
                             , e.prgm_start_dt
@@ -325,7 +325,7 @@
                         (
                             select
                                     yyyymmdd, ch_nm, brdcst_dt, hhmmss, ch_id, otv_ch_no as ch_no, ad_order, ad_id, ad_nm, ad_length, apln_form_id
-                                    , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'YYYYMMDDHH24MISS')::timestamp, 'YYYY-MM-DD HH24:MI:SS') as start_dt
+                                    , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'yyyyMMddHH24MISS')::timestamp, 'yyyy-MM-dd HH24:MI:SS') as start_dt
                                     , 'OTV' as screen_gubn
                             from    bms_dd_ats_ad_sche
                             where   brdcst_dt = #{brdcst_dt}
@@ -357,7 +357,7 @@
                             union all
                             select
                                     yyyymmdd, ch_nm, brdcst_dt, hhmmss, ch_id, concat('S', ots_ch_no) as ch_no, ad_order, ad_id, ad_nm, ad_length, apln_form_id
-                                    , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'YYYYMMDDHH24MISS')::timestamp, 'YYYY-MM-DD HH24:MI:SS') as start_dt
+                                    , to_char(to_timestamp(substr(concat(yyyymmdd, lpad(hhmmss::text, 8, '0')),1,14), 'yyyyMMddHH24MISS')::timestamp, 'yyyy-MM-dd HH24:MI:SS') as start_dt
                                     , 'OTS' as screen_gubn
                             from    bms_dd_ats_ad_sche
                             where   brdcst_dt = #{brdcst_dt}
