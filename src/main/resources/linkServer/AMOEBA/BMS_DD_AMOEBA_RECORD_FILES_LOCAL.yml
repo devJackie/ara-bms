@@ -5,7 +5,11 @@ indexConfig:
   uri: /index/BMS_DD_AMOEBA_RECORD_FILES
 
 sourceConfig:
-  type: local
+  type: sftp
+  server: localhost
+  port: 22
+  id: devjackie
+  password: Tjddydwozl12
   path: /Users/devjackie/ara-bms/amoeba/${date}/
   pathAttributes:
   - type: date

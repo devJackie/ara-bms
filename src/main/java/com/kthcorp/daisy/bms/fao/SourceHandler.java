@@ -1,6 +1,7 @@
 package com.kthcorp.daisy.bms.fao;
 
 import java.io.Closeable;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -11,6 +12,8 @@ public interface SourceHandler extends Closeable, AutoCloseable {
     List<RemoteFileInfo> getRemoteFiles() throws Exception;
 
     boolean get(String remote, String local) throws Exception;
+
+    InputStream getInputStream(String remote) throws Exception;
 
     boolean send(String local, String remote) throws Exception;
 }

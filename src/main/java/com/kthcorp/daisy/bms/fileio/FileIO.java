@@ -1,6 +1,7 @@
 package com.kthcorp.daisy.bms.fileio;
 
 import com.kthcorp.daisy.bms.fao.RemoteFileInfo;
+import com.kthcorp.daisy.bms.fao.SourceHandler;
 
 import java.io.File;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Map;
  */
 public interface FileIO {
 
-    List<FileIOInfo> readAmeobaRecFileList(List<RemoteFileInfo> remoteFiles) throws Exception;
+    List<FileIOInfo> readAmeobaRecFileList(SourceHandler sourceHandler, List<RemoteFileInfo> remoteFiles) throws Exception;
 
     List<Map<String, Object>> readAmeobaIdxRecInfoList(String[] fileArray) throws Exception;
 

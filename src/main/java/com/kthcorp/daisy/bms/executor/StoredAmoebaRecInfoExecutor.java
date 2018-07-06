@@ -78,7 +78,7 @@ public class StoredAmoebaRecInfoExecutor extends BaseExecutor {
 
             List<FileIOInfo> fileIOFiles;
             // .IDX 의 녹화파일 목록
-            fileIOFiles = fileIO.readAmeobaRecFileList(idxFiles);
+            fileIOFiles = fileIO.readAmeobaRecFileList(sourceHandler, idxFiles);
 
             fileIOFiles.forEach(x -> {
                 log.debug("{}", x);

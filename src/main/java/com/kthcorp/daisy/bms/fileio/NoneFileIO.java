@@ -1,6 +1,7 @@
 package com.kthcorp.daisy.bms.fileio;
 
 import com.kthcorp.daisy.bms.fao.RemoteFileInfo;
+import com.kthcorp.daisy.bms.fao.SourceHandler;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,7 +20,7 @@ public class NoneFileIO extends BaseFileIO {
     }
 
     @Override
-    public List<FileIOInfo> readAmeobaRecFileList(List<RemoteFileInfo> idxFiles) throws Exception {
+    public List<FileIOInfo> readAmeobaRecFileList(SourceHandler sourceHandler, List<RemoteFileInfo> remoteFiles) throws Exception {
         return null;
     }
 

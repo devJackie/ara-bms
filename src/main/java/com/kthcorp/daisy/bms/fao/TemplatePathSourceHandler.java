@@ -5,6 +5,7 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrSubstitutor;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -83,6 +84,11 @@ public class TemplatePathSourceHandler implements SourceHandler {
     @Override
     public boolean get(String remote, String local) throws Exception {
         return remoteFSHelper.copyToLocal(remote, local);
+    }
+
+    @Override
+    public InputStream getInputStream(String remote) throws Exception {
+        return remoteFSHelper.getInputStream(remote);
     }
 
     @Override

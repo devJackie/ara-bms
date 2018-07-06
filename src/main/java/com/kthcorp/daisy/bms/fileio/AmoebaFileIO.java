@@ -1,15 +1,13 @@
 package com.kthcorp.daisy.bms.fileio;
 
 import com.kthcorp.daisy.bms.fao.RemoteFileInfo;
+import com.kthcorp.daisy.bms.fao.SourceHandler;
 import com.kthcorp.daisy.bms.properties.BmsMetaProperties;
 import com.kthcorp.daisy.bms.util.CollectorUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,7 +22,7 @@ public class AmoebaFileIO extends BaseFileIO {
     }
 
     @Override
-    public List<FileIOInfo> readAmeobaRecFileList(List<RemoteFileInfo> remoteFiles) throws Exception {
+    public List<FileIOInfo> readAmeobaRecFileList(SourceHandler sourceHandler, List<RemoteFileInfo> remoteFiles) throws Exception {
         log.debug("config : {}", config);
 
         List<FileIOInfo> fileIOList = new ArrayList<>();
@@ -34,7 +32,8 @@ public class AmoebaFileIO extends BaseFileIO {
         for (RemoteFileInfo remoteFile : remoteFiles) {
             // yyyyMMdd 설정
             remoteFile.setYyyyMMdd(remoteFile.getFileName().split("\\.")[0]);
-            BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(remoteFile.getAbsolutePath()), textEncoding));
+            InputStream stream = sourceHandler.getInputStream(remoteFile.getAbsolutePath());
+            BufferedReader in = new BufferedReader(new InputStreamReader(stream, textEncoding));
 
             try {
                 String line;
