@@ -68,7 +68,7 @@ public class StoredMssPrgmScheInfoExecutor extends BaseExecutor {
             return executeFileInfo;
         }).collect(Collectors.toList());
 
-        log.info("executeFileInfos : {}", executeFileInfos);
+        log.debug("executeFileInfos : {}", executeFileInfos);
         log.info("1-{}. Remote file`s index checked. ", logIdx++);
 
         return executeFileInfos;
