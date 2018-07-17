@@ -41,6 +41,7 @@ public class StoredMediaRecInfoExecutor extends BaseExecutor {
 
         // .FIN 파일이 있는지 체크
         List<RemoteFileInfo> resultFiles = recFiles.stream().filter(f ->
+                f.getSize() > 0 &&
                 finFiles.contains(f.getFileName().substring(0, f.getFileName().indexOf(".")))).collect(Collectors.toList());
 
         // 현재날짜 설정

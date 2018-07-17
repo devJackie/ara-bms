@@ -40,6 +40,7 @@ public class StoredAtsAdScheInfoExecutor extends BaseExecutor {
 
         // .FIN 파일이 있는지 체크
         List<RemoteFileInfo> resultRemoteFiles = atsFiles.stream().filter(f ->
+                f.getSize() > 0 &&
                 finFiles.contains(f.getFileName().substring(0, f.getFileName().indexOf(".")))).collect(Collectors.toList());
 
         executeFileInfos = resultRemoteFiles.stream().map(x -> {
