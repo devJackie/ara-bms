@@ -210,6 +210,7 @@
             where   g.cnt_over = 1 -- 광고 + 프로그램 매핑 후 ad_order 가 2개이상 중복이 있으면 제거
         ) h
         where   h.rnum = 1
+        and	    substr(to_char(to_timestamp(h.ori_start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) = substr(to_char(to_timestamp(h.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) -- 보정 -> ats 편성표 시작시간과 최종 편성표 시작시간이 같은 데이터(년월일시)만 추출
         group by
                 h.yyyymmdd
                 , sche_gubn
@@ -410,6 +411,7 @@
             where   g.cnt_over = 1 -- 광고 + 프로그램 매핑 후 ad_order 가 2개이상 중복이 있으면 제거
         ) h
         where   h.rnum = 1
+        and	    substr(to_char(to_timestamp(h.ori_start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) = substr(to_char(to_timestamp(h.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) -- 보정 -> ats 편성표 시작시간과 최종 편성표 시작시간이 같은 데이터(년월일시)만 추출
         group by
                 h.yyyymmdd
                 , sche_gubn
