@@ -104,7 +104,7 @@ dependencies {
 //    destinationDir = file("$buildDir/libs") //jar 가 생성되는 디렉토리 지정
 //}
 
- jar {
+jar {
     baseName = 'ara-bms'
     version =  '1.0'
     extension = 'jar'

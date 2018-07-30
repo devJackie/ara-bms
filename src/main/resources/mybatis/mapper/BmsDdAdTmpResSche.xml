@@ -207,7 +207,7 @@
                     ) e on    <![CDATA[ d.ch_no = e.ch_no and e.prgm_start_dt <= d.start_dt and d.start_dt < e.prgm_end_dt ]]>
                 ) f
             ) g
-            where   g.cnt_over = 1 -- 광고 + 프로그램 매핑 후 ad_order 가 2개이상 중복이 있으면 제거
+            where   g.cnt_over = 1 -- 광고 + 프로그램 매핑 후 ad_order 가 2개이상 중복이 있으면 제거 (같은 채널, 프로그램 편성표에 광고 편성표가 2개이상 걸린 경우)
         ) h
         where   h.rnum = 1
         and	    substr(to_char(to_timestamp(h.ori_start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) = substr(to_char(to_timestamp(h.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) -- 보정 -> ats 편성표 시작시간과 최종 편성표 시작시간이 같은 데이터(년월일시)만 추출
@@ -408,7 +408,7 @@
                     ) e on  <![CDATA[ d.ch_no = e.ch_no and e.prgm_start_dt <= d.start_dt and d.start_dt <= e.prgm_end_dt ]]>
                 ) f
             ) g
-            where   g.cnt_over = 1 -- 광고 + 프로그램 매핑 후 ad_order 가 2개이상 중복이 있으면 제거
+            where   g.cnt_over = 1 -- 광고 + 프로그램 매핑 후 ad_order 가 2개이상 중복이 있으면 제거 (같은 채널, 프로그램 편성표에 광고 편성표가 2개이상 걸린 경우)
         ) h
         where   h.rnum = 1
         and	    substr(to_char(to_timestamp(h.ori_start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) = substr(to_char(to_timestamp(h.start_dt, 'yyyy-MM-dd HH24:MI:SS'), 'yyyyMMddHH24MISS'),1,10) -- 보정 -> ats 편성표 시작시간과 최종 편성표 시작시간이 같은 데이터(년월일시)만 추출
