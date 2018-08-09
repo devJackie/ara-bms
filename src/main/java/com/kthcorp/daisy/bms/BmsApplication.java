@@ -14,8 +14,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * Created by devjackie on 2018. 6. 8..
  */
 @SpringBootApplication
-@ComponentScan
-@EnableAutoConfiguration(exclude = {DataSourceTransactionManagerAutoConfiguration.class, DataSourceAutoConfiguration.class, MybatisAutoConfiguration.class})
 @EnableScheduling
 @Slf4j
 public class BmsApplication {

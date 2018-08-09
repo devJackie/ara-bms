@@ -22,8 +22,8 @@ production start script argument (수동 처리 날짜 입력 --executeDate=${yy
     + rmr /bms/RES_SCHE/STEP2/20180703/1
 
 2. table 삭제
-    + bms_dd_ad_tmp_res_sche brdcst_dt 가 20180702 인 데이터 삭제
-    + bms_dd_ad_res_sche 가 20180702 인 데이터 삭제
+    + bms_dd_ad_tmp_res_sche -> brdcst_dt 가 20180702 인 데이터 삭제
+    + bms_dd_ad_res_sche -> brdcst_dt 가 20180702 인 데이터 삭제
 
 ---
 
