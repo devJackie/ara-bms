@@ -158,7 +158,7 @@
                                     ) a
                                     where  a.otv_ch_no is not null or a.otv_ch_no != ''
                                 ) b
-                                    where   <![CDATA[ b.otv_rnum >= 1 and b.otv_rnum <= 30 ]]>
+                                where   <![CDATA[ b.otv_rnum >= 1 and b.otv_rnum <= 30 ]]>
                             )
                             union all
                             select
@@ -190,7 +190,7 @@
                                     ) a
                                     where   a.ots_ch_no is not null or a.ots_ch_no != ''
                                 ) b
-                            where   <![CDATA[ b.ots_rnum >= 1 and b.ots_rnum <= 30 ]]>
+                                where   <![CDATA[ b.ots_rnum >= 1 and b.ots_rnum <= 30 ]]>
                             )
                         ) c
                         where   not exists ( select 1 from bms_dd_amoeba_record_files dd where dd.apln_form_id = c.apln_form_id and dd.ad_id = c.ad_id and dd.ch_id = c.ch_id )
